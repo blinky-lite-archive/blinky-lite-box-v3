@@ -6569,7 +6569,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-beadpull\">blinky-beadpull</option>\n                                    <option value=\"blinky-modbus\">blinky-modbus</option>\n                                    <option value=\"blinky-power-mon\">blinky-power-mon</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                    <option value=\"blinky-scale\">blinky-scale</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
+        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-beadpull\">blinky-beadpull</option>\n                                    <option value=\"blinky-modbus\">blinky-modbus</option>\n                                    <option value=\"blinky-power-mon\">blinky-power-mon</option>\n                                    <option value=\"blinky-scale\">blinky-scale</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
         "output": "str",
         "x": 940,
         "y": 60,
@@ -8793,5 +8793,107 @@
                 "f5291e397d256f63"
             ]
         ]
+    },
+    {
+        "id": "5d6c17ec.a34b68",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-power-mon-demo",
+        "url": "/blinky-power-mon-demo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "6f7bfd42.3b5994"
+            ]
+        ]
+    },
+    {
+        "id": "92c2e795.aedbb8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-power-mon?name=101\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/powerMeterYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Power Monitor 101</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-power-mon?name=102\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/powerMeterYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Power Monitor 102</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 830,
+        "y": 580,
+        "wires": [
+            [
+                "c25dee26e7cc90a4"
+            ]
+        ]
+    },
+    {
+        "id": "6f7bfd42.3b5994",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "powerMeterYellow.png",
+        "output": "str",
+        "x": 350,
+        "y": 580,
+        "wires": [
+            [
+                "9c5f7ac4.2fde28"
+            ]
+        ]
+    },
+    {
+        "id": "9c5f7ac4.2fde28",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Power-Monitor Demo",
+        "output": "str",
+        "x": 500,
+        "y": 580,
+        "wires": [
+            [
+                "a8f728b7.feb5d8"
+            ]
+        ]
+    },
+    {
+        "id": "a8f728b7.feb5d8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
+        "output": "str",
+        "x": 670,
+        "y": 580,
+        "wires": [
+            [
+                "92c2e795.aedbb8"
+            ]
+        ]
+    },
+    {
+        "id": "c25dee26e7cc90a4",
+        "type": "subflow:8341090a.df9758",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 970,
+        "y": 580,
+        "wires": []
     }
 ]
