@@ -21,6 +21,13 @@
         "info": ""
     },
     {
+        "id": "b76c0793b15a73b9",
+        "type": "tab",
+        "label": "Web Apps 2",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "e17f7487.2a78e8",
         "type": "tab",
         "label": "blinky-lite-dataLogger",
@@ -528,6 +535,12 @@
         "id": "3edb36a2de1c87da",
         "type": "websocket-listener",
         "path": "/blinky-scale/websocket",
+        "wholemsg": "false"
+    },
+    {
+        "id": "c18cc87702466083",
+        "type": "websocket-listener",
+        "path": "/blinky-power-mon-simple/websocket",
         "wholemsg": "false"
     },
     {
@@ -2260,7 +2273,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n{{{payload.head}}}\n  </head>\n  <body>\n{{{payload.navBar}}}\n{{{payload.html.websocket}}}\n{{{payload.body}}}\n{{{payload.foot}}}\n  </body>\n</html>",
+        "template": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n{{{payload.head}}}\n  </head>\n  <body>\n{{{payload.html.websocket}}}\n{{{payload.navBar}}}\n{{{payload.body}}}\n{{{payload.foot}}}\n  </body>\n</html>",
         "output": "str",
         "x": 1150,
         "y": 40,
@@ -2315,7 +2328,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1270,
+        "x": 1290,
         "y": 40,
         "wires": []
     },
@@ -4724,7 +4737,8 @@
             "0ed0e6d8928c14de",
             "3d0299782e275c92",
             "de21e03a7ded2d46",
-            "ee630ac232b19d93"
+            "ee630ac232b19d93",
+            "355850f24ee88a60"
         ],
         "x": 815,
         "y": 580,
@@ -6661,7 +6675,8 @@
         "z": "8475ab9.3d26058",
         "name": "blinky-power-mon mqtt",
         "links": [
-            "0ed0e6d8928c14de"
+            "0ed0e6d8928c14de",
+            "355850f24ee88a60"
         ],
         "x": 595,
         "y": 140,
@@ -6704,7 +6719,8 @@
         "z": "8475ab9.3d26058",
         "name": "blinky-power-mon-archive",
         "links": [
-            "0ed0e6d8928c14de"
+            "0ed0e6d8928c14de",
+            "355850f24ee88a60"
         ],
         "x": 1155,
         "y": 700,
@@ -6962,7 +6978,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['power','powerAvg','powerRms', 'dutyFactor'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Power (W)',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    rangemode       : 'tozero'\n                },\n                yaxis2:\n                {\n                    title           : 'Duty Factor (%)',\n                    titlefont       : {color: '#f2a31f'},\n                    tickfont        : {color: '#f2a31f'},\n                    gridcolor       : '#f2a31f',\n                    zerolinecolor   : '#f2a31f',\n                    linecolor       : '#f2a31f',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 100]\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'blue'}\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Avg Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red'}\n            };\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: 'RMS Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'green'}\n            };\n            var trace4 = \n            {\n                x: [],\n                y: [],\n                name: 'Duty Factor',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'orange'}\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[2]];\n                trace4.x[ii] = x;\n                trace4.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[3]];\n             }\n\n\n            Plotly.newPlot('archiveChart', [trace1,trace2, trace3, trace4], layout);\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['power','powerAvg','powerRms', 'dutyFactor'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Power (W)',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    rangemode       : 'tozero'\n                },\n/*\n                yaxis2:\n                {\n                    title           : 'Duty Factor (%)',\n                    titlefont       : {color: '#f2a31f'},\n                    tickfont        : {color: '#f2a31f'},\n                    gridcolor       : '#f2a31f',\n                    zerolinecolor   : '#f2a31f',\n                    linecolor       : '#f2a31f',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 100]\n                },\n*/\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'blue'}\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Avg Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red',width:4}\n            };\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: 'RMS Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'green'}\n            };\n/*\n            var trace4 = \n            {\n                x: [],\n                y: [],\n                name: 'Duty Factor',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'orange'}\n            };\n*/\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[2]];\n//                trace4.x[ii] = x;\n//                trace4.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[3]];\n             }\n\n\n//            Plotly.newPlot('archiveChart', [trace1,trace2, trace3, trace4], layout);\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
         "output": "str",
         "x": 690,
         "y": 600,
@@ -7150,7 +7166,7 @@
         "server": "1ea60968c67f4c49",
         "client": "",
         "x": 1030,
-        "y": 180,
+        "y": 220,
         "wires": []
     },
     {
@@ -7180,7 +7196,7 @@
             "2e079a098c3745e9"
         ],
         "x": 875,
-        "y": 180,
+        "y": 220,
         "wires": [
             [
                 "feef1b91cf3c555e"
@@ -7903,7 +7919,7 @@
             "2e079a098c3745e9"
         ],
         "x": 875,
-        "y": 220,
+        "y": 260,
         "wires": [
             [
                 "caf1f0493ed3ee4f"
@@ -7918,7 +7934,7 @@
         "server": "874828cc9941fa30",
         "client": "",
         "x": 1040,
-        "y": 220,
+        "y": 260,
         "wires": []
     },
     {
@@ -8320,7 +8336,7 @@
             "5eef535208c9625b"
         ],
         "x": 875,
-        "y": 260,
+        "y": 300,
         "wires": [
             [
                 "e448eb6d6ef04379"
@@ -8335,7 +8351,7 @@
         "server": "3edb36a2de1c87da",
         "client": "",
         "x": 1030,
-        "y": 260,
+        "y": 300,
         "wires": []
     },
     {
@@ -8895,5 +8911,318 @@
         "x": 970,
         "y": 580,
         "wires": []
+    },
+    {
+        "id": "355850f24ee88a60",
+        "type": "link in",
+        "z": "8475ab9.3d26058",
+        "name": "blinky power-mon-simple input socket",
+        "links": [
+            "1e710224.de723e",
+            "76b3cf58f503afba",
+            "ab40734a9039d27b"
+        ],
+        "x": 875,
+        "y": 180,
+        "wires": [
+            [
+                "007827ec53328f58"
+            ]
+        ]
+    },
+    {
+        "id": "007827ec53328f58",
+        "type": "websocket out",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-power-mon-simple/websocket",
+        "server": "c18cc87702466083",
+        "client": "",
+        "x": 1070,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5fa5ddddb76507cd",
+        "type": "websocket in",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-power-mon-simple/websocket",
+        "server": "c18cc87702466083",
+        "client": "",
+        "x": 200,
+        "y": 340,
+        "wires": [
+            [
+                "f7c7e41ed88e691e"
+            ]
+        ]
+    },
+    {
+        "id": "f7c7e41ed88e691e",
+        "type": "json",
+        "z": "8475ab9.3d26058",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 410,
+        "y": 340,
+        "wires": [
+            [
+                "12c2be0e427d2d6d"
+            ]
+        ]
+    },
+    {
+        "id": "12c2be0e427d2d6d",
+        "type": "function",
+        "z": "8475ab9.3d26058",
+        "name": "Shift msg",
+        "func": "return msg.payload;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 550,
+        "y": 340,
+        "wires": [
+            [
+                "4bda293b.6a4c38"
+            ]
+        ]
+    },
+    {
+        "id": "95462c400828f6c3",
+        "type": "function",
+        "z": "b76c0793b15a73b9",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name\nmsg.payload['script']['deviceType'] = 'blinky-power-mon';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 80,
+        "wires": [
+            [
+                "837864c19fddb1b8"
+            ]
+        ]
+    },
+    {
+        "id": "3a4af1456d92e75c",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Ideon Innovation Coffee Machine",
+        "output": "str",
+        "x": 360,
+        "y": 160,
+        "wires": [
+            [
+                "65a353572efbdbbe"
+            ]
+        ]
+    },
+    {
+        "id": "65a353572efbdbbe",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var archiveList = [];\n\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(false);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            getArchive(24);\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function getScaledPix(percentageWindowWidth)\n        {\n            var pix = window.innerWidth * percentageWindowWidth;\n            pix = Math.round(pix / 100);\n            return pix;\n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        lastPing = new Date().getTime();\n                        heartbeat();\n                        device = JSON.parse(msg.payload);\n                        mqttDevice = msg.mqttDevice;\n                        updateDmaReadings(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "output": "str",
+        "x": 690,
+        "y": 80,
+        "wires": [
+            [
+                "6d6381e04a3d4c8e"
+            ]
+        ]
+    },
+    {
+        "id": "1bed9ac44df22845",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.vertbarWidget}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 680,
+        "y": 240,
+        "wires": [
+            [
+                "584f3393f09a26c8"
+            ]
+        ]
+    },
+    {
+        "id": "584f3393f09a26c8",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div  width=\"100%\">\n            <table width=\"100%\">\n                <tr>\n                    <td width=\"15%\">\n                        <div id=\"powerAvgBarPlot\" width=\"100%\" ></div>\n                    </td>\n                    <td width=\"15%\">\n                        <div id=\"powerBarPlot\" width=\"100%\" ></div>\n                    </td>\n                    <td width=\"70%\">\n                        <div id=\"archiveChart\" width=\"100%\" ></div>\n                    </td>\n                </tr>\n            </table>\n        </div>\n    </div>",
+        "output": "str",
+        "x": 890,
+        "y": 240,
+        "wires": [
+            [
+                "320208e67a55fc7e"
+            ]
+        ]
+    },
+    {
+        "id": "837864c19fddb1b8",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "coffeeCupBlue.png",
+        "output": "str",
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "3a4af1456d92e75c"
+            ]
+        ]
+    },
+    {
+        "id": "43ea7265c7d9a542",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['powerAvg','power'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                plot_bgcolor: \"#eeeeee\",\n                paper_bgcolor:\"#eeeeee\",\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15,\"orientation\": \"h\"},\n                height      : getScaledPix(53),\n                width       : getScaledPix(70),\n                xaxis       :\n                {\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Avg Power (W)',\n                    titlefont       : {color: 'red'},\n                    tickfont        : {color: 'red'},\n                    gridcolor       : 'red',\n                    zerolinecolor   : 'red',\n                    linecolor       : 'red',\n                    range: [0, 600]\n                },\n\n                yaxis2:\n                {\n                    title           : 'Peak Power (W)',\n                    titlefont       : {color: 'blue'},\n                    tickfont        : {color: 'blue'},\n                    gridcolor       : 'blue',\n                    zerolinecolor   : 'blue',\n                    linecolor       : 'blue',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 3000]\n                },\n\n                margin: \n                    {\n                        l: getScaledPix(8),\n                        r: getScaledPix(12),\n                        b: getScaledPix(5),\n                        t: getScaledPix(0),\n                        pad: 0\n                    }\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Avg Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red',width:4}\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Peak Power',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'blue',width:1}\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n\n             }\n\n\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout, {displayModeBar: false, staticPlot: false});\n\n        }\n",
+        "output": "str",
+        "x": 690,
+        "y": 200,
+        "wires": [
+            [
+                "1bed9ac44df22845"
+            ]
+        ]
+    },
+    {
+        "id": "c227afe69c3758be",
+        "type": "http in",
+        "z": "b76c0793b15a73b9",
+        "name": "/blinky-power-mon-simple",
+        "url": "/blinky-power-mon-simple",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 80,
+        "wires": [
+            [
+                "95462c400828f6c3"
+            ]
+        ]
+    },
+    {
+        "id": "6d6381e04a3d4c8e",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n\n            var powerAvgBarConfig = \n                {\n                    lolo            : device.powerAvg.alarm.limits.lolo, \n                    low             : device.powerAvg.alarm.limits.low, \n                    high            : device.powerAvg.alarm.limits.high, \n                    hihi            : device.powerAvg.alarm.limits.hihi, \n                    value           : device.powerAvg.value, \n                    unit            : device.powerAvg.unit, \n                    textsize        : 2,\n                    label           : 'Avg Power', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    width           : 15, \n                    height          : 53, \n                    title           : \"Avg: \" + device.powerAvg.value.toFixed(0) + \" W\",\n                    htmlId          : 'powerAvgBarPlot'\n                };\n            setHorzBarWidget(powerAvgBarConfig);\n            \n            var powerBarConfig = \n                {\n                    lolo            : device.power.alarm.limits.lolo, \n                    low             : device.power.alarm.limits.low, \n                    high            : device.power.alarm.limits.high, \n                    hihi            : device.power.alarm.limits.hihi, \n                    value           : device.power.value, \n                    unit            : device.power.unit, \n                    textsize        : 2,\n                    label           : 'Peak Power', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    width           : 15, \n                    height          : 53, \n                    title           : \"Peak: \" + device.power.value.toFixed(0) + \" W\",\n                    htmlId          : 'powerBarPlot'\n                };\n            setHorzBarWidget(powerBarConfig);\n        }\n",
+        "output": "str",
+        "x": 720,
+        "y": 120,
+        "wires": [
+            [
+                "1509b6bc.6f6a99"
+            ]
+        ]
+    },
+    {
+        "id": "e845deccda809433",
+        "type": "subflow:ca529822.9112f8",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 1330,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "320208e67a55fc7e",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            background-color: var(--color5) !important;\n            max-width: 100%;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top: 1w;\n          padding-bottom:0vw;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n          font-size:5vw;\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "output": "str",
+        "x": 1050,
+        "y": 240,
+        "wires": [
+            [
+                "d878eb9bf180c1c5"
+            ]
+        ]
+    },
+    {
+        "id": "d878eb9bf180c1c5",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "navBar",
+        "field": "payload.navBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- navBar -->\n    <div>\n        <table width=\"100%\">\n            <tr>\n                <td width=\"10%\" style=\"text-align:right;\">\n                    <img src=\"/img/{{{payload.navBarIcon}}}\" style=\"width:5vw;height:5vw;\"/>\n                </td>\n                <td width=\"90%\" style=\"text-align:center;\">\n                    <span style=\"color:var(--color1);font-size:5vw;\">{{{payload.title}}}</span>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 1200,
+        "y": 240,
+        "wires": [
+            [
+                "e845deccda809433"
+            ]
+        ]
+    },
+    {
+        "id": "1509b6bc.6f6a99",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.horzbarWidget",
+        "field": "payload.script.vertbarWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Horz Bar Widget\n        function setHorzBarWidget(barConfig)\n        {\n            var lowValue = 0;\n            var mediumValue = 0;\n            var highValue = 0;\n        \n            var lowColor = barConfig.backgroundColor;\n            var mediumColor = barConfig.backgroundColor;\n            var highColor = barConfig.backgroundColor;\n            var valueColor = barConfig.backgroundColor; \n            \n            if ( barConfig.value <= barConfig.lolo)\n            {\n                lowValue = barConfig.lolo;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.lolo <= barConfig.value) && (barConfig.value < barConfig.low) )\n            {\n                lowValue = barConfig.value;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.low  <= barConfig.value) && (barConfig.value < barConfig.high) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.value - barConfig.low; \n                lowColor = barConfig.mediumColor;\n                mediumColor = barConfig.mediumColor;\n                valueColor = mediumColor;\n        \n            }\n            if ( (barConfig.high <= barConfig.value) && (barConfig.value < barConfig.hihi) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low;\n                highValue = barConfig.value - barConfig.high;\n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if ( barConfig.hihi <= barConfig.value)\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low; \n                highValue = barConfig.hihi - barConfig.high; \n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            \n            var lowBar = \n            {\n                x: ['', '-'],\n                y: [ barConfig.low, lowValue],\n                type: 'bar',\n//                orientation: 'v',\n                showlegend: false,\n                marker:{color: [barConfig.lowColor, lowColor]},\n              width: [0.15, 0.8],\n            };\n            var mediumBar = \n            {\n                x: ['', '-'],\n                y: [barConfig.high - barConfig.low, mediumValue],\n                type: 'bar',\n//                orientation: 'v',\n                showlegend: false,\n                marker:{color: [barConfig.mediumColor, mediumColor]},\n              width: [0.15, 0.8],\n            };\n            var highBar = \n            {\n                x: ['', '-'],\n                y: [barConfig.hihi - barConfig.high, highValue],\n//                orientation: 'v',\n                type: 'bar',\n                showlegend: false,\n                marker:{color: [barConfig.highColor, highColor]},\n              width: [0.15, 0.8],\n            };\n            var layout = \n                {\n                    barmode: 'stack',\n                    plot_bgcolor:barConfig.backgroundColor,\n                    paper_bgcolor:barConfig.backgroundColor,\n                    margin: \n                        {\n                            t: getScaledPix(5), //top margin\n                            l: getScaledPix(5), //left margin\n                            r: getScaledPix(2), //right margin\n                            b: getScaledPix(5) //bottom margin\n                        },\n \n                    width:  getScaledPix(barConfig.width),\n                    height: getScaledPix(barConfig.height),\n                    title: \n                        {\n                            text: barConfig.title,\n//                            font: {color: valueColor, size:barConfig.textsize},\n                            font: {color: '#000000', size:getScaledPix(barConfig.textsize)},\n                        },\n                    yaxis: \n                        {\n                            range: [barConfig.lolo, barConfig.hihi],\n                            tickfont: {color:barConfig.labelColor, size:getScaledPix(barConfig.textsize)},\n                            gridcolor       : barConfig.gridColor\n                        },\n                    xaxis: \n                        {\n                           tickfont: {color:valueColor, size:getScaledPix(barConfig.textsize)}\n                        }\n                };\n           Plotly.newPlot(barConfig.htmlId, [lowBar, mediumBar, highBar], layout, {displayModeBar: false, staticPlot: false});\n        }\n        \n        \n        \n        \n        \n    \n",
+        "output": "str",
+        "x": 720,
+        "y": 160,
+        "wires": [
+            [
+                "43ea7265c7d9a542"
+            ]
+        ]
     }
 ]
