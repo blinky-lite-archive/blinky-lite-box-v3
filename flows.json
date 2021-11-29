@@ -562,7 +562,7 @@
     {
         "id": "c18cc87702466083",
         "type": "websocket-listener",
-        "path": "/blinky-power-mon-simple/websocket",
+        "path": "/blinky-power-mon-widget/websocket",
         "wholemsg": "false"
     },
     {
@@ -9135,8 +9135,8 @@
         "id": "cb4aa868627e15d6",
         "type": "http in",
         "z": "b76c0793b15a73b9",
-        "name": "/blinky-power-mon-simple",
-        "url": "/blinky-power-mon-simple",
+        "name": "/blinky-power-mon-widget",
+        "url": "/blinky-power-mon-widget",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
@@ -9680,7 +9680,7 @@
         "id": "90046c4ce2d51ab6",
         "type": "websocket out",
         "z": "b76c0793b15a73b9",
-        "name": "/blinky-power-mon-simple/websocket",
+        "name": "/blinky-power-mon-widget/websocket",
         "server": "c18cc87702466083",
         "client": "",
         "x": 1170,
@@ -9735,7 +9735,7 @@
         "id": "99c592de43897c04",
         "type": "websocket in",
         "z": "b76c0793b15a73b9",
-        "name": "/blinky-power-mon-simple/websocket",
+        "name": "/blinky-power-mon-widget/websocket",
         "server": "c18cc87702466083",
         "client": "",
         "x": 200,
