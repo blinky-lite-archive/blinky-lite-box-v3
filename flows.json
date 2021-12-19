@@ -10127,7 +10127,7 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Find price",
-        "func": "device = flow.get('device');\nexchangeRate = flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\nvar future = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "func": "device = flow.get('device');\nexchangeRate = flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\ndevice.futurePrice.value = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -10198,6 +10198,70 @@
         "broker": "84d80994.260508",
         "x": 760,
         "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9c0f985d81bbc008",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 720,
+        "wires": [
+            [
+                "b2de0c0b9ab31693"
+            ]
+        ]
+    },
+    {
+        "id": "b2de0c0b9ab31693",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Get time",
+        "func": "var now = new Date();\nmsg.payload = now.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 720,
+        "wires": [
+            [
+                "d2e2f3f3a6f362ac"
+            ]
+        ]
+    },
+    {
+        "id": "d2e2f3f3a6f362ac",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 720,
         "wires": []
     }
 ]
