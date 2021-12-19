@@ -864,12 +864,10 @@
         "y": 180,
         "wires": [
             [
-                "bc2507b7.46f4b8",
-                "a34bddaa12ba725e"
+                "bc2507b7.46f4b8"
             ],
             [
-                "621ab8d1.42e078",
-                "6fe6194054a8034c"
+                "621ab8d1.42e078"
             ]
         ]
     },
@@ -6316,8 +6314,7 @@
                 "ee4c177c.2435b8"
             ],
             [
-                "ee4c177c.2435b8",
-                "07e845429aaf4775"
+                "ee4c177c.2435b8"
             ]
         ]
     },
@@ -10201,94 +10198,6 @@
         "broker": "84d80994.260508",
         "x": 760,
         "y": 580,
-        "wires": []
-    },
-    {
-        "id": "9401a947e5ab3fa0",
-        "type": "debug",
-        "z": "e17f7487.2a78e8",
-        "name": "Archive",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1220,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "6fe6194054a8034c",
-        "type": "function",
-        "z": "e17f7487.2a78e8",
-        "name": "Filter name",
-        "func": "if (msg.payload.deviceType != 'espotPrice') return null;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1070,
-        "y": 280,
-        "wires": [
-            [
-                "9401a947e5ab3fa0"
-            ]
-        ]
-    },
-    {
-        "id": "53605a8df4ffc15c",
-        "type": "debug",
-        "z": "e17f7487.2a78e8",
-        "name": "Device",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1210,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "a34bddaa12ba725e",
-        "type": "function",
-        "z": "e17f7487.2a78e8",
-        "name": "Filter name",
-        "func": "if (msg.payload[1].deviceType != 'espotPrice') return null;\nreturn {topic:'espotPrice',payload:msg.payload[1]};",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1070,
-        "y": 340,
-        "wires": [
-            [
-                "53605a8df4ffc15c"
-            ]
-        ]
-    },
-    {
-        "id": "07e845429aaf4775",
-        "type": "debug",
-        "z": "e17f7487.2a78e8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 680,
-        "y": 220,
         "wires": []
     }
 ]
