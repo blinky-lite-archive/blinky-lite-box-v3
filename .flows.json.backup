@@ -579,6 +579,12 @@
         "wholemsg": "false"
     },
     {
+        "id": "f867b4b695fa781a",
+        "type": "websocket-listener",
+        "path": "/espotPrice/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -4660,11 +4666,16 @@
                 "t": "eq",
                 "v": "blinky-scale",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "espotPrice",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 1050,
         "y": 740,
         "wires": [
@@ -4682,6 +4693,9 @@
             ],
             [
                 "5eef535208c9625b"
+            ],
+            [
+                "df90abfd748bbd25"
             ]
         ]
     },
@@ -9546,9 +9560,9 @@
         "z": "8475ab9.3d26058",
         "name": "Action Switch In",
         "links": [
-            "063e3d12598b17fc",
-            "be346535d6c21d30",
-            "0c0471ad52cc97eb"
+            "0c0471ad52cc97eb",
+            "613568dea53692f1",
+            "be346535d6c21d30"
         ],
         "x": 275,
         "y": 380,
@@ -9902,8 +9916,8 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 610,
-        "y": 360,
+        "x": 490,
+        "y": 240,
         "wires": [
             [
                 "16eb68dd21c79672"
@@ -9930,8 +9944,8 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 260,
-        "y": 360,
+        "x": 140,
+        "y": 240,
         "wires": [
             [
                 "88542b1ff6092d2e"
@@ -9949,8 +9963,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
-        "y": 360,
+        "x": 310,
+        "y": 240,
         "wires": [
             [
                 "d279605b9d7bde87"
@@ -9968,8 +9982,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
-        "y": 360,
+        "x": 690,
+        "y": 240,
         "wires": [
             []
         ]
@@ -9994,8 +10008,8 @@
         "onceDelay": "10",
         "topic": "",
         "payloadType": "date",
-        "x": 290,
-        "y": 160,
+        "x": 150,
+        "y": 100,
         "wires": [
             [
                 "bd9b7f6fc6ad5da5"
@@ -10015,8 +10029,8 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 450,
-        "y": 160,
+        "x": 430,
+        "y": 100,
         "wires": [
             [
                 "7a20b461738cbe99"
@@ -10035,7 +10049,7 @@
         "finalize": "",
         "libs": [],
         "x": 650,
-        "y": 160,
+        "y": 100,
         "wires": [
             []
         ]
@@ -10060,13 +10074,13 @@
         "onceDelay": "2",
         "topic": "",
         "payloadType": "date",
-        "x": 90,
+        "x": 130,
         "y": 40,
         "wires": [
             [
-                "bd9b7f6fc6ad5da5",
                 "a061e6e5cdecce04",
-                "ec9ab555400d53ad"
+                "ec9ab555400d53ad",
+                "bd9b7f6fc6ad5da5"
             ]
         ]
     },
@@ -10086,8 +10100,8 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 250,
-        "y": 300,
+        "x": 340,
+        "y": 160,
         "wires": [
             [
                 "88542b1ff6092d2e"
@@ -10114,8 +10128,8 @@
         "onceDelay": "6",
         "topic": "",
         "payloadType": "date",
-        "x": 260,
-        "y": 580,
+        "x": 150,
+        "y": 320,
         "wires": [
             [
                 "a8d2eb4249f7439d"
@@ -10127,14 +10141,14 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Find price",
-        "func": "device = flow.get('device');\nexchangeRate = flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\nvar future = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "func": "device = flow.get('device');\nexchangeRate = flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\ndevice.futurePrice.value = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 580,
-        "y": 580,
+        "x": 470,
+        "y": 320,
         "wires": [
             [
                 "cdfe154e900d501f"
@@ -10157,8 +10171,8 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 420,
-        "y": 580,
+        "x": 310,
+        "y": 320,
         "wires": [
             [
                 "04607df462870afa"
@@ -10170,13 +10184,13 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Setup device",
-        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 100,\n                hihi: 100\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    priceTime: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0,\n        unit: \"ms\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 2634109573209,\n                hihi: 2634109573209\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    exchangeRate: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 10,\n        unit: \"SEK/EUR\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 20,\n                hihi: 20\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\nflow.set('device',device);\nreturn msg;",
+        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 1,\n                high: 2,\n                hihi: 5\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    priceTime: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0,\n        unit: \"ms\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 2634109573209,\n                hihi: 2634109573209\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    exchangeRate: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 10,\n        unit: \"SEK/EUR\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 20,\n                hihi: 20\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\nflow.set('device',device);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 370,
         "y": 40,
         "wires": [
             []
@@ -10196,8 +10210,8 @@
         "correl": "",
         "expiry": "",
         "broker": "84d80994.260508",
-        "x": 760,
-        "y": 580,
+        "x": 650,
+        "y": 320,
         "wires": []
     },
     {
@@ -10221,8 +10235,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 240,
-        "y": 720,
+        "x": 140,
+        "y": 400,
         "wires": [
             [
                 "b2de0c0b9ab31693"
@@ -10240,8 +10254,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
-        "y": 720,
+        "x": 290,
+        "y": 400,
         "wires": [
             [
                 "d2e2f3f3a6f362ac"
@@ -10260,8 +10274,465 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 570,
-        "y": 720,
+        "x": 490,
+        "y": 400,
         "wires": []
+    },
+    {
+        "id": "5c9c12f92d219aa2",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = 'SE4'\nmsg.payload['script']['deviceType'] = 'espotPrice';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 580,
+        "wires": [
+            [
+                "faa6b997fe84097c"
+            ]
+        ]
+    },
+    {
+        "id": "bc2de1ee6d096b29",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "ESpot Price SE4",
+        "output": "str",
+        "x": 380,
+        "y": 660,
+        "wires": [
+            [
+                "d4f7af39035a2b83"
+            ]
+        ]
+    },
+    {
+        "id": "faa6b997fe84097c",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "basicYellow.png",
+        "output": "str",
+        "x": 390,
+        "y": 620,
+        "wires": [
+            [
+                "bc2de1ee6d096b29"
+            ]
+        ]
+    },
+    {
+        "id": "8bcb94049b24ada6",
+        "type": "subflow:8341090a.df9758",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "x": 1310,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "9cfb6854c850b0ab",
+        "type": "http in",
+        "z": "c764f51b8859588d",
+        "name": "/espotPrice",
+        "url": "/espotPrice",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 580,
+        "wires": [
+            [
+                "5c9c12f92d219aa2"
+            ]
+        ]
+    },
+    {
+        "id": "d4f7af39035a2b83",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var archiveList = [];\n\n        var espotPriceDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(false);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevice',\n                    payload   : {$and : [ {deviceType: espotPriceDevice.deviceType}, {name: espotPriceDevice.name} ]},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'getDevice':\n                    if (msg.userID == userID)\n                    {\n                        updateDmaReadings(msg.payload);\n                        getArchive(24);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == espotPriceDevice.deviceType) && (msg.payload.device.name == espotPriceDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 580,
+        "wires": [
+            [
+                "d1e9ec156ff2e971"
+            ]
+        ]
+    },
+    {
+        "id": "9fff3437201b3bb3",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.gaugeWidget}}}\n{{{payload.script.timePlot}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 700,
+        "y": 780,
+        "wires": [
+            [
+                "66ed5559d1beb532"
+            ]
+        ]
+    },
+    {
+        "id": "8a2dbff01561647d",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n{{{payload.html.dashboard}}}\n{{{payload.html.timePlot}}}\n{{{payload.html.archive}}}\n    </div>",
+        "output": "str",
+        "x": 1010,
+        "y": 700,
+        "wires": [
+            [
+                "8bcb94049b24ada6"
+            ]
+        ]
+    },
+    {
+        "id": "90f9d88e49aac4d6",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "html.archive",
+        "field": "payload.html.archive",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Archive HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Archive</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive2hrButton\" onclick=\"getArchive(2)\" >2</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive4hrButton\" onclick=\"getArchive(4)\" >4</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive8hrButton\" onclick=\"getArchive(8)\" >8</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >24</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive72hrButton\" onclick=\"getArchive(72)\" >72</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >168</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <span class='big-text' >Hours</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 660,
+        "wires": [
+            [
+                "8a2dbff01561647d"
+            ]
+        ]
+    },
+    {
+        "id": "66ed5559d1beb532",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "html.dashboard",
+        "field": "payload.html.dashboard",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Day Ahead Spot Price</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"priceGaugePlot\" width=\"100%\" ></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
+        "output": "str",
+        "x": 1040,
+        "y": 580,
+        "wires": [
+            [
+                "1acfc8958d95e9df"
+            ]
+        ]
+    },
+    {
+        "id": "75d2ffd1e6588e88",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : espotPriceDevice.deviceType,\n                name : espotPriceDevice.name, \n                attr : ['priceTime','price'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'SEK /kW-hr',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    range: [-0.5, 1.5]\n    //                rangemode       : 'tozero'\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'SE4',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red'}\n        \n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                trace1.x[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]] ;\n             }\n\n\n            Plotly.newPlot('archiveChart', [trace1], layout);\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 740,
+        "wires": [
+            [
+                "9fff3437201b3bb3"
+            ]
+        ]
+    },
+    {
+        "id": "1acfc8958d95e9df",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "html.timePlot",
+        "field": "payload.html.timePlot",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Future Price</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"timePlotChart\" width=\"100%\" ></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 620,
+        "wires": [
+            [
+                "90f9d88e49aac4d6"
+            ]
+        ]
+    },
+    {
+        "id": "d3fd93cd76969a12",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.timePlot",
+        "field": "payload.script.timePlot",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var timePlotLength = 600000;\n        var timePlotLayout =\n        {\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15},\n            height      : '500',\n            width       : '',\n            xaxis       :\n            {\n                type: 'date'\n            },\n            yaxis:\n            {\n                title           : 'SEK / kW-hr',\n                titlefont       : {color: '#557a95'},\n                tickfont        : {color: '#557a95'},\n                gridcolor       : '#beceda',\n                zerolinecolor   : '#beceda',\n                linecolor       : '#beceda',\n//                range: [-0.5, 1.5]\n                rangemode       : 'tozero'\n            },\n/*\n            yaxis2:\n            {\n                title           : 'Duty Factor (%)',\n                titlefont       : {color: '#f2a31f'},\n                tickfont        : {color: '#f2a31f'},\n                gridcolor       : '#f2a31f',\n                zerolinecolor   : '#f2a31f',\n                linecolor       : '#f2a31f',\n                overlaying: 'y',\n                side: 'right',\n                range: [0, 100]\n            },\n*/\n            margin: \n                {\n                    t: 30, //top margin\n//                    l: 0, //left margin\n//                    r: 0, //right margin\n//                    b: 20 //bottom margin\n                },\n        };\n        var timePlotTraces = [];\n        timePlotTraces[0] = \n        {\n            x: [],\n            y: [],\n            name: 'SE4',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'red'}\n    \n        };\n        function futurePricePlot(futurePrice)\n        {\n            for (var ii = 0; ii < futurePrice.value[0].length; ++ii)\n            {\n                timePlotTraces[0].x.push(futurePrice.value[0][ii]);\n                timePlotTraces[0].y.push(futurePrice.value[1][ii]);\n            }    \n            Plotly.newPlot(\"timePlotChart\", timePlotTraces, timePlotLayout);\n        }\n\n",
+        "output": "str",
+        "x": 720,
+        "y": 700,
+        "wires": [
+            [
+                "75d2ffd1e6588e88"
+            ]
+        ]
+    },
+    {
+        "id": "d1e9ec156ff2e971",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            var titleColor = '#000000';\n            var priceGaugeConfig = \n                {\n                    lolo            : device.price.alarm.limits.lolo, \n                    low             : device.price.alarm.limits.low, \n                    high            : device.price.alarm.limits.high, \n                    hihi            : device.price.alarm.limits.hihi, \n                    value           : device.price.value, \n                    unit            : device.price.unit, \n                    numberSize      : 30,\n                    labelSize       : 38,\n                    label           : '', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : 'black', \n                    titleColor      : titleColor, \n                    size            : 800, \n                    htmlId          : 'priceGaugePlot'\n                };\n            setGaugeWidget(priceGaugeConfig);\n            futurePricePlot(device.futurePrice);\n        }\n",
+        "output": "str",
+        "x": 740,
+        "y": 620,
+        "wires": [
+            [
+                "8f7555a6e22b18a5"
+            ]
+        ]
+    },
+    {
+        "id": "32f1be49da0827be",
+        "type": "websocket in",
+        "z": "c764f51b8859588d",
+        "name": "/espotPrice/websocket",
+        "server": "f867b4b695fa781a",
+        "client": "",
+        "x": 160,
+        "y": 840,
+        "wires": [
+            [
+                "2f1b0478.24543c"
+            ]
+        ]
+    },
+    {
+        "id": "2f1b0478.24543c",
+        "type": "json",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 350,
+        "y": 840,
+        "wires": [
+            [
+                "c6b778f72c946142"
+            ]
+        ]
+    },
+    {
+        "id": "82d5a7b5.21ed68",
+        "type": "switch",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getDevice",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 610,
+        "y": 840,
+        "wires": [
+            [
+                "613568dea53692f1"
+            ],
+            [
+                "338c2e2d2422c922"
+            ]
+        ]
+    },
+    {
+        "id": "338c2e2d2422c922",
+        "type": "mongodb3 in",
+        "z": "c764f51b8859588d",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "devices",
+        "operation": "findOne",
+        "x": 810,
+        "y": 880,
+        "wires": [
+            [
+                "e29f6bd5ab2e1064"
+            ]
+        ]
+    },
+    {
+        "id": "1d0d229b0fa52613",
+        "type": "websocket out",
+        "z": "c764f51b8859588d",
+        "name": "/espotPrice/websocket",
+        "server": "f867b4b695fa781a",
+        "client": "",
+        "x": 1260,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "e29f6bd5ab2e1064",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Parse Device",
+        "func": "var newMsg = \n{\n    topic   :   msg.topic,\n    payload:\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   msg.payload\n    }\n}\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1050,
+        "y": 880,
+        "wires": [
+            [
+                "1d0d229b0fa52613"
+            ]
+        ]
+    },
+    {
+        "id": "8f7555a6e22b18a5",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.gaugeWidget",
+        "field": "payload.script.gaugeWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// GaugeWidget\n        function setGaugeWidget(gaugeConfig)\n        {\n            var degrees = 180.0 * (gaugeConfig.hihi - gaugeConfig.value) / (gaugeConfig.hihi - gaugeConfig.lolo);\n            if (degrees < 0.0 )   degrees = 0.0;\n            if (degrees > 180.0 ) degrees = 180.0;\n            // Trig to calc meter point\n            var radius = 0.50;\n            var radians = degrees * Math.PI / 180;\n            var x = radius * Math.cos(radians);\n            var y = radius * Math.sin(radians);\n            var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';\n            // Path: may have to change to create a better triangle\n            var mainPath = path1,\n                pathX = String(x),\n                space = ' ',\n                pathY = String(y),\n                pathEnd = ' Z';\n            var rotation = (180.0 * (gaugeConfig.high - gaugeConfig.lolo) / (gaugeConfig.hihi - gaugeConfig.lolo)) - 90.0;\n            var path = mainPath.concat(pathX,space,pathY,pathEnd);\n        \n            var valueColor = gaugeConfig.backgroundColor; \n            \n            if ( (gaugeConfig.lolo <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.low) )\n            {\n                valueColor = gaugeConfig.lowColor;\n            }\n            if ( (gaugeConfig.low  <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.high) )\n            {\n                valueColor = gaugeConfig.mediumColor;\n            }\n            if ( (gaugeConfig.high <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.hihi) )\n            {\n              valueColor = gaugeConfig.highColor;\n            }\n            if ( gaugeConfig.hihi <= gaugeConfig.value)\n            {\n                valueColor = gaugeConfig.highColor;\n            }\n            valueColor = gaugeConfig.titleColor;\n        \n            var data = \n                [\n                    { \n                        type: 'scatter',\n                        x: [0], y:[0],\n                        marker: {size: 14, color:valueColor},\n                        showlegend: false,\n                        name: gaugeConfig.label,\n                        text: gaugeConfig.value.toString(),\n                        hoverinfo: 'text+name',\n        \n                        \n                    },\n                    { \n                        values: \n                            [\n                                gaugeConfig.hihi - gaugeConfig.high, \n                                gaugeConfig.high - gaugeConfig.low, \n                                gaugeConfig.low  - gaugeConfig.lolo, \n                                gaugeConfig.hihi - gaugeConfig.lolo \n                            ],\n                        rotation: rotation,\n                        text: \n                            [\n                                gaugeConfig.high.toString() + '&#8596;' + gaugeConfig.hihi.toString(), \n                                gaugeConfig.low.toString()  + '&#8596;' + gaugeConfig.high.toString(), \n                                gaugeConfig.lolo.toString() + '&#8596;' + gaugeConfig.low.toString(), \n                                ''\n                            ],\n                        textinfo: 'text',\n                        textposition:'inside',\n                        textfont: {color: gaugeConfig.labelColor, size:gaugeConfig.numberSize},\n                        marker: \n                            {\n                                colors:\n                                    [\n                                        gaugeConfig.highColor,\n                                        gaugeConfig.mediumColor,\n                                        gaugeConfig.lowColor, \n                                        gaugeConfig.backgroundColor\n                                    ]\n                            },\n                        hoverinfo: 'label',\n                        hole: 0.5,\n                        type: 'pie',\n                        showlegend: false,\n                        sort: false\n                    }\n                ];\n            var layout = \n                {\n                    shapes:\n                        [\n                            {\n                                type: 'path',\n                                path: path,\n                                fillcolor: valueColor,\n                                line: {color: valueColor }\n                            }\n                        ],\n                    height: gaugeConfig.size,\n                    width: gaugeConfig.size,\n                    title: \n                        {\n                            text:gaugeConfig.label + ' ' + gaugeConfig.value.toString() + ' ' + gaugeConfig.unit,\n                            font: {color: valueColor, size:gaugeConfig.labelSize},\n                         },\n                    xaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1],\n                        },\n                    yaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1]\n                        },\n                    margin: \n                        {\n                            t: 80, //top margin\n                            l: 0, //left margin\n                            r: 0, //right margin\n                            b: 20 //bottom margin\n                        },\n                    plot_bgcolor:gaugeConfig.backgroundColor,\n                    paper_bgcolor:gaugeConfig.backgroundColor\n            \n                };\n            $('#' + gaugeConfig.htmlId).attr('style','max-height: calc(' + (gaugeConfig.size / 2).toString() + 'px + 50px) !important; overflow:hidden;');\n            Plotly.newPlot(gaugeConfig.htmlId, data, layout, {'displayModeBar': false});\n        }",
+        "output": "str",
+        "x": 730,
+        "y": 660,
+        "wires": [
+            [
+                "d3fd93cd76969a12"
+            ]
+        ]
+    },
+    {
+        "id": "613568dea53692f1",
+        "type": "link out",
+        "z": "c764f51b8859588d",
+        "name": "espotPrice Websocket archive request",
+        "links": [
+            "f92124c5033966a3"
+        ],
+        "x": 735,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "df90abfd748bbd25",
+        "type": "link out",
+        "z": "8475ab9.3d26058",
+        "name": "espotPrice-archive",
+        "links": [
+            "94489a275b7f183f"
+        ],
+        "x": 1155,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "94489a275b7f183f",
+        "type": "link in",
+        "z": "c764f51b8859588d",
+        "name": "espotPrice Websocket In",
+        "links": [
+            "df90abfd748bbd25"
+        ],
+        "x": 1115,
+        "y": 820,
+        "wires": [
+            [
+                "1d0d229b0fa52613"
+            ]
+        ]
+    },
+    {
+        "id": "c6b778f72c946142",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 330,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "d6ccc809f3510550",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Shift msg",
+        "func": "return msg.payload;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 480,
+        "y": 940,
+        "wires": [
+            []
+        ]
     }
 ]
