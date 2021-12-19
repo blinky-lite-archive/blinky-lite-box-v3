@@ -10446,7 +10446,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Day Ahead Spot Price</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"priceGaugePlot\" width=\"100%\" ></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
+        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Current Spot Price</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"priceGaugePlot\" width=\"100%\" ></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
         "output": "str",
         "x": 1040,
         "y": 580,
