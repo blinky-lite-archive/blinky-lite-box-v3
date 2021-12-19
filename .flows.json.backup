@@ -1,5 +1,12 @@
 [
     {
+        "id": "c764f51b8859588d",
+        "type": "tab",
+        "label": "ElecPrices",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "8475ab9.3d26058",
         "type": "tab",
         "label": "Web App Socket Router",
@@ -474,7 +481,7 @@
         "port": "1883",
         "clientid": "$(MQTTCLIENTID)",
         "usetls": false,
-        "compatmode": true,
+        "protocolVersion": 4,
         "keepalive": "60",
         "cleansession": true,
         "birthTopic": "",
@@ -857,10 +864,12 @@
         "y": 180,
         "wires": [
             [
-                "bc2507b7.46f4b8"
+                "bc2507b7.46f4b8",
+                "a34bddaa12ba725e"
             ],
             [
-                "621ab8d1.42e078"
+                "621ab8d1.42e078",
+                "6fe6194054a8034c"
             ]
         ]
     },
@@ -1496,11 +1505,12 @@
         "type": "function",
         "z": "dc20c6e0.0feb98",
         "name": "Scan for alarms",
-        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
+        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n\n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 600,
         "y": 740,
         "wires": [
@@ -4532,11 +4542,16 @@
                 "t": "eq",
                 "v": "blinky-scale",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "espotPrice",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 510,
         "y": 180,
         "wires": [
@@ -4554,7 +4569,8 @@
             ],
             [
                 "97b56364e8f8efec"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -6271,11 +6287,16 @@
                 "t": "eq",
                 "v": "blinky-scale",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "espotPrice",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 630,
         "y": 100,
         "wires": [
@@ -6293,6 +6314,10 @@
             ],
             [
                 "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8",
+                "07e845429aaf4775"
             ]
         ]
     },
@@ -9173,7 +9198,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['power','powerAvg','powerRms', 'dutyFactor'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Power (W)',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    rangemode       : 'tozero'\n                },\n/*\n                yaxis2:\n                {\n                    title           : 'Duty Factor (%)',\n                    titlefont       : {color: '#f2a31f'},\n                    tickfont        : {color: '#f2a31f'},\n                    gridcolor       : '#f2a31f',\n                    zerolinecolor   : '#f2a31f',\n                    linecolor       : '#f2a31f',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 100]\n                },\n*/\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'blue'}\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Avg Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red',width:4}\n            };\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: 'RMS Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'green'}\n            };\n/*\n            var trace4 = \n            {\n                x: [],\n                y: [],\n                name: 'Duty Factor',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'orange'}\n            };\n*/\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[2]];\n//                trace4.x[ii] = x;\n//                trace4.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[3]];\n             }\n\n\n//            Plotly.newPlot('archiveChart', [trace1,trace2, trace3, trace4], layout);\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['power','powerAvg','dutyFactor'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Power (W)',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    rangemode       : 'tozero'\n                },\n\n                yaxis2:\n                {\n                    title           : 'Duty Factor (%)',\n                    titlefont       : {color: '#f2a31f'},\n                    tickfont        : {color: '#f2a31f'},\n                    gridcolor       : '#f2a31f',\n                    zerolinecolor   : '#f2a31f',\n                    linecolor       : '#f2a31f',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 100]\n                },\n\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'blue'}\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Avg Power',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'red',width:4}\n            };\n\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: 'Duty Factor',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: {color: 'orange'}\n            };\n\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[2]];\n//                trace4.x[ii] = x;\n//                trace4.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[3]];\n             }\n\n\n//            Plotly.newPlot('archiveChart', [trace1,trace2, trace3, trace4], layout);\n            Plotly.newPlot('archiveChart', [trace1,trace2, trace3], layout);\n\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
         "output": "str",
         "x": 690,
         "y": 860,
@@ -9230,7 +9255,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Archive JavaScript\n        var timePlotLength = 600000;\n        var timePlotLayout =\n        {\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15},\n            height      : '500',\n            width       : '',\n            xaxis       :\n            {\n                type: 'date'\n            },\n            yaxis:\n            {\n                title           : 'Power (W)',\n                titlefont       : {color: '#557a95'},\n                tickfont        : {color: '#557a95'},\n                gridcolor       : '#beceda',\n                zerolinecolor   : '#beceda',\n                linecolor       : '#beceda',\n                rangemode       : 'tozero'\n            },\n\n            yaxis2:\n            {\n                title           : 'Duty Factor (%)',\n                titlefont       : {color: '#f2a31f'},\n                tickfont        : {color: '#f2a31f'},\n                gridcolor       : '#f2a31f',\n                zerolinecolor   : '#f2a31f',\n                linecolor       : '#f2a31f',\n                overlaying: 'y',\n                side: 'right',\n                range: [0, 100]\n            },\n\n            margin: \n                {\n                    t: 30, //top margin\n//                    l: 0, //left margin\n//                    r: 0, //right margin\n//                    b: 20 //bottom margin\n                },\n        };\n        var timePlotTraces = [];\n        timePlotTraces[0] = \n        {\n            x: [],\n            y: [],\n            name: 'Power',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'blue'}\n    \n        };\n        timePlotTraces[1] = \n        {\n            x: [],\n            y: [],\n            name: 'Avg Power',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'red'}\n        };\n\n        timePlotTraces[2] = \n        {\n            x: [],\n            y: [],\n            name: 'RMS Power',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'green'}\n        };\n        timePlotTraces[3] = \n        {\n            x: [],\n            y: [],\n            name: 'Duty Factor',\n            yaxis: 'y2',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'orange'}\n        };\n\n        function addTracePointsToTimePlot(pts)\n        {\n            var now = new Date().getTime();\n            var plotBeginning = now - timePlotLength;\n            var removeDone = false;\n            while(!removeDone)\n            {\n                if (timePlotTraces[0].x[0] < plotBeginning)\n                {\n                    for (var ii = 0; ii < timePlotTraces.length; ++ii)\n                    {\n                        timePlotTraces[ii].x.shift();\n                        timePlotTraces[ii].y.shift();\n                    }\n                }\n                else\n                {\n                    removeDone = true;\n                }\n            }\n            for (var ii = 0; ii < timePlotTraces.length; ++ii)\n            {\n                timePlotTraces[ii].x.push(now);\n                timePlotTraces[ii].y.push(pts[ii]);\n            }    \n            Plotly.newPlot(\"timePlotChart\", timePlotTraces, timePlotLayout);\n        }\n\n",
+        "template": "// Archive JavaScript\n        var timePlotLength = 600000;\n        var timePlotLayout =\n        {\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15},\n            height      : '500',\n            width       : '',\n            xaxis       :\n            {\n                type: 'date'\n            },\n            yaxis:\n            {\n                title           : 'Power (W)',\n                titlefont       : {color: '#557a95'},\n                tickfont        : {color: '#557a95'},\n                gridcolor       : '#beceda',\n                zerolinecolor   : '#beceda',\n                linecolor       : '#beceda',\n                rangemode       : 'tozero'\n            },\n\n            yaxis2:\n            {\n                title           : 'Duty Factor (%)',\n                titlefont       : {color: '#f2a31f'},\n                tickfont        : {color: '#f2a31f'},\n                gridcolor       : '#f2a31f',\n                zerolinecolor   : '#f2a31f',\n                linecolor       : '#f2a31f',\n                overlaying: 'y',\n                side: 'right',\n                range: [0, 100]\n            },\n\n            margin: \n                {\n                    t: 30, //top margin\n//                    l: 0, //left margin\n//                    r: 0, //right margin\n//                    b: 20 //bottom margin\n                },\n        };\n        var timePlotTraces = [];\n        timePlotTraces[0] = \n        {\n            x: [],\n            y: [],\n            name: 'Power',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'blue'}\n    \n        };\n        timePlotTraces[1] = \n        {\n            x: [],\n            y: [],\n            name: 'Avg Power',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'red'}\n        };\n\n        timePlotTraces[2] = \n        {\n            x: [],\n            y: [],\n            name: 'Duty Factor',\n            yaxis: 'y2',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: 'orange'}\n        };\n\n        function addTracePointsToTimePlot(pts)\n        {\n            var now = new Date().getTime();\n            var plotBeginning = now - timePlotLength;\n            var removeDone = false;\n            while(!removeDone)\n            {\n                if (timePlotTraces[0].x[0] < plotBeginning)\n                {\n                    for (var ii = 0; ii < timePlotTraces.length; ++ii)\n                    {\n                        timePlotTraces[ii].x.shift();\n                        timePlotTraces[ii].y.shift();\n                    }\n                }\n                else\n                {\n                    removeDone = true;\n                }\n            }\n            for (var ii = 0; ii < timePlotTraces.length; ++ii)\n            {\n                timePlotTraces[ii].x.push(now);\n                timePlotTraces[ii].y.push(pts[ii]);\n            }    \n            Plotly.newPlot(\"timePlotChart\", timePlotTraces, timePlotLayout);\n        }\n\n",
         "output": "str",
         "x": 700,
         "y": 820,
@@ -9294,7 +9319,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Status</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Power (W)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='powerId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Avg. Power (W)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='powerAvgId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >RMS Power (W)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='powerRmsId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Duty Factor (%)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='dutyFactorId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text'  id=\"interlockText\">Interlock</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <img src='/img/greenLight.png' height=\"90px\" id='interlock'/>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Battery (V)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='vbatId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >LoRa (dBm)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='loraId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                           </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
+        "template": "<!-- Dashboard HTML -->\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n                <div class='card'>\n                    <p class='card-title'>Status</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Power (W)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='powerId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Avg. Power (W)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='powerAvgId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Duty Factor (%)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='dutyFactorId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text'  id=\"interlockText\">Interlock</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <img src='/img/greenLight.png' height=\"90px\" id='interlock'/>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >LoRa (dBm)</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text'  id='loraId' ></span>\n                                    </td>\n                                    <td width='20%'>\n                                    </td>\n                                </tr>\n                           </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n",
         "output": "str",
         "x": 1020,
         "y": 740,
@@ -9313,7 +9338,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            if (device.settingInProgress == 0)\n            {\n                disableSettings(false);\n            }\n            else\n            {\n                disableSettings(true);\n            }\n            $('#powerId').text(device.power.value);\n            $('#powerAvgId').text(device.powerAvg.value);\n            $('#powerRmsId').text(device.powerRms.value);\n            $('#dutyFactorId').text(device.dutyFactor.value);\n            $('#vbatId').text(device.vbat.value);\n            $('#loraId').text(device.lora.value);\n            $('#linkQualityId').text(device.linkQuality.value);\n            $('#signalLevelId').text(device.signalLevel.value);\n            switch(device.interlock.value)\n            {\n                case 0:\n                    $('#interlock').attr('src','/img/greenLight.png');\n                    $('#interlockText').text('Interlock: OK');\n                    break;\n                case 1:\n                    $('#interlock').attr('src','/img/yellowLight.png');\n                    $('#interlockText').text('Interlock: Device Error');\n                    break;\n                case 2:\n                    $('#interlockText').text('Interlock: Power Off');\n                    $('#interlock').attr('src','/img/redLight.png');\n                    break;\n                default:\n                    break;\n            }\n            \n            addTracePointsToTimePlot([device.power.value, device.powerAvg.value, device.powerRms.value, device.dutyFactor.value]);\n            var powerGaugeConfig = \n                {\n                    lolo            : device.power.alarm.limits.lolo, \n                    low             : device.power.alarm.limits.low, \n                    high            : device.power.alarm.limits.high, \n                    hihi            : device.power.alarm.limits.hihi, \n                    value           : device.power.value, \n                    unit            : device.power.unit, \n                    numberSize      : 30,\n                    labelSize       : 38,\n                    label           : '', \n                    lowColor        : '#ffff00', \n                    mediumColor     : '#00ff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    size            : 800, \n                    htmlId          : 'powerGaugePlot'\n                };\n            setGaugeWidget(powerGaugeConfig);\n\n\n        }\n        function disableSettings(disable)\n        {\n\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            if (device.settingInProgress == 0)\n            {\n                disableSettings(false);\n            }\n            else\n            {\n                disableSettings(true);\n            }\n            $('#powerId').text(device.power.value);\n            $('#powerAvgId').text(device.powerAvg.value);\n            $('#dutyFactorId').text(device.dutyFactor.value);\n            $('#loraId').text(device.lora.value);\n            $('#linkQualityId').text(device.linkQuality.value);\n            $('#signalLevelId').text(device.signalLevel.value);\n            switch(device.interlock.value)\n            {\n                case 0:\n                    $('#interlock').attr('src','/img/greyLight.png');\n                    $('#interlockText').text('Interlock: None');\n                    break;\n                case 1:\n                    $('#interlock').attr('src','/img/greenLight.png');\n                    $('#interlockText').text('Interlock: Device OK');\n                    break;\n                case 2:\n                    $('#interlockText').text('Interlock: Device Error');\n                    $('#interlock').attr('src','/img/redLight.png');\n                    break;\n                case 3:\n                    $('#interlockText').text('Interlock: Power Off');\n                    $('#interlock').attr('src','/img/purpleLight.png');\n                    break;\n                default:\n                    break;\n            }\n            \n            addTracePointsToTimePlot([device.power.value, device.powerAvg.value, device.dutyFactor.value]);\n            var powerGaugeConfig = \n                {\n                    lolo            : device.power.alarm.limits.lolo, \n                    low             : device.power.alarm.limits.low, \n                    high            : device.power.alarm.limits.high, \n                    hihi            : device.power.alarm.limits.hihi, \n                    value           : device.power.value, \n                    unit            : device.power.unit, \n                    numberSize      : 30,\n                    labelSize       : 38,\n                    label           : '', \n                    lowColor        : '#ffff00', \n                    mediumColor     : '#00ff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    size            : 800, \n                    htmlId          : 'powerGaugePlot'\n                };\n            setGaugeWidget(powerGaugeConfig);\n\n\n        }\n        function disableSettings(disable)\n        {\n\n        }\n",
         "output": "str",
         "x": 720,
         "y": 740,
@@ -9866,5 +9891,404 @@
                 "4288e23f5e92b6be"
             ]
         ]
+    },
+    {
+        "id": "d279605b9d7bde87",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 610,
+        "y": 360,
+        "wires": [
+            [
+                "16eb68dd21c79672"
+            ]
+        ]
+    },
+    {
+        "id": "f5de72b6e4e36701",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "At 2pm",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 14 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 360,
+        "wires": [
+            [
+                "88542b1ff6092d2e"
+            ]
+        ]
+    },
+    {
+        "id": "88542b1ff6092d2e",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "SpotPrice Query",
+        "func": "var numberOfDays = 1;\nmsg.url ='https://api.energidataservice.dk/datastore_search_sql?sql=' \nmsg.url = msg.url + '%0A%20SELECT%20*';\nmsg.url = msg.url + '%0A%20from%20\"elspotprices\"';\nmsg.url = msg.url + '%0A%20WHERE%20%22HourUTC%22%20%3E%20((current_timestamp%20at%20time%20zone%20%27UTC%27)-INTERVAL%20%27'+ numberOfDays.toString() + '%20days%27)'\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 360,
+        "wires": [
+            [
+                "d279605b9d7bde87"
+            ]
+        ]
+    },
+    {
+        "id": "16eb68dd21c79672",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Parse SpotPrice Table",
+        "func": "var se4Data = [];\nexchangeRate = flow.get('exchangeRate');\nfor (var ii = 0; ii < msg.payload.result.records.length; ++ii)\n{\n    if(msg.payload.result.records[ii].PriceArea === 'SE4')\n    {\n        var timeStampDate = new Date(0);\n        var utc = msg.payload.result.records[ii].HourUTC\n        timeStampDate.setUTCFullYear(Number(utc.split('T')[0].split('-')[0]));\n        timeStampDate.setUTCMonth(Number(utc.split('T')[0].split('-')[1]) - 1);\n        timeStampDate.setUTCDate(Number(utc.split('T')[0].split('-')[2]));\n        timeStampDate.setUTCHours(Number(utc.split('T')[1].split(':')[0]));\n        timeStampDate.setUTCMinutes(0);\n        timeStampDate.setUTCSeconds(0);\n        timeStampDate.setUTCMilliseconds(0);\n        var priceSEKWHr = Math.round(msg.payload.result.records[ii].SpotPriceEUR * exchangeRate) / 1000;\n        var se4Record = {timeStamp:timeStampDate.getTime(),priceSEKWHr: priceSEKWHr};\n        se4Data.push(se4Record);\n    }\n}\nsortByKey(se4Data, 'timeStamp');\n/*\nfor (var ii = 0; ii < se4Data.length; ++ii)\n{\n    node.warn((new Date(se4Data[ii].timeStamp).toString() + \" price \" + se4Data[ii].priceSEKWHr.toString()));\n}\n*/\nflow.set('se4Data',se4Data);\nreturn {topic:'SE4',payload:se4Data};\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bed174e4d77b4306",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "At 12 pm",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 12 * * *",
+        "once": false,
+        "onceDelay": "10",
+        "topic": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 160,
+        "wires": [
+            [
+                "bd9b7f6fc6ad5da5"
+            ]
+        ]
+    },
+    {
+        "id": "bd9b7f6fc6ad5da5",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "EUR to SEK",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27&base_currency=EUR",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "7a20b461738cbe99"
+            ]
+        ]
+    },
+    {
+        "id": "7a20b461738cbe99",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Set SEK exchange Rate",
+        "func": "flow.set('exchangeRate',msg.payload.data.SEK);\nreturn {topic:'exchangeRate', payload:msg.payload.data.SEK};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "56ee3b61e124bf7e",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 40,
+        "wires": [
+            [
+                "bd9b7f6fc6ad5da5",
+                "a061e6e5cdecce04",
+                "ec9ab555400d53ad"
+            ]
+        ]
+    },
+    {
+        "id": "a061e6e5cdecce04",
+        "type": "delay",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "88542b1ff6092d2e"
+            ]
+        ]
+    },
+    {
+        "id": "55af8d37e923382b",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "Every hour",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 0-23 * * *",
+        "once": false,
+        "onceDelay": "6",
+        "topic": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 580,
+        "wires": [
+            [
+                "a8d2eb4249f7439d"
+            ]
+        ]
+    },
+    {
+        "id": "04607df462870afa",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Find price",
+        "func": "device = flow.get('device');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\nvar future = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(se4Data[ii].priceSEKWHr);\n    }\n}\ndevice.price.value = se4Data[record].priceSEKWHr\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 580,
+        "wires": [
+            [
+                "cdfe154e900d501f"
+            ]
+        ]
+    },
+    {
+        "id": "a8d2eb4249f7439d",
+        "type": "delay",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "3",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "x": 420,
+        "y": 580,
+        "wires": [
+            [
+                "04607df462870afa"
+            ]
+        ]
+    },
+    {
+        "id": "ec9ab555400d53ad",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Setup device",
+        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 100,\n                hihi: 100\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\nflow.set('device',device);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cdfe154e900d501f",
+        "type": "mqtt out",
+        "z": "c764f51b8859588d",
+        "name": "Publish reading",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "84d80994.260508",
+        "x": 760,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9401a947e5ab3fa0",
+        "type": "debug",
+        "z": "e17f7487.2a78e8",
+        "name": "Archive",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1220,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6fe6194054a8034c",
+        "type": "function",
+        "z": "e17f7487.2a78e8",
+        "name": "Filter name",
+        "func": "if (msg.payload.deviceType != 'espotPrice') return null;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 280,
+        "wires": [
+            [
+                "9401a947e5ab3fa0"
+            ]
+        ]
+    },
+    {
+        "id": "53605a8df4ffc15c",
+        "type": "debug",
+        "z": "e17f7487.2a78e8",
+        "name": "Device",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1210,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a34bddaa12ba725e",
+        "type": "function",
+        "z": "e17f7487.2a78e8",
+        "name": "Filter name",
+        "func": "if (msg.payload[1].deviceType != 'espotPrice') return null;\nreturn {topic:'espotPrice',payload:msg.payload[1]};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 340,
+        "wires": [
+            [
+                "53605a8df4ffc15c"
+            ]
+        ]
+    },
+    {
+        "id": "07e845429aaf4775",
+        "type": "debug",
+        "z": "e17f7487.2a78e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 220,
+        "wires": []
     }
 ]

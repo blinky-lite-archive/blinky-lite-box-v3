@@ -1,5 +1,12 @@
 [
     {
+        "id": "c764f51b8859588d",
+        "type": "tab",
+        "label": "ElecPrices",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "8475ab9.3d26058",
         "type": "tab",
         "label": "Web App Socket Router",
@@ -474,7 +481,7 @@
         "port": "1883",
         "clientid": "$(MQTTCLIENTID)",
         "usetls": false,
-        "compatmode": true,
+        "protocolVersion": 4,
         "keepalive": "60",
         "cleansession": true,
         "birthTopic": "",
@@ -1496,11 +1503,12 @@
         "type": "function",
         "z": "dc20c6e0.0feb98",
         "name": "Scan for alarms",
-        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
+        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n\n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 600,
         "y": 740,
         "wires": [
@@ -4532,11 +4540,16 @@
                 "t": "eq",
                 "v": "blinky-scale",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "espotPrice",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 510,
         "y": 180,
         "wires": [
@@ -4554,7 +4567,8 @@
             ],
             [
                 "97b56364e8f8efec"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -6271,14 +6285,22 @@
                 "t": "eq",
                 "v": "blinky-scale",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "espotPrice",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 630,
         "y": 100,
         "wires": [
+            [
+                "ee4c177c.2435b8"
+            ],
             [
                 "ee4c177c.2435b8"
             ],
@@ -9866,5 +9888,316 @@
                 "4288e23f5e92b6be"
             ]
         ]
+    },
+    {
+        "id": "d279605b9d7bde87",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 610,
+        "y": 360,
+        "wires": [
+            [
+                "16eb68dd21c79672"
+            ]
+        ]
+    },
+    {
+        "id": "f5de72b6e4e36701",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "At 2pm",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 14 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 360,
+        "wires": [
+            [
+                "88542b1ff6092d2e"
+            ]
+        ]
+    },
+    {
+        "id": "88542b1ff6092d2e",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "SpotPrice Query",
+        "func": "var numberOfDays = 1;\nmsg.url ='https://api.energidataservice.dk/datastore_search_sql?sql=' \nmsg.url = msg.url + '%0A%20SELECT%20*';\nmsg.url = msg.url + '%0A%20from%20\"elspotprices\"';\nmsg.url = msg.url + '%0A%20WHERE%20%22HourUTC%22%20%3E%20((current_timestamp%20at%20time%20zone%20%27UTC%27)-INTERVAL%20%27'+ numberOfDays.toString() + '%20days%27)'\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 360,
+        "wires": [
+            [
+                "d279605b9d7bde87"
+            ]
+        ]
+    },
+    {
+        "id": "16eb68dd21c79672",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Parse SpotPrice Table",
+        "func": "var se4Data = [];\nexchangeRate = flow.get('exchangeRate');\nfor (var ii = 0; ii < msg.payload.result.records.length; ++ii)\n{\n    if(msg.payload.result.records[ii].PriceArea === 'SE4')\n    {\n        var timeStampDate = new Date(0);\n        var utc = msg.payload.result.records[ii].HourUTC\n        timeStampDate.setUTCFullYear(Number(utc.split('T')[0].split('-')[0]));\n        timeStampDate.setUTCMonth(Number(utc.split('T')[0].split('-')[1]) - 1);\n        timeStampDate.setUTCDate(Number(utc.split('T')[0].split('-')[2]));\n        timeStampDate.setUTCHours(Number(utc.split('T')[1].split(':')[0]));\n        timeStampDate.setUTCMinutes(0);\n        timeStampDate.setUTCSeconds(0);\n        timeStampDate.setUTCMilliseconds(0);\n        var priceSEKWHr = Math.round(msg.payload.result.records[ii].SpotPriceEUR * exchangeRate) / 1000;\n        var se4Record = {timeStamp:timeStampDate.getTime(),priceSEKWHr: priceSEKWHr};\n        se4Data.push(se4Record);\n    }\n}\nsortByKey(se4Data, 'timeStamp');\n/*\nfor (var ii = 0; ii < se4Data.length; ++ii)\n{\n    node.warn((new Date(se4Data[ii].timeStamp).toString() + \" price \" + se4Data[ii].priceSEKWHr.toString()));\n}\n*/\nflow.set('se4Data',se4Data);\nreturn {topic:'SE4',payload:se4Data};\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bed174e4d77b4306",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "At 12 pm",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 12 * * *",
+        "once": false,
+        "onceDelay": "10",
+        "topic": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 160,
+        "wires": [
+            [
+                "bd9b7f6fc6ad5da5"
+            ]
+        ]
+    },
+    {
+        "id": "bd9b7f6fc6ad5da5",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "EUR to SEK",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27&base_currency=EUR",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "7a20b461738cbe99"
+            ]
+        ]
+    },
+    {
+        "id": "7a20b461738cbe99",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Set SEK exchange Rate",
+        "func": "flow.set('exchangeRate',msg.payload.data.SEK);\nreturn {topic:'exchangeRate', payload:msg.payload.data.SEK};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "56ee3b61e124bf7e",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 40,
+        "wires": [
+            [
+                "bd9b7f6fc6ad5da5",
+                "a061e6e5cdecce04",
+                "ec9ab555400d53ad"
+            ]
+        ]
+    },
+    {
+        "id": "a061e6e5cdecce04",
+        "type": "delay",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "88542b1ff6092d2e"
+            ]
+        ]
+    },
+    {
+        "id": "55af8d37e923382b",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "Every hour",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 0-23 * * *",
+        "once": false,
+        "onceDelay": "6",
+        "topic": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 580,
+        "wires": [
+            [
+                "a8d2eb4249f7439d"
+            ]
+        ]
+    },
+    {
+        "id": "04607df462870afa",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Find price",
+        "func": "device = flow.get('device');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\nvar future = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(se4Data[ii].priceSEKWHr);\n    }\n}\ndevice.price.value = se4Data[record].priceSEKWHr\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 580,
+        "wires": [
+            [
+                "cdfe154e900d501f"
+            ]
+        ]
+    },
+    {
+        "id": "a8d2eb4249f7439d",
+        "type": "delay",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "3",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "x": 420,
+        "y": 580,
+        "wires": [
+            [
+                "04607df462870afa"
+            ]
+        ]
+    },
+    {
+        "id": "ec9ab555400d53ad",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Setup device",
+        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 100,\n                hihi: 100\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\nflow.set('device',device);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cdfe154e900d501f",
+        "type": "mqtt out",
+        "z": "c764f51b8859588d",
+        "name": "Publish reading",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "84d80994.260508",
+        "x": 760,
+        "y": 580,
+        "wires": []
     }
 ]
