@@ -10080,9 +10080,7 @@
         "y": 40,
         "wires": [
             [
-                "a061e6e5cdecce04",
-                "ec9ab555400d53ad",
-                "bd9b7f6fc6ad5da5"
+                "ec9ab555400d53ad"
             ]
         ]
     },
@@ -10102,7 +10100,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 340,
+        "x": 740,
         "y": 160,
         "wires": [
             [
@@ -10186,7 +10184,7 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Setup device",
-        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 1,\n                high: 2,\n                hihi: 5\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    priceTime: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0,\n        unit: \"ms\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 2634109573209,\n                hihi: 2634109573209\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    exchangeRate: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 10,\n        unit: \"SEK/EUR\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 20,\n                hihi: 20\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\nflow.set('device',device);\nreturn msg;",
+        "func": "var device = \n{\n    deviceType: \"espotPrice\",\n    name: \"SE4\",\n    arcPeriod: 3599000,\n    timeStamp: 1634109573209,\n    lastArchive: 1634109544163,\n    settingInProgress: 0,\n    archiveNow: 0,\n    price: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0.1,\n        unit: \"SEK/kW-hr\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 1,\n                high: 2,\n                hihi: 5\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    priceTime: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 0,\n        unit: \"ms\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 2634109573209,\n                hihi: 2634109573209\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    exchangeRate: \n    {\n        action: \"reading\",\n        type: \"scalar\",\n        value: 10,\n        unit: \"SEK/EUR\",\n        alarm: \n        {\n            value: 0,\n            limits: \n            {\n                lolo: 0,\n                low: 0,\n                high: 20,\n                hihi: 20\n            },\n            notify: \n            {\n                name: \"\",\n                number: \"\",\n                time: 0\n            }\n        }\n    },\n    futurePrice:\n    {\n        action: \"reading\",\n        type: \"vector\",\n        value: [[],[]]\n    }\n}\n//flow.set('device',device);\nreturn {topic:'initDevice',payload:device};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -10195,7 +10193,9 @@
         "x": 370,
         "y": 40,
         "wires": [
-            []
+            [
+                "420a959b0cc3fe78"
+            ]
         ]
     },
     {
@@ -10757,6 +10757,167 @@
         "wires": [
             [
                 "f1cdd1ecd1214374"
+            ]
+        ]
+    },
+    {
+        "id": "f812bb6a.1aec68",
+        "type": "json",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1330,
+        "y": 200,
+        "wires": [
+            [
+                "e0d2b8e49c2e469b"
+            ]
+        ]
+    },
+    {
+        "id": "f9be9054ce456982",
+        "type": "switch",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ping",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "config",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1670,
+        "y": 200,
+        "wires": [
+            [],
+            [
+                "8bdd37bae2e08b93"
+            ]
+        ]
+    },
+    {
+        "id": "e0d2b8e49c2e469b",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Filter MQTT",
+        "func": "return {topic:msg.topic.split('/')[4], payload:msg.payload};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1490,
+        "y": 200,
+        "wires": [
+            [
+                "f9be9054ce456982"
+            ]
+        ]
+    },
+    {
+        "id": "e7b7e47649621cd2",
+        "type": "mqtt in",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "topic": "blinky-lite-v3/espotPrice/SE4/setting/#",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "84d80994.260508",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 1110,
+        "y": 200,
+        "wires": [
+            [
+                "f812bb6a.1aec68"
+            ]
+        ]
+    },
+    {
+        "id": "8bdd37bae2e08b93",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Save Config",
+        "func": "var device = JSON.parse(JSON.stringify(msg.payload));\nflow.set('device',device);\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 220,
+        "wires": [
+            [
+                "cdfe154e900d501f"
+            ]
+        ]
+    },
+    {
+        "id": "420a959b0cc3fe78",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Get device from database",
+        "func": "device = msg.payload\nvar projectionFilter =  \n{\n    projection:\n    {\n        _id                         :   0, \n    } \n};\nvar query =  {$and : [ {deviceType: device.deviceType}, {name: device.name} ]};\nreturn {topic:'getDevice',payload:[query,projectionFilter]};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 40,
+        "wires": [
+            [
+                "8a3d925738c4ff18"
+            ]
+        ]
+    },
+    {
+        "id": "8a3d925738c4ff18",
+        "type": "mongodb3 in",
+        "z": "c764f51b8859588d",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "devices",
+        "operation": "findOne",
+        "x": 840,
+        "y": 40,
+        "wires": [
+            [
+                "a42775c71bed6090"
+            ]
+        ]
+    },
+    {
+        "id": "a42775c71bed6090",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Save device to flow",
+        "func": "flow.set('device',msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 40,
+        "wires": [
+            [
+                "bd9b7f6fc6ad5da5",
+                "a061e6e5cdecce04"
             ]
         ]
     }
