@@ -10026,7 +10026,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27&base_currency=EUR",
+        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -10044,7 +10044,7 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Set SEK exchange Rate",
-        "func": "flow.set('exchangeRate',msg.payload.data.SEK);\nreturn {topic:'exchangeRate', payload:msg.payload.data.SEK};",
+        "func": "//flow.set('exchangeRate',msg.payload.data.SEK);\nflow.set('exchangeRate',10.31);\nreturn {topic:'exchangeRate', payload:msg.payload.data.SEK};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -10073,7 +10073,7 @@
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "2",
+        "onceDelay": "5",
         "topic": "",
         "payloadType": "date",
         "x": 130,
@@ -10151,7 +10151,8 @@
         "y": 320,
         "wires": [
             [
-                "cdfe154e900d501f"
+                "cdfe154e900d501f",
+                "d9f7e25b412b1d02"
             ]
         ]
     },
@@ -10238,7 +10239,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 140,
-        "y": 400,
+        "y": 440,
         "wires": [
             [
                 "b2de0c0b9ab31693"
@@ -10257,7 +10258,7 @@
         "finalize": "",
         "libs": [],
         "x": 290,
-        "y": 400,
+        "y": 440,
         "wires": [
             [
                 "d2e2f3f3a6f362ac"
@@ -10277,7 +10278,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 490,
-        "y": 400,
+        "y": 440,
         "wires": []
     },
     {
@@ -10801,7 +10802,9 @@
         "x": 1670,
         "y": 200,
         "wires": [
-            [],
+            [
+                "9120711128e161c0"
+            ],
             [
                 "8bdd37bae2e08b93"
             ]
@@ -10857,11 +10860,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1860,
+        "x": 1850,
         "y": 220,
         "wires": [
             [
-                "cdfe154e900d501f"
+                "861321fbabcddc82"
             ]
         ]
     },
@@ -10902,22 +10905,6 @@
         ]
     },
     {
-        "id": "3da07ff15a2fc654",
-        "type": "debug",
-        "z": "c764f51b8859588d",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1370,
-        "y": 40,
-        "wires": []
-    },
-    {
         "id": "a42775c71bed6090",
         "type": "function",
         "z": "c764f51b8859588d",
@@ -10932,10 +10919,185 @@
         "y": 40,
         "wires": [
             [
-                "3da07ff15a2fc654",
                 "bd9b7f6fc6ad5da5",
                 "a061e6e5cdecce04"
             ]
         ]
+    },
+    {
+        "id": "9120711128e161c0",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Ping",
+        "func": "var device = flow.get('device');\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1830,
+        "y": 160,
+        "wires": [
+            [
+                "861321fbabcddc82"
+            ]
+        ]
+    },
+    {
+        "id": "861321fbabcddc82",
+        "type": "link out",
+        "z": "c764f51b8859588d",
+        "name": "Setting Action out",
+        "links": [
+            "8de3e25764bb3a49"
+        ],
+        "x": 1965,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8de3e25764bb3a49",
+        "type": "link in",
+        "z": "c764f51b8859588d",
+        "name": "Publish Reading In",
+        "links": [
+            "861321fbabcddc82"
+        ],
+        "x": 535,
+        "y": 380,
+        "wires": [
+            [
+                "cdfe154e900d501f"
+            ]
+        ]
+    },
+    {
+        "id": "0509dad5f8dab3c9",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1030,
+        "y": 360,
+        "wires": [
+            [
+                "11493beabaa7bdff"
+            ]
+        ]
+    },
+    {
+        "id": "11493beabaa7bdff",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Test Ping",
+        "func": "return {topic:'blinky-lite-v3/espotPrice/SE4/setting/ping',payload:true};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c52dde1e46189934",
+        "type": "mqtt in",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "topic": "blinky-lite-v3/espotPrice/SE4/reading",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "84d80994.260508",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 1090,
+        "y": 440,
+        "wires": [
+            [
+                "30dd0b9c76065dd0"
+            ]
+        ]
+    },
+    {
+        "id": "4f1d6a7db080fb5e",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1470,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "30dd0b9c76065dd0",
+        "type": "json",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1310,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d9f7e25b412b1d02",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "b3426e2bb55e3179",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 140,
+        "wires": []
     }
 ]
