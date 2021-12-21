@@ -10026,7 +10026,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27",
+        "url": "https://freecurrencyapi.net/api/v2/latest?apikey=561e5bd0-6018-11ec-b454-2f4fdd123f27&base_currency=EUR",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -10044,7 +10044,7 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Set SEK exchange Rate",
-        "func": "//flow.set('exchangeRate',msg.payload.data.SEK);\nflow.set('exchangeRate',10.31);\nreturn {topic:'exchangeRate', payload:msg.payload.data.SEK};",
+        "func": "var exchangeRate = flow.get('exchangeRate');\nif (exchangeRate == undefined) exchangeRate  = 10.0;\nif ((\"data\" in msg.payload))\n{\n    if ((\"SEK\" in msg.payload.data))\n    {\n        exchangeRate = msg.payload.data.SEK;\n    }\n    \n}\nflow.set('exchangeRate',exchangeRate);\nreturn {topic:'exchangeRate', payload:exchangeRate};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -11065,21 +11065,5 @@
         "wires": [
             []
         ]
-    },
-    {
-        "id": "b3426e2bb55e3179",
-        "type": "debug",
-        "z": "c764f51b8859588d",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1020,
-        "y": 140,
-        "wires": []
     }
 ]
