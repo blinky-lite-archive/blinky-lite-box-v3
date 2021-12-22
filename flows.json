@@ -10112,7 +10112,7 @@
         "id": "55af8d37e923382b",
         "type": "inject",
         "z": "c764f51b8859588d",
-        "name": "Every hour",
+        "name": "Every 15 minutes",
         "props": [
             {
                 "p": "payload"
@@ -10123,12 +10123,12 @@
             }
         ],
         "repeat": "",
-        "crontab": "0 0-23 * * *",
+        "crontab": "*/15 0-23 * * *",
         "once": false,
         "onceDelay": "6",
         "topic": "",
         "payloadType": "date",
-        "x": 150,
+        "x": 170,
         "y": 320,
         "wires": [
             [
@@ -10147,7 +10147,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 470,
+        "x": 520,
         "y": 320,
         "wires": [
             [
@@ -10171,7 +10171,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 310,
+        "x": 360,
         "y": 320,
         "wires": [
             [
@@ -10212,7 +10212,7 @@
         "correl": "",
         "expiry": "",
         "broker": "84d80994.260508",
-        "x": 650,
+        "x": 700,
         "y": 320,
         "wires": []
     },
