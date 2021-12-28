@@ -9594,7 +9594,7 @@
             }
         ],
         "repeat": "",
-        "crontab": "00 14 * * *",
+        "crontab": "0 11-14 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",

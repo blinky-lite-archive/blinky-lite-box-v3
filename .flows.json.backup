@@ -573,12 +573,6 @@
         "wholemsg": "false"
     },
     {
-        "id": "5a549bad8aa4e762",
-        "type": "websocket-listener",
-        "path": "/blinky-power-mon-open/websocket",
-        "wholemsg": "false"
-    },
-    {
         "id": "f867b4b695fa781a",
         "type": "websocket-listener",
         "path": "/espotPrice/websocket",
