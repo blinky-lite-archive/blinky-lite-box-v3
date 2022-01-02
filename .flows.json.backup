@@ -1,5 +1,12 @@
 [
     {
+        "id": "86abf68b4fd6e89a",
+        "type": "tab",
+        "label": "TempForecast",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "c764f51b8859588d",
         "type": "tab",
         "label": "ElecPrices",
@@ -1515,7 +1522,7 @@
         "type": "function",
         "z": "dc20c6e0.0feb98",
         "name": "Scan for alarms",
-        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n\n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
+        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar oldAlarmList = context.get('oldAlarmList')\nif (oldAlarmList == undefined) oldAlarmList = [];\nvar numDevices = objectLength(msg.payload);\nvar props = ['readings', 'settings'];\nvar alarmList = [];\nvar alarmCount = 0;\nfor (var idev = 0; idev < numDevices; ++idev)\n{\n    var device = msg.payload[idev];\n \n    var keys = Object.keys(device);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\nif (device.deviceType == 'temp-forecast') node.warn(keys[ii]);\n        if (device[keys[ii]].hasOwnProperty('type'))\n        {\n            if (device[keys[ii]].type == 'scalar')\n            {\n                if (device[keys[ii]].alarm.value > 0)\n                {\n                    alarmList[alarmCount] = \n                    {\n                        deviceType: device.deviceType,\n                        name  : device.name,\n                        prop  : device[keys[ii]].action,\n                        attr  : keys[ii],\n                        value : device[keys[ii]].value,\n                        unit  : device[keys[ii]].unit,\n                        alarm : device[keys[ii]].alarm.value,\n                        id    : device.deviceType + '-' +  device.name + '-' +  device[keys[ii]].action + '-' + keys[ii],\n                        notify: device[keys[ii]].alarm.notify\n                    };\n                    ++alarmCount;\n                }\n            }\n        }\n    }\n}\n\nvar newAlarmList = [];\nvar newAlarmCount = 0;\nfor (var ialarm = 0; ialarm < alarmCount; ++ialarm)\n{\n    var oldAlarm = oldAlarmList.find(oldAlarm => oldAlarm.id === alarmList[ialarm].id);\n    if (oldAlarm == undefined) \n    {\n        newAlarmList[newAlarmCount] = alarmList[ialarm];\n        ++newAlarmCount;\n    }\n}\ncontext.set('oldAlarmList', alarmList);\nreturn [{topic:'alarmList', payload:{topic:'alarmList',payload:alarmList}},{topic:'newAlarmList', payload:newAlarmList}];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -6358,14 +6365,22 @@
                 "t": "eq",
                 "v": "blinky-DS18B20",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "temp-forecast",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 8,
+        "outputs": 9,
         "x": 630,
         "y": 100,
         "wires": [
+            [
+                "ee4c177c.2435b8"
+            ],
             [
                 "ee4c177c.2435b8"
             ],
@@ -6711,7 +6726,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-beadpull\">blinky-beadpull</option>\n                                    <option value=\"blinky-modbus\">blinky-modbus</option>\n                                    <option value=\"blinky-power-mon\">blinky-power-mon</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-scale\">blinky-scale</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
+        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-beadpull\">blinky-beadpull</option>\n                                    <option value=\"blinky-DS18B20\">blinky-DS18B20</option>\n                                    <option value=\"blinky-modbus\">blinky-modbus</option>\n                                    <option value=\"blinky-power-mon\">blinky-power-mon</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-scale\">blinky-scale</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
         "output": "str",
         "x": 940,
         "y": 60,
@@ -11801,6 +11816,198 @@
         "name": "",
         "x": 1290,
         "y": 2240,
+        "wires": []
+    },
+    {
+        "id": "b2b2f76b19e0434d",
+        "type": "inject",
+        "z": "86abf68b4fd6e89a",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "d5757803428c1ec6"
+            ]
+        ]
+    },
+    {
+        "id": "f196c7888723a616",
+        "type": "inject",
+        "z": "86abf68b4fd6e89a",
+        "name": "Every hour",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 0-23 * * *",
+        "once": false,
+        "onceDelay": "10",
+        "topic": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ed16f55f5cd4fd4c",
+        "type": "http request",
+        "z": "86abf68b4fd6e89a",
+        "name": "WeatherForecast",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 570,
+        "y": 320,
+        "wires": [
+            [
+                "fc5ee7bb8cc7de43"
+            ]
+        ]
+    },
+    {
+        "id": "6d286f4f5edcafbe",
+        "type": "inject",
+        "z": "86abf68b4fd6e89a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "82a783d5d9de9ac2"
+            ]
+        ]
+    },
+    {
+        "id": "281a44a56ecd0f63",
+        "type": "debug",
+        "z": "86abf68b4fd6e89a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "d5757803428c1ec6",
+        "type": "function",
+        "z": "86abf68b4fd6e89a",
+        "name": "Define Device",
+        "func": "var device = \n{\n  deviceType: \"temp-forecast\",\n  name: \"Brantevik\",\n  arcPeriod: 60000,\n  timeStamp: 1600576723130,\n  lastArchive: 1600576720254,\n  settingInProgress: 1,\n  archiveNow: 0,\n  latitude: {\n    action: \"reading\",\n    type: \"scalar\",\n    value: 55.516,\n    unit: \"degrees\",\n    alarm: {\n      value: 0,\n      limits: {\n        lolo: -90,\n        low: -90,\n        high: 90,\n        hihi: 90\n      },\n      notify: {\n        name: \"\",\n        number: \"\",\n        time: 0\n      }\n    }\n  },\n  longitude: {\n    action: \"reading\",\n    type: \"scalar\",\n    value: 14.347,\n    unit: \"degrees\",\n    alarm: {\n      value: 0,\n      limits: {\n        lolo: -180,\n        low: -180,\n        high: 180,\n        hihi: 180\n      },\n      notify: {\n        name: \"\",\n        number: \"\",\n        time: 0\n      }\n    }\n  },\n  temp: {\n    action: \"reading\",\n    type: \"scalar\",\n    value: 16.187,\n    unit: \"C\",\n    alarm: {\n      value: 0,\n      limits: {\n        lolo: 5,\n        low: 8,\n        high: 30,\n        hihi: 40\n      },\n      notify: {\n        name: \"\",\n        number: \"\",\n        time: 0\n      }\n    }\n  },\n  tempFeel: {\n    action: \"reading\",\n    type: \"scalar\",\n    value: 16.187,\n    unit: \"C\",\n    alarm: {\n      value: 0,\n      limits: {\n        lolo: 5,\n        low: 8,\n        high: 30,\n        hihi: 40\n      },\n      notify: {\n        name: \"\",\n        number: \"\",\n        time: 0\n      }\n    }\n  },\n  tempTime: {\n    action: \"reading\",\n    type: \"scalar\",\n    value: 1600576723130,\n    unit: \"mS\",\n    alarm: {\n      value: 0,\n      limits: {\n        lolo: 1600000000000,\n        low:  1600000000000,\n        high: 2600000000000,\n        hihi: 2600000000000\n      },\n      notify: {\n        name: \"\",\n        number: \"\",\n        time: 0\n      }\n    }\n  },\n  futureTemp: {\n    action: \"reading\",\n    type: \"vector\",\n    value: [[],[]]\n  },\n  futureTempFeel: {\n    action: \"reading\",\n    type: \"vector\",\n    value: [[],[]]\n  }\n};\nflow.set('device',device)\nreturn null;",
+        "outputs": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "82a783d5d9de9ac2",
+        "type": "function",
+        "z": "86abf68b4fd6e89a",
+        "name": "Setup temp Query",
+        "func": "var device = flow.get('device');\nmsg['url'] = \"https://api.openweathermap.org/data/2.5/onecall?lat=\"\nmsg.url = msg.url + device.latitude.value.toString();\nmsg.url = msg.url + \"&lon=\"\nmsg.url = msg.url + device.longitude.value.toString()\nmsg.url = msg.url + \"&exclude=minutely,daily,alerts&units=metric&appid=7d601871b009743f05babf9eaeae73a0\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "ed16f55f5cd4fd4c"
+            ]
+        ]
+    },
+    {
+        "id": "fc5ee7bb8cc7de43",
+        "type": "function",
+        "z": "86abf68b4fd6e89a",
+        "name": "Parse Query",
+        "func": "var device = flow.get('device');\ndevice.temp.value = msg.payload.current.temp;\ndevice.tempFeel.value = msg.payload.current.feels_like;\nvar tempTime = new Date( msg.payload.current.dt * 1000);\ntempTime.setMilliseconds(0);\ntempTime.setSeconds(0);\ntempTime.setMinutes(0);\ndevice.tempTime.value = tempTime.getTime();\ndevice.futureTemp.value = [[],[]];\ndevice.futureTempFeel.value = [[],[]];\nfor (var ii = 0; ii < msg.payload.hourly.length; ++ii)\n{\n    device.futureTemp.value[0].push(msg.payload.hourly[ii].dt * 1000);\n    device.futureTemp.value[1].push(msg.payload.hourly[ii].temp);\n    device.futureTempFeel.value[0].push(msg.payload.hourly[ii].dt * 1000);\n    device.futureTempFeel.value[1].push(msg.payload.hourly[ii].feels_like);\n}\nvar toppy = 'blinky-lite-v3/' + device.deviceType + '/' + device.name + '/reading';\nreturn {topic:toppy, payload:device};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 320,
+        "wires": [
+            [
+                "281a44a56ecd0f63",
+                "a332d20fae88d9b9"
+            ]
+        ]
+    },
+    {
+        "id": "a332d20fae88d9b9",
+        "type": "mqtt out",
+        "z": "86abf68b4fd6e89a",
+        "name": "Publish reading",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "84d80994.260508",
+        "x": 1020,
+        "y": 400,
         "wires": []
     }
 ]
