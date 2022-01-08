@@ -934,6 +934,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 1200,
         "y": 100,
         "wires": [
@@ -3306,6 +3307,9 @@
         "func": "return {\n    topic   :msg.payload.name, \n    payload : \n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        {\n            projection  :\n            {\n                _id :   0\n                \n            }\n        }\n    ],\n    'device'    :   msg.payload\n};\n\n",
         "outputs": 1,
         "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
         "x": 770,
         "y": 100,
         "wires": [
@@ -6384,14 +6388,22 @@
                 "t": "eq",
                 "v": "temp-forecast",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-eon-mon",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 9,
+        "outputs": 10,
         "x": 630,
         "y": 100,
         "wires": [
+            [
+                "ee4c177c.2435b8"
+            ],
             [
                 "ee4c177c.2435b8"
             ],

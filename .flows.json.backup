@@ -12249,7 +12249,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "basicYellow.png",
+        "template": "thermoYellow.png",
         "output": "str",
         "x": 410,
         "y": 560,
