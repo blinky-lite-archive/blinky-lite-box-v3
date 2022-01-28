@@ -13172,7 +13172,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table>\n            <tr>\n                <td><img src=\"/img/bl-mc-icon-inverse.png\"/></td>\n            </tr>\n        </table>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table>\n            <tr>\n                <td><img src=\"/img/bl-mc-icon-inverse.png\" style=\"width:450px;height:450px;\"/></td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
         "x": 730,
         "y": 100,
