@@ -9218,9 +9218,7 @@
         "x": 150,
         "y": 100,
         "wires": [
-            [
-                "bd9b7f6fc6ad5da5"
-            ]
+            []
         ]
     },
     {
@@ -9346,7 +9344,7 @@
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Find price",
-        "func": "device = flow.get('device');\nexchangeRate = flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\ndevice.futurePrice.value = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\nif (writeFuture)\n{\n    device.futurePrice.value[0].push(se4Data[se4Data.length - 1].timeStamp);\n    device.futurePrice.value[1].push(Math.round(se4Data[se4Data.length - 1].priceEURMWHr * exchangeRate) / 1000);\n}\n\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
+        "func": "device = flow.get('device');\nexchangeRate = 10.41; //flow.get('exchangeRate');\nvar se4Data = flow.get('se4Data');\nvar now = new Date().getTime();\nvar record = se4Data.length - 1;\ndevice.futurePrice.value = [[],[]];\nvar writeFuture = false;\nfor (var ii = 0; ii < (se4Data.length - 1); ++ii)\n{\n    if ((now >= se4Data[ii].timeStamp) &&(now < se4Data[ii + 1].timeStamp))\n    {\n        record = ii;\n        writeFuture = true;\n    }\n    if (writeFuture)\n    {\n        device.futurePrice.value[0].push(se4Data[ii].timeStamp);\n        device.futurePrice.value[1].push(Math.round(se4Data[ii].priceEURMWHr * exchangeRate) / 1000);\n    }\n}\nif (writeFuture)\n{\n    device.futurePrice.value[0].push(se4Data[se4Data.length - 1].timeStamp);\n    device.futurePrice.value[1].push(Math.round(se4Data[se4Data.length - 1].priceEURMWHr * exchangeRate) / 1000);\n}\n\ndevice.price.value = Math.round(se4Data[record].priceEURMWHr * exchangeRate) / 1000;\ndevice.priceTime.value = se4Data[record].timeStamp\ndevice.exchangeRate.value = exchangeRate;\nreturn {topic:'blinky-lite-v3/espotPrice/SE4/reading', payload:device};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -9962,7 +9960,6 @@
         "y": 40,
         "wires": [
             [
-                "bd9b7f6fc6ad5da5",
                 "a061e6e5cdecce04"
             ]
         ]
