@@ -13735,8 +13735,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 1080,
+        "x": 340,
+        "y": 1120,
         "wires": [
             [
                 "b515b194a06f1bca"
@@ -13754,7 +13754,7 @@
         "syntax": "mustache",
         "template": "SE4 El-Prissensor ",
         "output": "str",
-        "x": 380,
+        "x": 280,
         "y": 1160,
         "wires": [
             [
@@ -13772,7 +13772,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 1080,
+        "y": 1120,
         "wires": [
             [
                 "95c0e2059e9b95cf"
@@ -13788,10 +13788,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var archiveList = [];\n        var espotPriceDevice = null;\n\n        var espotPriceDeviceConfig = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(false);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var actionMsg = \n                {\n                    $and : [ {deviceType: espotPriceDeviceConfig.deviceType}, {name: espotPriceDeviceConfig.name} ]\n                };\n                sendActionMsg('getDevice','readDatabase', actionMsg);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'getDevice':\n                    if (msg.userID == userID)\n                    {\n                        espotPriceDevice = JSON.parse(JSON.stringify(msg.payload));\n                        updateDmaReadings(espotPriceDevice);\n                        var time = new Date().toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', '');\n                        $('#currentSpotPriceCardTitle').text(espotPriceDevice.price.value.toFixed(2) + ' ' + espotPriceDevice.price.unit);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var archiveList = [];\n        var espotPriceDevice = null;\n\n        var espotPriceDeviceConfig = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(false);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#gaugeCard').show();\n            $('#timePlotCard').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n            }\n            var actionMsg = \n            {\n                $and : [ {deviceType: espotPriceDeviceConfig.deviceType}, {name: espotPriceDeviceConfig.name} ]\n            };\n            sendActionMsg('getDevice','readDatabase', actionMsg);\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'getDevice':\n                    if (msg.userID == userID)\n                    {\n                        espotPriceDevice = JSON.parse(JSON.stringify(msg.payload));\n                        hideTimePlotCard();\n                        updateDmaReadings(espotPriceDevice);\n                        var time = new Date().toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', '');\n                        $('#currentSpotPriceCardTitle').text(espotPriceDevice.price.value.toFixed(2) + ' ' + espotPriceDevice.price.unit);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function hideGaugeCard()\n        {\n            $('#gaugeCard').hide();\n            $('#timePlotCard').show();\n            futurePricePlot(espotPriceDevice.futurePrice);\n\n        }\n        function hideTimePlotCard()\n        {\n            $('#gaugeCard').show();\n            $('#timePlotCard').hide();\n        }",
         "output": "str",
         "x": 710,
-        "y": 1080,
+        "y": 1120,
         "wires": [
             [
                 "e3babfea609694a5"
@@ -13807,10 +13807,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.gaugeWidget}}}\n{{{payload.script.timePlot}}}\n{{{payload.script.archive}}}\n{{{payload.script.user}}}\n",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.gaugeWidget}}}\n{{{payload.script.timePlot}}}\n{{{payload.script.user}}}\n",
         "output": "str",
         "x": 700,
-        "y": 1240,
+        "y": 1320,
         "wires": [
             [
                 "4d1476a775ad3a92"
@@ -13829,7 +13829,7 @@
         "template": "    <div width=\"100%\">\n{{{payload.html.dashboard}}}\n    </div>",
         "output": "str",
         "x": 1010,
-        "y": 1240,
+        "y": 1280,
         "wires": [
             [
                 "5bfa5dc5d03a5bf6"
@@ -13845,10 +13845,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n        <div class='card'>\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\" ></div>\n                <p style='color: white;font-size: 1000%;'>SE4 Spot Price</p>\n                <p style='color: white;font-size: 1000%;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n",
+        "template": "<!-- Dashboard HTML -->\n        <div class='card' id=\"gaugeCard\">\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\"></div>\n                <p><button class='btn' style='background-color:#083357;color:#fcc200; font-size: 1000%;' onclick='hideGaugeCard()'>SE4 Spot Price</button></p>\n                <p style='color: white;font-size: 1000%;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n        <div class='card' id=\"timePlotCard\">\n            <div class='card-body' align=\"center\" style=\"padding-top:100px;\">\n                <div id=\"timePlotChart\" width=\"100%\" onclick='hideTimePlotCard()'></div>\n            </div>\n        </div>\n",
         "output": "str",
         "x": 1040,
-        "y": 1080,
+        "y": 1120,
         "wires": [
             [
                 "984d70133b8eb1d3"
@@ -13864,10 +13864,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            var titleColor = '#000000';\n            var priceGaugeConfig = \n                {\n                    lolo            : device.price.alarm.limits.lolo, \n                    low             : device.price.alarm.limits.low, \n                    high            : device.price.alarm.limits.high, \n                    hihi            : device.price.alarm.limits.hihi, \n                    value           : Math.round(100 * device.price.value) / 100, \n                    unit            : device.price.unit, \n                    numberSize      : 80,\n                    labelSize       : 50,\n                    label           : '', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#083357', \n                    labelColor      : 'black', \n                    titleColor      : 'white', \n                    size            : 1600, \n                    htmlId          : 'priceGaugePlot'\n                };\n            setGaugeWidget(priceGaugeConfig);\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            var titleColor = '#000000';\n            var priceGaugeConfig = \n                {\n                    lolo            : device.price.alarm.limits.lolo, \n                    low             : device.price.alarm.limits.low, \n                    high            : device.price.alarm.limits.high, \n                    hihi            : device.price.alarm.limits.hihi, \n                    value           : Math.round(100 * device.price.value) / 100, \n                    unit            : device.price.unit, \n                    numberSize      : 100,\n                    labelSize       : 50,\n                    label           : '', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#083357', \n                    labelColor      : 'black', \n                    titleColor      : 'white', \n                    size            : 1600, \n                    htmlId          : 'priceGaugePlot'\n                };\n            setGaugeWidget(priceGaugeConfig);\n        }\n",
         "output": "str",
         "x": 740,
-        "y": 1120,
+        "y": 1160,
         "wires": [
             [
                 "1d236ba0418a2685"
@@ -13886,10 +13886,10 @@
         "template": "// GaugeWidget\n        function setGaugeWidget(gaugeConfig)\n        {\n            var degrees = 180.0 * (gaugeConfig.hihi - gaugeConfig.value) / (gaugeConfig.hihi - gaugeConfig.lolo);\n            if (degrees < 0.0 )   degrees = 0.0;\n            if (degrees > 180.0 ) degrees = 180.0;\n            // Trig to calc meter point\n            var radius = 0.50;\n            var radians = degrees * Math.PI / 180;\n            var x = radius * Math.cos(radians);\n            var y = radius * Math.sin(radians);\n            var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';\n            // Path: may have to change to create a better triangle\n            var mainPath = path1,\n                pathX = String(x),\n                space = ' ',\n                pathY = String(y),\n                pathEnd = ' Z';\n            var rotation = (180.0 * (gaugeConfig.high - gaugeConfig.lolo) / (gaugeConfig.hihi - gaugeConfig.lolo)) - 90.0;\n            var path = mainPath.concat(pathX,space,pathY,pathEnd);\n        \n            var valueColor = gaugeConfig.backgroundColor; \n            \n            if ( (gaugeConfig.lolo <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.low) )\n            {\n                valueColor = gaugeConfig.lowColor;\n            }\n            if ( (gaugeConfig.low  <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.high) )\n            {\n                valueColor = gaugeConfig.mediumColor;\n            }\n            if ( (gaugeConfig.high <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.hihi) )\n            {\n              valueColor = gaugeConfig.highColor;\n            }\n            if ( gaugeConfig.hihi <= gaugeConfig.value)\n            {\n                valueColor = gaugeConfig.highColor;\n            }\n            valueColor = gaugeConfig.titleColor;\n        \n            var data = \n                [\n                    { \n                        type: 'scatter',\n                        x: [0], y:[0],\n                        marker: {size: 14, color:valueColor},\n                        showlegend: false,\n                        name: gaugeConfig.label,\n                        text: gaugeConfig.value.toString(),\n                        hoverinfo: 'text+name',\n        \n                        \n                    },\n                    { \n                        values: \n                            [\n                                gaugeConfig.hihi - gaugeConfig.high, \n                                gaugeConfig.high - gaugeConfig.low, \n                                gaugeConfig.low  - gaugeConfig.lolo, \n                                gaugeConfig.hihi - gaugeConfig.lolo \n                            ],\n                        rotation: rotation,\n                        text: \n                            [\n                                gaugeConfig.high.toString() + ' to ' + gaugeConfig.hihi.toString(), \n                                gaugeConfig.low.toString()  + ' to ' + gaugeConfig.high.toString(), \n                                gaugeConfig.lolo.toString() + ' to ' + gaugeConfig.low.toString(), \n                                ''\n                            ],\n                        textinfo: 'text',\n                        textposition:'inside',\n                        textfont: {color: gaugeConfig.labelColor, size:gaugeConfig.numberSize},\n                        marker: \n                            {\n                                colors:\n                                    [\n                                        gaugeConfig.highColor,\n                                        gaugeConfig.mediumColor,\n                                        gaugeConfig.lowColor, \n                                        gaugeConfig.backgroundColor\n                                    ]\n                            },\n                        hoverinfo: 'label',\n                        hole: 0.5,\n                        type: 'pie',\n                        showlegend: false,\n                        sort: false\n                    }\n                ];\n            var layout = \n                {\n                    shapes:\n                        [\n                            {\n                                type: 'path',\n                                path: path,\n                                fillcolor: valueColor,\n                                line: {color: valueColor }\n                            }\n                        ],\n                    height: gaugeConfig.size,\n                    width: gaugeConfig.size,\n                    title: \n                        {\n//                            text:gaugeConfig.label + ' ' + gaugeConfig.value.toString() + ' ' + gaugeConfig.unit,\n//                            font: {color: valueColor, size:gaugeConfig.labelSize},\n                         },\n                    xaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1],\n                        },\n                    yaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1]\n                        },\n                    margin: \n                        {\n                            t: 80, //top margin\n                            l: 0, //left margin\n                            r: 0, //right margin\n                            b: 20 //bottom margin\n                        },\n                    plot_bgcolor:gaugeConfig.backgroundColor,\n                    paper_bgcolor:gaugeConfig.backgroundColor\n            \n                };\n            $('#' + gaugeConfig.htmlId).attr('style','max-height: calc(' + (gaugeConfig.size / 2).toString() + 'px + 50px) !important; overflow:hidden;');\n            Plotly.newPlot(gaugeConfig.htmlId, data, layout, {'displayModeBar': false, staticPlot: true});\n        }",
         "output": "str",
         "x": 730,
-        "y": 1160,
+        "y": 1200,
         "wires": [
             [
-                "e613f9ea8c54709d"
+                "bca4672d7db7019a"
             ]
         ]
     },
@@ -13905,7 +13905,7 @@
         "template": "        function getCreds()\n        {\n            var now = new Date().getTime();\n            var expDate = Number(getCookie('ExpDate'));\n            if (expDate > 0)\n            {\n                expDate = expDate - now;\n                if(expDate < 0)\n                {\n                    logout();\n                }\n                else\n                {\n                    var hours = Math.floor(expDate / 3600000);\n                    var minutes = expDate - hours * 3600000;\n                    minutes = Math.floor(minutes / 60000);\n                    var seconds = expDate - (hours * 3600000) - (minutes * 60000);\n                    seconds = Math.floor(seconds / 1000);\n                    hours = hours.toString();\n                    if (hours.length == 1) hours = '0' + hours; \n                    minutes = minutes.toString();\n                    if (minutes.length == 1) minutes = '0' + minutes; \n                    seconds = seconds.toString();\n                    if (seconds.length == 1) seconds = '0' + seconds; \n                    var timeString = hours + ':' + minutes + ':' + seconds;\n                    $('#usernameId').text(getCookie('Username'));\n                    $('#expTimeId').text(timeString);\n                }\n            }\n            else\n            {\n                $('#usernameId').text(getCookie('Username'));\n                $('#expTimeId').text('Forever');\n            }\n        }\n        function logout()\n        {\n            document.cookie = project + \"Role= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"ExpDate= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"Username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            window.location.href = \"/\";\n        }\n        function renew()\n        {\n            var actionMsg = {};\n            sendActionMsg('renew', 'renew', actionMsg);\n        }\n        function updateCookie(msg)\n        {\n            document.cookie = project + \"Role=\" + msg.role;\n            document.cookie = project + \"ExpDate=\" + msg.expDate;\n            document.cookie = project + \"Username=\" + msg.username;\n        }\n        function downloadToken()\n        {\n            downloadString(getCookie(\"Role\"), \"text/plain\", project + \"-token.txt\");\n        }\n// from https://gist.github.com/danallison/3ec9d5314788b337b682\n        function downloadString(text, fileType, fileName) \n        {\n            var blob = new Blob([text], { type: fileType });\n            \n            var a = document.createElement('a');\n            a.download = fileName;\n            a.href = URL.createObjectURL(blob);\n            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');\n            a.style.display = \"none\";\n            document.body.appendChild(a);\n            a.click();\n            document.body.removeChild(a);\n            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);\n        }",
         "output": "str",
         "x": 710,
-        "y": 1200,
+        "y": 1280,
         "wires": [
             [
                 "fc423f840f6e0c7a"
@@ -13918,7 +13918,7 @@
         "z": "c764f51b8859588d",
         "name": "",
         "x": 1430,
-        "y": 1240,
+        "y": 1280,
         "wires": []
     },
     {
@@ -13933,7 +13933,7 @@
         "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: #083357 !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: #083357;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
         "x": 1170,
-        "y": 1240,
+        "y": 1280,
         "wires": [
             [
                 "893e7bf98437e15a"
@@ -13952,7 +13952,7 @@
         "template": "<!-- navBar -->\n",
         "output": "str",
         "x": 1300,
-        "y": 1240,
+        "y": 1280,
         "wires": [
             [
                 "47f8b05c6fd7f118"
@@ -13984,5 +13984,24 @@
         "x": 1060,
         "y": 980,
         "wires": []
+    },
+    {
+        "id": "bca4672d7db7019a",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "script.timePlot",
+        "field": "payload.script.timePlot",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var timePlotLength = 600000;\n        var timePlotLayout =\n        {\n            paper_bgcolor: '#083357',\n            plot_bgcolor: '#083357',\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15},\n            height      : '1400',\n            width       : '1600',\n            title: \n            {\n                text:'SEK / kW-hr',\n                font: \n                {\n                    size: 120,\n                    color: 'white'\n                },\n                xref: 'paper',\n                x: 0.22,\n            },\n            xaxis       :\n            {\n                type: 'date',\n                tickangle       : '90',\n                tickfont        : {size: 100, color: 'white'},\n                tickformat: \"%H:%M\\n%b-%d\"\n            },\n            yaxis:\n            {\n                tickfont        : {color: 'white',size: 100},\n                gridcolor       : 'white',\n                zerolinecolor   : 'white',\n                linecolor       : 'white',\n                range           : [0, 5]\n//                rangemode       : 'tozero'\n            },\n            margin: \n                {\n                    t: 200, //top margin\n                    l: 200, //left margin\n                    r: 100, //right margin\n                    b: 400 //bottom margin\n                },\n                showlegend: false\n        };\n        var timePlotTraces = [];\n        timePlotTraces[0] = \n        {\n            x: [],\n            y: [],\n            name: 'SE4',\n            yaxis: 'y1',\n            type: 'bar',\n            marker:{color: '#fcc200'}\n//            type: 'scatter',\n//            mode: 'lines',\n//            line: {color: 'red'}\n    \n        };\n        function futurePricePlot(futurePrice)\n        {\n            for (var ii = 0; ii < futurePrice.value[0].length; ++ii)\n            {\n                timePlotTraces[0].x.push(futurePrice.value[0][ii]);\n                timePlotTraces[0].y.push(futurePrice.value[1][ii]);\n            } \n            timePlotLayout.yaxis.range = [0, espotPriceDevice.price.alarm.limits.hihi];\n            Plotly.newPlot(\"timePlotChart\", timePlotTraces, timePlotLayout, {displayModeBar: false, staticPlot: true});\n        }\n\n",
+        "output": "str",
+        "x": 720,
+        "y": 1240,
+        "wires": [
+            [
+                "e613f9ea8c54709d"
+            ]
+        ]
     }
 ]
