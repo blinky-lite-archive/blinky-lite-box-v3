@@ -13845,7 +13845,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n        <div class='card' id=\"gaugeCard\">\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\"></div>\n                <p><button class='btn' style='background-color:#f83357;color:#fcc200;' onclick='hideGaugeCard()' id='hideGaugeButton' >SE4 Spot Price</button></p>\n                <p style='color: white;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n        <div class='card' id=\"timePlotCard\">\n            <div class='card-body' align=\"center\" id=\"timePlotCardBody\">\n                <div id=\"timePlotChart\" width=\"100%\" onclick='hideTimePlotCard()'></div>\n            </div>\n        </div>\n",
+        "template": "<!-- Dashboard HTML -->\n        <div class='card' id=\"gaugeCard\">\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\"></div>\n                <p><button class='btn' style='border-color:#fcc200;border-width: 10px;background-color:#083357;color:#fcc200;' onclick='hideGaugeCard()' id='hideGaugeButton' >SE4 Spot Price</button></p>\n                <p style='color: white;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n        <div class='card' id=\"timePlotCard\">\n            <div class='card-body' align=\"center\" id=\"timePlotCardBody\">\n                <div id=\"timePlotChart\" width=\"100%\" onclick='hideTimePlotCard()'></div>\n            </div>\n        </div>\n",
         "output": "str",
         "x": 1040,
         "y": 1120,
