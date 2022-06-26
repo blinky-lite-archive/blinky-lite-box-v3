@@ -363,6 +363,40 @@
         "color": "#DDAA99"
     },
     {
+        "id": "3fec913b325ae6ff",
+        "type": "subflow",
+        "name": "HTTPS Check",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "30495fc00067bd92"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 300,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "30495fc00067bd92",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#487895",
+        "icon": "font-awesome/fa-key"
+    },
+    {
         "id": "6ad7c930.1a06b8",
         "type": "ui_base",
         "theme": {
@@ -641,7 +675,7 @@
         "y": 40,
         "wires": [
             [
-                "83301a46.e7b368"
+                "524a755f2629bcc1"
             ]
         ]
     },
@@ -773,7 +807,7 @@
         "syntax": "mustache",
         "template": "    <div width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">Tr</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Device</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Name</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Prop</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Attr</span></td>\n                <td width=\"8%\" align=\"center\"><span class=\"tableHeading \">value</span></td>\n                <td width=\"7%\" align=\"center\"><span class=\"tableHeading \">unit</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">y1</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">y2</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">pt</span></td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">1</span></td>\n                <td>\n                    <select class=\"custom-select \" id=\"deviceSelect0\" onchange=\"deviceSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect0\" onchange=\"nameSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"propSelect0\" onchange=\"propSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"attrSelect0\" onchange=\"attrSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText \" id=\"valueSelect0\"></span></td>\n                <td align=\"center\"><span class=\"tableText \" id=\"unitSelect0\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_0y1\" type=\"radio\" name=\"plotAxis_0\"  value=\"y1\"  onchange='selectAxis(0,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_0y2\" type=\"radio\" name=\"plotAxis_0\"  value=\"y2\"  onchange='selectAxis(0,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_0\" type=\"checkbox\" name=\"pts_0\"  value=\"pts\"  onchange='selectPts(0)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">2</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect1\" onchange=\"deviceSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect1\" onchange=\"nameSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect1\" onchange=\"propSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect1\" onchange=\"attrSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect1\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect1\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_1y1\" type=\"radio\" name=\"plotAxis_1\"  value=\"y1\"  onchange='selectAxis(1,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_1y2\" type=\"radio\" name=\"plotAxis_1\"  value=\"y2\"  onchange='selectAxis(1,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_1\" type=\"checkbox\" name=\"pts_1\"  value=\"pts\"  onchange='selectPts(1)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">3</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect2\" onchange=\"deviceSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect2\" onchange=\"nameSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect2\" onchange=\"propSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect2\" onchange=\"attrSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect2\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect2\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_2y1\" type=\"radio\" name=\"plotAxis_2\"  value=\"y1\"  onchange='selectAxis(2,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_2y2\" type=\"radio\" name=\"plotAxis_2\"  value=\"y2\"  onchange='selectAxis(2,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_2\" type=\"checkbox\" name=\"pts_2\"  value=\"pts\"  onchange='selectPts(2)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">4</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect3\" onchange=\"deviceSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect3\" onchange=\"nameSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect3\" onchange=\"propSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect3\" onchange=\"attrSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect3\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect3\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_3y1\" type=\"radio\" name=\"plotAxis_3\"  value=\"y1\"  onchange='selectAxis(3,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_3y2\" type=\"radio\" name=\"plotAxis_3\"  value=\"y2\"  onchange='selectAxis(3,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_3\" type=\"checkbox\" name=\"pts_3\"  value=\"pts\"  onchange='selectPts(3)' checked ></td>\n            </tr>\n        </table>\n    </div>\n    <div>\n        <div class='row'>\n            <div class='col-md-6'>\n                <table>\n                    <tr>\n                        <td width=50%  align=\"center\"class=\"tableHeading\">Span</td>\n                        <td width=50% align=\"center\"></td>\n                    </tr>\n                    <tr>\n                         <td align=\"center\">\n                            <input class=\"form-control\" id=\"plotLength\" type=\"text\" value=\"300\"/>\n                        </td>\n                        <td align=\"center\">\n                            <button class=\"btn jumbotron-button\" id=\"startPlotButton\" type=\"button\" onclick=\"startPlot()\">Start Plot</button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-md-12'>\n                <div class='card'>\n                    <p class='card-title'>Time Plot</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"timePlot\" width=\"100%\" class=\"plot\"></div> \n                    </div>\n                </div>\n            </div>\n        </div>\n     </div>",
         "output": "str",
-        "x": 1190,
+        "x": 1370,
         "y": 40,
         "wires": [
             [
@@ -891,7 +925,7 @@
         "syntax": "mustache",
         "template": "        var plotStarted = false;\n        var plotTraces = [];\n        var plotStartTime = 0;\n        var plotLength = 0;\n        var plotLayout = {};\n \n        function onDocumentReadySpecial()\n        {\n        }\n        function onWebSocketMessageSpecial(msg)\n        {\n        }\n        function loadDeviceValuesSpecial(data)\n        {\n            upDatePlot();\n        }\n        function clearAttrOptionListSpecial(itrace)\n        {\n        }\n        function attrSelectedSpecial(itrace)\n        {\n        }\n\n        function selectAxis(itrace,axis)\n        {\n            devInfo[itrace].axis  = axis;\n        }\n        function selectPts(itrace)\n        {\n            devInfo[itrace].pts = !devInfo[itrace].pts;\n        }\n        function startPlot()\n        {\n            if (!plotStarted)\n            {\n                $(\"#startPlotButton\").html('Stop Plot');\n            }\n            else\n            {\n                $(\"#startPlotButton\").html('Start Plot');\n            }\n            plotStarted = !plotStarted;\n            if (!plotStarted)\n            {\n                plotTraces = [];\n                for (var itrace = 0; itrace < numTraces; ++itrace)\n                {\n                    deviceSelect[itrace].disabled = false;\n                    nameSelect[itrace].disabled = false;\n                    propSelect[itrace].disabled = false;\n                    attrSelect[itrace].disabled = false;\n                    $('#plotAxis_' + itrace.toString() + 'y1').prop( \"disabled\", false );\n                    $('#plotAxis_' + itrace.toString() + 'y2').prop( \"disabled\", false );\n                    $('#pts_' + itrace.toString()).prop( \"disabled\", false );\n                }\n                return;\n            }\n            plotTraces = [];\n            \n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                deviceSelect[itrace].disabled = true;\n                nameSelect[itrace].disabled = true;\n                propSelect[itrace].disabled = true;\n                attrSelect[itrace].disabled = true;\n                $('#plotAxis_' + itrace.toString() + 'y1').prop( \"disabled\", true );\n                $('#plotAxis_' + itrace.toString() + 'y2').prop( \"disabled\", true );\n                $('#pts_' + itrace.toString()).prop( \"disabled\", true );\n                if (devInfo[itrace].name.length > 0)\n                {\n                    var modeType = 'lines';\n                    if (devInfo[itrace].pts) modeType = 'markers';\n                    var trace =  \n                    {\n                        x: [],\n                        y: [],\n                        name: devInfo[itrace].axis + ' ' + devInfo[itrace].deviceType + '.' + devInfo[itrace].name + '.' + devInfo[itrace].prop + '.' + devInfo[itrace].attr + ' (' + devInfo[itrace].device[devInfo[itrace].attr].unit + ')',\n                        yaxis: devInfo[itrace].axis,\n                        type: 'scatter',\n                        mode: modeType\n                    };\n                    plotTraces.push(trace);\n                }\n            }\n            plotLayout =\n            {\n                showlegend: true,\n                legend: {x: 0,y: 1.35},\n                xaxis       : {type: 'date' },\n                yaxis: {title: 'y1'},\n                yaxis2: {title: 'y2',overlaying: 'y',side: 'right'}\n            };\n\n            plotStartTime = new Date().getTime();\n            Plotly.newPlot('timePlot', plotTraces, plotLayout);\n            plotLength = Number($(\"#plotLength\").val());\n        }\n        function upDatePlot()\n        {\n            if (!plotStarted) return;\n            var now = new Date().getTime();\n            var plotBeginning = now - plotLength * 1000;\n            var traceCount = 0;\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                if (devInfo[itrace].name.length > 0)\n                {\n                    var removeDone = false;\n                    while(!removeDone)\n                    {\n                        if (plotTraces[traceCount].x[0] < plotBeginning)\n                        {\n                            plotTraces[traceCount].x.shift();\n                            plotTraces[traceCount].y.shift();\n                        }\n                        else\n                        {\n                            removeDone = true;\n                        }\n                    }\n                    plotTraces[traceCount].x.push(now);\n                    plotTraces[traceCount].y.push(devInfo[itrace].device[devInfo[itrace].attr].value);\n                    ++traceCount;\n                }\n            }\n            Plotly.newPlot('timePlot', plotTraces, plotLayout);\n        }",
         "output": "str",
-        "x": 670,
+        "x": 850,
         "y": 40,
         "wires": [
             [
@@ -932,7 +966,7 @@
         "syntax": "mustache",
         "template": "Scalar Plotter",
         "output": "str",
-        "x": 1070,
+        "x": 1250,
         "y": 40,
         "wires": [
             [
@@ -1079,7 +1113,7 @@
         "y": 100,
         "wires": [
             [
-                "bc63b66b.867d18"
+                "a4587ae9888d2b33"
             ]
         ]
     },
@@ -1094,7 +1128,7 @@
         "syntax": "mustache",
         "template": "    <div width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">Tr</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Device</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Name</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Prop</span></td>\n                <td width=\"19%\" align=\"center\"><span class=\"tableHeading \">Attr</span></td>\n                <td width=\"8%\" align=\"center\"><span class=\"tableHeading \">value</span></td>\n                <td width=\"7%\" align=\"center\"><span class=\"tableHeading \">unit</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">y1</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">y2</span></td>\n                <td width=\"2%\" align=\"center\"><span class=\"tableHeading \">pt</span></td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <a id='csv0' href='' target='_blank' download=\"data0.csv\" class=\"csv-linked\">1</a>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"deviceSelect0\" onchange=\"deviceSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect0\" onchange=\"nameSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"propSelect0\" onchange=\"propSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"attrSelect0\" onchange=\"attrSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText \" id=\"valueSelect0\"></span></td>\n                <td align=\"center\"><span class=\"tableText \" id=\"unitSelect0\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_0y1\" type=\"radio\" name=\"plotAxis_0\"  value=\"y1\"  onchange='selectAxis(0,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_0y2\" type=\"radio\" name=\"plotAxis_0\"  value=\"y2\"  onchange='selectAxis(0,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_0\" type=\"checkbox\" name=\"pts_0\"  value=\"pts\"  onchange='selectPts(0)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <a id='csv1' href='' target='_blank' download=\"data1.csv\" class=\"csv-linked\">2</a>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect1\" onchange=\"deviceSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect1\" onchange=\"nameSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect1\" onchange=\"propSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect1\" onchange=\"attrSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect1\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect1\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_1y1\" type=\"radio\" name=\"plotAxis_1\"  value=\"y1\"  onchange='selectAxis(1,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_1y2\" type=\"radio\" name=\"plotAxis_1\"  value=\"y2\"  onchange='selectAxis(1,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_1\" type=\"checkbox\" name=\"pts_1\"  value=\"pts\"  onchange='selectPts(1)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <a id='csv2' href='' target='_blank' download=\"data2.csv\" class=\"csv-linked\">3</a>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect2\" onchange=\"deviceSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect2\" onchange=\"nameSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect2\" onchange=\"propSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect2\" onchange=\"attrSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect2\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect2\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_2y1\" type=\"radio\" name=\"plotAxis_2\"  value=\"y1\"  onchange='selectAxis(2,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_2y2\" type=\"radio\" name=\"plotAxis_2\"  value=\"y2\"  onchange='selectAxis(2,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_2\" type=\"checkbox\" name=\"pts_2\"  value=\"pts\"  onchange='selectPts(2)' checked ></td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <a id='csv3' href='' target='_blank' download=\"data3.csv\" class=\"csv-linked\">4</a>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect3\" onchange=\"deviceSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect3\" onchange=\"nameSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect3\" onchange=\"propSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect3\" onchange=\"attrSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect3\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect3\"></span></td>\n                <form action=\"\" >\n                   <td align=\"center\"><input id=\"plotAxis_3y1\" type=\"radio\" name=\"plotAxis_3\"  value=\"y1\"  onchange='selectAxis(3,\"y1\")' checked></td>\n                   <td align=\"center\"><input id=\"plotAxis_3y2\" type=\"radio\" name=\"plotAxis_3\"  value=\"y2\"  onchange='selectAxis(3,\"y2\")' ></td>\n                </form>\n                <td align=\"center\"><input id=\"pts_3\" type=\"checkbox\" name=\"pts_3\"  value=\"pts\"  onchange='selectPts(3)' checked ></td>\n            </tr>\n        </table>\n    </div>\n    <div id='plotSetup'>\n        <div class='row'>\n            <div class='col-md-12'>\n                <table id='plotSetupTable'>\n                    <tr>\n                        <td width=10% align=\"center\" class=\"tableHeading\">Max Plot Pts</td>\n                        <td width=20% align=\"center\" class=\"tableHeading\">Start</td>\n                        <td width=20% align=\"center\" class=\"tableHeading\">Stop</td>\n                        <td width=10% align=\"center\"></td>\n                    </tr>\n                    <tr>\n                        <td align=\"center\">\n                            <input class=\"form-control\" id=\"maxPtsToPlot\" type=\"text\" value=\"500\"/>\n                        </td>\n                        <td align=\"center\">\n                            <input class=\"form-control\" id=\"startDate\" type=\"text\"/>\n                        </td>\n                        <td align=\"center\">\n                            <input class=\"form-control\" id=\"stopDate\" type=\"text\"/>\n                        </td>\n                        <td align=\"center\">\n                            <button width=100% class=\"btn jumbotron-button\" id=\"getDataButton\" type=\"button\" onclick=\"getArchiveData()\">Get Data</button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n       </div>\n        <div class='row'>\n            <div class='col-md-12'>\n                <div class='card' id=\"timePlotCard\" >\n                    <p class='card-title'>Time Plot</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"timePlot\" width=\"100%\" class=\"plot\"></div> \n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>",
         "output": "str",
-        "x": 1190,
+        "x": 1370,
         "y": 100,
         "wires": [
             [
@@ -1113,7 +1147,7 @@
         "syntax": "mustache",
         "template": "        var startDate = 0;\n        var stopDate = 0;\n        var csvFile = [];\n        var archiveRequestList = [];\n        var archiveList = [];\n\n        function onDocumentReadySpecial()\n        {\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                $('#csv'+ itrace.toString()).removeAttr(\"href\");\n                $('#csv'+ itrace.toString()).css('color', 'black');\n                $('#csv'+ itrace.toString()).css('text-decoration', 'none');\n                $('#csv'+ itrace.toString()).css('font-weight', 'bold');\n                csvFile[itrace] = null;\n\n            }\n            var now = new Date();\n            console.log(now.toLocaleString('en-US',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', ''));\n            var then = new Date(now.getTime() - 3600 * 24 * 1000);\n            $( \"#startDate\" ).val(then.toLocaleString('en-US',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', ''));\n            $( \"#stopDate\" ).val(now.toLocaleString('en-US',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', ''));\n            $( function()\n            {\n                $('#startDate').datetimepicker();\n            } );\n            $( function()\n            {\n                $('#stopDate').datetimepicker();\n            } );\n            $('#timePlotCard').hide();\n        }\n        function onWebSocketMessageSpecial(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'getArchiveValues':\n                    archiveList.push(msg.payload);\n                    if (archiveRequestList.length > 0)\n                    {\n                        getArchiveValues();\n                    }\n                    else\n                    {\n                        loadArchiveValues();\n                    }\n                    break;\n                default:\n                // code block\n            }\n        }\n        function loadDeviceValuesSpecial(data)\n        {\n        }\n        function clearAttrOptionListSpecial(itrace)\n        {\n            $('#csv'+ itrace.toString()).removeAttr(\"href\");\n            $('#csv'+ itrace.toString()).css('color', 'black');\n            $('#csv'+ itrace.toString()).css('text-decoration', 'none');\n            $('#csv'+ itrace.toString()).css('font-weight', 'bold');\n       }\n        function attrSelectedSpecial(itrace)\n        {\n            $('#csv'+ itrace.toString()).removeAttr(\"href\");\n            $('#csv'+ itrace.toString()).css('color', 'black');\n            $('#csv'+ itrace.toString()).css('text-decoration', 'none');\n            $('#csv'+ itrace.toString()).css('font-weight', 'bold');\n        }\n        function selectAxis(itrace,axis)\n        {\n            devInfo[itrace].axis  = axis;\n        }\n        function selectPts(itrace)\n        {\n            devInfo[itrace].pts = !devInfo[itrace].pts;\n        }\n        function getArchiveData()\n        {\n            archiveRequestList = [];\n            archiveList = [];\n            startDate = new Date($( \"#startDate\" ).val()).getTime();\n            stopDate = new Date($( \"#stopDate\" ).val()).getTime();\n            var traceCount = 0;\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                if (devInfo[itrace].name.length > 0) \n                {\n                    archiveRequestList[traceCount] = \n                    {\n                        deviceType  : devInfo[itrace].deviceType, \n                        name        : devInfo[itrace].name, \n                        prop        : devInfo[itrace].prop, \n                        attr        : devInfo[itrace].attr,\n                        startDate   : startDate, \n                        stopDate    : stopDate,\n                        itrace      : itrace\n                    };\n                    ++traceCount;\n                }\n            }\n            if (traceCount < 1) return;\n            $('#plotSetupTable').hide();\n            $('#timePlotCard').hide();\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                $('#csv'+ itrace.toString()).removeAttr(\"href\");\n                $('#csv'+ itrace.toString()).css('color', 'black');\n                $('#csv'+ itrace.toString()).css('text-decoration', 'none');\n                $('#csv'+ itrace.toString()).css('font-weight', 'bold');\n            }\n            messageDialog('Alert', 'Wait!', 'Requesting data ...');\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var maxPtsToPlot = Number($( \"#maxPtsToPlot\" ).val());\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0],\n                    maxPtsToPlot: maxPtsToPlot\n                };\n            sendActionMsg('getArchiveValues', 'readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function loadArchiveValues()\n        {\n            $( \"#messageDialog\" ).dialog('close');\n            $('#plotSetupTable').show();\n            var plotTraces = [];\n            for (ii = 0; ii < archiveList.length; ++ii)\n            {\n                itrace = archiveList[ii].itrace;\n                var modeType = 'lines';\n                if (devInfo[itrace].pts) modeType = 'markers';\n                var trace =  \n                {\n                    x: [],\n                    y: [],\n                    name: devInfo[itrace].axis + ' ' + devInfo[itrace].deviceType + '.' + devInfo[itrace].name + '.' + devInfo[itrace].prop + '.' + devInfo[itrace].attr + ' (' + devInfo[itrace].device[devInfo[itrace].attr].unit + ')',\n                    yaxis: devInfo[itrace].axis,\n                    type: 'scatter',\n                    mode: modeType\n                }\n                for (var ipt = 0; ipt < archiveList[ii].trace.length; ++ipt)\n                {\n                    trace.x[ipt] = archiveList[ii].trace[ipt].timeStamp;\n                    trace.y[ipt] = archiveList[ii].trace[ipt].value;\n                }\n                plotTraces.push(trace);\n                makeCsvFile(ii);\n            }\n            var plotLayout =\n            {\n                showlegend: true,\n                legend: {x: 0,y: 1.35},\n                xaxis       : {type: 'date' },\n                yaxis: {title: 'y1'},\n                yaxis2: {title: 'y2',overlaying: 'y',side: 'right'}\n            };\n            $('#timePlotCard').show();\n            Plotly.newPlot('timePlot', plotTraces, plotLayout);\n        }\n        function makeCsvFile(ii)\n        {\n            var dataString = '';\n            var startT = archiveList[ii].trace[0].timeStamp;\n            var itrace = archiveList[ii].itrace;\n        \n            dataString = dataString + 'Device,' + devInfo[itrace].deviceType + ',' + devInfo[itrace].name + ',' + devInfo[itrace].prop + ',' + devInfo[itrace].attr  +'\\n';\n            dataString = dataString + 'StartDate,' + new Date(startT).toLocaleString('en-US',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}) + '\\n';\n            dataString = dataString + 'StartDate (mS),' + startT.toString() + '\\n';\n            dataString = dataString + 'Time (sec), Value (' + devInfo[itrace].device[devInfo[itrace].attr].unit + ')\\n';\n            for (var ipt = 0; ipt < archiveList[ii].trace.length; ++ipt)\n            {\n                var x = (archiveList[ii].trace[ipt].timeStamp - startT) / 1000;\n                var y = archiveList[ii].trace[ipt].value;\n                dataString = dataString + x.toString() + ',' + y.toString() + '\\n';\n            }\n            var data = new Blob([dataString], {type: 'text/plain'});\n        \n            // If we are replacing a previously generated file we need to\n            // manually revoke the object URL to avoid memory leaks.\n            if (csvFile[itrace] !== null) {\n              window.URL.revokeObjectURL(csvFile[itrace]);\n            }\n        \n            csvFile[itrace] = window.URL.createObjectURL(data);\n            // returns a URL you can use as a href\n            $('#csv'+ itrace.toString()).css('color', 'blue');\n            $('#csv'+ itrace.toString()).css('text-decoration', 'underline');\n            $('#csv'+ itrace.toString()).css('font-weight', 'bold');\n            $('#csv'+ itrace.toString()).attr(\"href\", csvFile[itrace]);\n            $('#csv'+ itrace.toString()).attr(\"download\", devInfo[itrace].deviceType + '-' + devInfo[itrace].name + '-' + devInfo[itrace].prop + '-' + devInfo[itrace].attr + '.csv');\n        \n        }\n",
         "output": "str",
-        "x": 670,
+        "x": 850,
         "y": 100,
         "wires": [
             [
@@ -1132,7 +1166,7 @@
         "syntax": "mustache",
         "template": "Scalar Archive Plotter",
         "output": "str",
-        "x": 1070,
+        "x": 1250,
         "y": 100,
         "wires": [
             [
@@ -1262,7 +1296,7 @@
         "y": 160,
         "wires": [
             [
-                "5fe2ee6b.e7801"
+                "d5b379f613b93f3a"
             ]
         ]
     },
@@ -1277,7 +1311,7 @@
         "syntax": "mustache",
         "template": "    <div width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"9%\"  align=\"center\"><span class=\"tableHeading \">Tr</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">Device</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">Name</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">Prop</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">Attr</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">value</span></td>\n                <td width=\"13%\" align=\"center\"><span class=\"tableHeading \">unit</span></td>\n                <td width=\"6.5%\" align=\"center\"><span class=\"tableHeading \">Set</span></td>\n                <td width=\"6.5%\" align=\"center\"><span class=\"tableHeading \">Con</span></td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">1</span></td>\n                <td>\n                    <select class=\"custom-select \" id=\"deviceSelect0\" onchange=\"deviceSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect0\" onchange=\"nameSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"propSelect0\" onchange=\"propSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"attrSelect0\" onchange=\"attrSelected(0)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText \" id=\"valueSelect0\"></span></td>\n                <td align=\"center\"><span class=\"tableText \" id=\"unitSelect0\"></span></td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"setDeviceButton0\" type=\"button\" onclick=\"setDevice(0)\">Set</button>\n                </td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"conDeviceButton0\" type=\"button\" onclick=\"conDevice(0)\">Con</button>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">2</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect1\" onchange=\"deviceSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect1\" onchange=\"nameSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect1\" onchange=\"propSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect1\" onchange=\"attrSelected(1)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect1\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect1\"></span></td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"setDeviceButton1\" type=\"button\" onclick=\"setDevice(1)\">Set</button>\n                </td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"conDeviceButton1\" type=\"button\" onclick=\"conDevice(1)\">Con</button>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">3</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect2\" onchange=\"deviceSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect2\" onchange=\"nameSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect2\" onchange=\"propSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect2\" onchange=\"attrSelected(2)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect2\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect2\"></span></td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"setDeviceButton2\" type=\"button\" onclick=\"setDevice(2)\">Set</button>\n                </td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"conDeviceButton2\" type=\"button\" onclick=\"conDevice(2)\">Con</button>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"center\"><span class=\"tableText\">4</span></td>\n                <td>\n                    <select class=\"custom-select\" id=\"deviceSelect3\" onchange=\"deviceSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select \" id=\"nameSelect3\" onchange=\"nameSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"propSelect3\" onchange=\"propSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td>\n                    <select class=\"custom-select\" id=\"attrSelect3\" onchange=\"attrSelected(3)\">\n                        <option value='notSelected'></option>\n                    </select>\n                </td>\n                <td align=\"center\"><span class=\"tableText\" id=\"valueSelect3\"></span></td>\n                <td align=\"center\"><span class=\"tableText\" id=\"unitSelect3\"></span></td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"setDeviceButton3\" type=\"button\" onclick=\"setDevice(3)\">Set</button>\n                </td>\n                <td align=\"center\">\n                    <button class=\"btn jumbotron-button btn-block\" id=\"conDeviceButton3\" type=\"button\" onclick=\"conDevice(3)\">Con</button>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"setDeviceDialog\" title=\"set Device\" class='card'>\n        <p class='card-title' id='setDeviceDialogAttribute'>Attribute</p>\n        <div class='card-body'>\n            <table>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">Value</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"attrValue\" type=\"text\" value=\"0\" /></td>\n                </tr>\n            </table>\n        </div>\n    </div>\n    <div id=\"conDeviceDialog\" title=\"Config Device\" class='card'>\n        <p class='card-title' id='conDeviceDialogAttribute'>Attribute</p>\n        <div class='card-body'>\n            <table>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">LoLo</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"loloAlarm\" type=\"text\" value=\"0\" /></td>\n                </tr>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">LOW</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"lowAlarm\" type=\"text\" value=\"0\" /></td>\n                </tr>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">HIGH</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"highAlarm\" type=\"text\" value=\"0\" /></td>\n                </tr>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">HiHi</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"hihiAlarm\" type=\"text\" value=\"0\" /></td>\n                </tr>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">Notify Name</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"notifyName\" type=\"text\" value=\"\" /></td>\n                </tr>\n                <tr>\n                    <td width=\"50%\" align=\"left\">  <span class=\"tableHeading\">Notify Number</span></td>\n                    <td width=\"50%\" align=\"right\"><input class=\"form-control\" id=\"notifyNumber\" type=\"text\" value=\"\" /></td>\n                </tr>\n            </table>\n        </div>\n    </div>",
         "output": "str",
-        "x": 1190,
+        "x": 1370,
         "y": 160,
         "wires": [
             [
@@ -1315,7 +1349,7 @@
         "syntax": "mustache",
         "template": "Scalar Viewer",
         "output": "str",
-        "x": 1070,
+        "x": 1250,
         "y": 160,
         "wires": [
             [
@@ -1440,7 +1474,7 @@
         "y": 220,
         "wires": [
             [
-                "fac3ac47.cbce"
+                "de9e3fc4f9e0c072"
             ]
         ]
     },
@@ -1455,7 +1489,7 @@
         "syntax": "mustache",
         "template": "    <div width=\"100%\">\n        <div class=\"row\"> \n            <div class=\"col-md-3\" align=\"center\" style=\"padding-top:10px;padding-bottom:10px;\"></div>\n            <div class=\"col-md-6\" align=\"center\" style=\"padding-top:10px;padding-bottom:10px;\">\n                <button class=\"btn jumbotron-button btn-block\" id=\"toggleSoundButton\" type=\"button\" onclick=\"toggleSound()\">Turn Sound On</button>\n            </div>\n            <div class=\"col-md-3\" align=\"center\" style=\"padding-top:10px;padding-bottom:10px;\"></div>\n        </div>\n    </div>\n    <div width=\"100%\">\n        <table width=\"100%\" id='alarmTable'>\n            <tr class=\"tableHeading\">\n                <td width='12%'>Alarm</td>\n                <td width='12%'>Device</td>\n                <td width='12%'>Name</td>\n                <td width='12%'>Property</td>\n                <td width='12%'>Attribute</td>\n                <td width='12%'>Value</td>\n                <td width='12%'>Unit</td>\n                <td width='12%'>Type</td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
-        "x": 1190,
+        "x": 1370,
         "y": 220,
         "wires": [
             [
@@ -1474,7 +1508,7 @@
         "syntax": "mustache",
         "template": "        var ws;\n        var retries = 0;\n        var userID = -1;\n        var audioAlarm = new Audio('/audio/alarm.ogg');\n        var alarmSoundOn = false;\n        var soundLastPlayed = 0;\n        var soundInterval = 4000;\n        \n        useWebSockets(true);\n        function onDocumentReady()\n        {\n            createAlarmTableRows(100);\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n               case 'alarmList':\n                    alarmScan(msg.payload);\n                    break;\n                default:\n                // code block\n            }\n        }\n        function createAlarmTableRows(nrows)\n        {\n            var alarmTable = document.getElementById('alarmTable');\n            for (var irow = 0; irow < nrows; ++irow)\n            {\n                var row = alarmTable.insertRow(irow + 1);\n                row.setAttribute(\"id\", \"alarmTable\" + irow.toString());\n                row.setAttribute(\"class\", \"tableText\");\n                var iconCell = row.insertCell(0);\n                var devCell  = row.insertCell(1);\n                var nameCell = row.insertCell(2);\n                var propCell = row.insertCell(3);\n                var attrCell = row.insertCell(4);\n                var valueCell= row.insertCell(5);\n                var unitCell = row.insertCell(6);\n                var typeCell = row.insertCell(7);\n                iconCell.setAttribute(\"id\", \"alarmTable\" + irow.toString() + \"_icon\");\n                devCell.setAttribute( \"id\", \"alarmTable\" + irow.toString() + \"_dev\");\n                nameCell.setAttribute( \"id\", \"alarmTable\" + irow.toString() + \"_name\");\n                propCell.setAttribute( \"id\", \"alarmTable\" + irow.toString() + \"_prop\");\n                attrCell.setAttribute(\"id\", \"alarmTable\" + irow.toString() + \"_attr\");\n                valueCell.setAttribute(\"id\", \"alarmTable\" + irow.toString() + \"_value\");\n                unitCell.setAttribute(\"id\", \"alarmTable\" + irow.toString() + \"_unit\");\n                typeCell.setAttribute(\"id\", \"alarmTable\" + irow.toString() + \"_type\");\n                $('#alarmTable' + irow.toString()).hide();\n                iconCell.innerHTML = \"<img id='alarmTable\" + irow.toString() + \"_led'\" + \" src='/img/redLight.png' height='50px'/>\";\n            }\n        \n        }\n        function alarmScan(alarmList)\n        {\n            var deviceInfo = [];\n            var nrows = $('#alarmTable tr').length;\n            nrows = nrows - 1;\n            if (alarmList.length > nrows) alert('Too many alarms to display!');\n            for (var idev = 0; idev < alarmList.length; ++idev)\n            {\n                $('#alarmTable' + idev.toString()).show();\n                $('#alarmTable' + idev.toString() + '_dev').html(alarmList[idev].deviceType);\n                $('#alarmTable' + idev.toString() + '_name').html(alarmList[idev].name);\n                $('#alarmTable' + idev.toString() + '_prop').html(alarmList[idev].prop);\n                $('#alarmTable' + idev.toString() + '_attr').html(alarmList[idev].attr);\n                $('#alarmTable' + idev.toString() + '_value').html(alarmList[idev].value);\n                $('#alarmTable' + idev.toString() + '_unit').html(alarmList[idev].unit);\n                var type = '';\n                if (alarmList[idev].alarm == 1) type = 'LOW';\n                if (alarmList[idev].alarm == 2) type = 'HIGH';\n                if (alarmList[idev].alarm == 3) type = 'LOLO';\n                if (alarmList[idev].alarm == 4) type = 'HIHI';\n                $('#alarmTable' + idev.toString() + '_type').html(type);\n                if (alarmList[idev].alarm < 3)\n                {\n                    $('#alarmTable' + idev.toString() + '_led').attr('src','/img/yellowLight.png');\n                }\n                else\n                {\n                    $('#alarmTable' + idev.toString() + '_led').attr('src','/img/redLight.png');\n                    if (alarmSoundOn)\n                    {\n                        if ((new Date().getTime() - soundLastPlayed) > soundInterval)\n                        {\n                            audioAlarm.play();\n                            soundLastPlayed = new Date().getTime();\n                        }\n                    }\n                    \n                }\n        \n            }\n            for (var idev = alarmList.length; idev < nrows; ++idev)\n            {\n                $('#alarmTable' + idev.toString()).hide();\n            }\n        \n        }\n        function toggleSound()\n        {\n            alarmSoundOn = !alarmSoundOn;\n            var soundButtonText = 'Turn Sound On';\n            if (alarmSoundOn) soundButtonText = 'Turn Sound Off';\n            $('#toggleSoundButton').html(soundButtonText);\n        }",
         "output": "str",
-        "x": 930,
+        "x": 1110,
         "y": 220,
         "wires": [
             [
@@ -1493,7 +1527,7 @@
         "syntax": "mustache",
         "template": "Alarm Scanner",
         "output": "str",
-        "x": 1070,
+        "x": 1250,
         "y": 220,
         "wires": [
             [
@@ -1677,7 +1711,7 @@
         "id": "72941646.0206b8",
         "type": "subflow:f22a539a.a67b3",
         "z": "dc20c6e0.0feb98",
-        "x": 1330,
+        "x": 1510,
         "y": 40,
         "wires": []
     },
@@ -1685,7 +1719,7 @@
         "id": "bb160287.a4943",
         "type": "subflow:f22a539a.a67b3",
         "z": "dc20c6e0.0feb98",
-        "x": 1330,
+        "x": 1510,
         "y": 100,
         "wires": []
     },
@@ -1693,7 +1727,7 @@
         "id": "bc45cf67.b90c6",
         "type": "subflow:f22a539a.a67b3",
         "z": "dc20c6e0.0feb98",
-        "x": 1330,
+        "x": 1510,
         "y": 160,
         "wires": []
     },
@@ -1701,7 +1735,7 @@
         "id": "f07664a9.ede108",
         "type": "subflow:f22a539a.a67b3",
         "z": "dc20c6e0.0feb98",
-        "x": 1330,
+        "x": 1510,
         "y": 220,
         "wires": []
     },
@@ -2488,7 +2522,7 @@
         "y": 60,
         "wires": [
             [
-                "49150800.c088c8"
+                "517b79d22bbe5ced"
             ]
         ]
     },
@@ -2562,7 +2596,7 @@
         "y": 120,
         "wires": [
             [
-                "1e9bf28b.344d8d"
+                "384da6cb7cceb074"
             ]
         ]
     },
@@ -2715,7 +2749,7 @@
         "y": 300,
         "wires": [
             [
-                "b213f397.94307"
+                "6f1305726e75da2e"
             ]
         ]
     },
@@ -3067,7 +3101,7 @@
         "syntax": "mustache",
         "template": "        var editedTrace = -1;\n        \n        function onDocumentReadySpecial()\n        {\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                $('#setDeviceButton'+ itrace.toString()).hide();\n                $('#conDeviceButton'+ itrace.toString()).hide();\n            }\n        }\n        function onWebSocketMessageSpecial(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'getJwtToken':\n                    loadJwtToken(msg);\n                    break;\n                case 'settingAcknowledge':\n                    acknowledgeDialog('Acknowledge', 'Setting', msg.payload);\n                    break;\n                default:\n                // code block\n            }\n        }\n        $( function() \n        {\n            $( \"#setDeviceDialog\" ).dialog(\n                {\n//                    closeOnEscape: false,\n//                    open: function(event, ui) {$(\".ui-dialog-titlebar-close\", ui.dialog | ui).hide();},\n                    width:    500,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Set\",\n                            click: function() {disableButtons(false); sendSetting(); $( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                        {\n                            text: \"Cancel\",\n                            click: function() {disableButtons(false); $( this ).dialog( \"close\" ); permitGetDeviceValues = true;},\n                            showText: false\n                        }\n                    ]\n                });\n        } );\n        $( function() \n        {\n            $( \"#conDeviceDialog\" ).dialog(\n                {\n//                    closeOnEscape: false,\n//                    open: function(event, ui) {$(\".ui-dialog-titlebar-close\", ui.dialog | ui).hide();},\n                    width:    500,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Set\",\n                            click: function() {disableButtons(false); sendConfig(); $( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                        {\n                            text: \"Cancel\",\n                            click: function() {disableButtons(false); $( this ).dialog( \"close\" ); permitGetDeviceValues = true;},\n                            showText: false\n                        }\n                    ]\n                });\n        } );\n        function disableButtons(disable)\n        {\n            for (var itrace = 0; itrace < numTraces; ++itrace)\n            {\n                $('#setDeviceButton'+ itrace.toString()).attr('disabled',disable);\n                $('#conDeviceButton'+ itrace.toString()).attr('disabled',disable);\n            }\n        }\n        function setDevice(itrace)\n        {\n            permitGetDeviceValues = false;\n            editedTrace = itrace;\n            $( \"#editDeviceDialog\" ).dialog( \"option\", \"title\", \"Edit\");    \n            $( \"#editDeviceDialogAttribute\").html(devInfo[itrace].deviceType + '-'  + devInfo[itrace].name + '-'  + devInfo[itrace].prop + '-'  + devInfo[itrace].attr);\n            var attr = devInfo[itrace].device[devInfo[itrace].attr];\n            $( \"#attrValue\").val(attr.value);\n            disableButtons(true);\n\n\n            $( \"#setDeviceDialog\" ).dialog( \"open\" );\n        }\n        function conDevice(itrace)\n        {\n            permitGetDeviceValues = false;\n            editedTrace = itrace;\n            $( \"#editDeviceDialog\" ).dialog( \"option\", \"title\", \"Edit\");    \n            $( \"#editDeviceDialogAttribute\").html(devInfo[itrace].deviceType + '-'  + devInfo[itrace].name + '-'  + devInfo[itrace].prop + '-'  + devInfo[itrace].attr);\n            var attr = devInfo[itrace].device[devInfo[itrace].attr];\n            $( \"#loloAlarm\").val(attr.alarm.limits.lolo);\n            $( \"#lowAlarm\").val(attr.alarm.limits.low);\n            $( \"#highAlarm\").val(attr.alarm.limits.high);\n            $( \"#hihiAlarm\").val(attr.alarm.limits.hihi);\n            $( \"#notifyName\").val(attr.alarm.notify.name);\n            $( \"#notifyNumber\").val(attr.alarm.notify.number);\n            disableButtons(true);\n\n            $( \"#conDeviceDialog\" ).dialog( \"open\" );\n        }\n        function sendSetting()\n        {\n            var attr = devInfo[editedTrace].device[devInfo[editedTrace].attr];\n            if (isNaN($('#attrValue').val()))\n            {\n                permitGetDeviceValues = true;\n                acknowledgeDialog('Error', 'Entry not a number!', attr.attr);\n                return;\n            }\n\n            var actionMsg = \n                {\n                    topic   : project + '/' + devInfo[editedTrace].device.deviceType + '/' + devInfo[editedTrace].device.name + '/setting/setting',\n                    payload : {'attr': devInfo[editedTrace].attr, 'value':Number($( \"#attrValue\").val())}\n                };\n            sendActionMsg('sendSettingToMqtt','setting',actionMsg);\n\n            permitGetDeviceValues = true;\n        }\n        function sendConfig()\n        {\n            var attr = devInfo[editedTrace].device[devInfo[editedTrace].attr];\n            if (isNaN($('#loloAlarm').val()) \n                || isNaN($('#lowAlarm').val()) \n                || isNaN($('#highAlarm').val()) \n                || isNaN($('#hihiAlarm').val()))\n            {\n                permitGetDeviceValues = true;\n                acknowledgeDialog('Error', 'Entry not a number!', attr.attr);\n                return;\n            }\n\n            attr.alarm.limits.lolo = Number($( \"#loloAlarm\").val());\n            attr.alarm.limits.low = Number($( \"#lowAlarm\").val());\n            attr.alarm.limits.high = Number($( \"#highAlarm\").val());\n            attr.alarm.limits.hihi = Number($( \"#hihiAlarm\").val());\n            attr.alarm.notify.number =  $( \"#notifyNumber\").val();\n            attr.alarm.notify.name = $( \"#notifyName\").val();\n            var actionMsg = \n                {\n                    topic   : project + '/' + devInfo[editedTrace].device.deviceType + '/' + devInfo[editedTrace].device.name + '/setting/config',\n                    payload :  devInfo[editedTrace].device\n                };\n            sendActionMsg('sendConfigToMqtt', 'setting',  actionMsg);\n            permitGetDeviceValues = true;\n        }\n        function loadDeviceValuesSpecial(data)\n        {\n        }\n        function clearAttrOptionListSpecial(itrace)\n        {\n            $('#setDeviceButton'+ itrace.toString()).hide();\n            $('#conDeviceButton'+ itrace.toString()).hide();\n        }\n        function attrSelectedSpecial(itrace)\n        {\n            if (devInfo[itrace].prop == 'setting') $('#setDeviceButton'+ itrace.toString()).show();\n            $('#conDeviceButton'+ itrace.toString()).show();\n\n        }\n\n",
         "output": "str",
-        "x": 670,
+        "x": 850,
         "y": 160,
         "wires": [
             [
@@ -3081,7 +3115,7 @@
         "z": "dc20c6e0.0feb98",
         "name": "",
         "env": [],
-        "x": 900,
+        "x": 1080,
         "y": 160,
         "wires": [
             [
@@ -3112,7 +3146,7 @@
         "z": "dc20c6e0.0feb98",
         "name": "",
         "env": [],
-        "x": 900,
+        "x": 1080,
         "y": 40,
         "wires": [
             [
@@ -3126,7 +3160,7 @@
         "z": "dc20c6e0.0feb98",
         "name": "",
         "env": [],
-        "x": 900,
+        "x": 1080,
         "y": 100,
         "wires": [
             [
@@ -4154,7 +4188,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 290,
+        "x": 470,
         "y": 40,
         "wires": [
             [
@@ -4167,7 +4201,7 @@
         "type": "subflow:495f0879.c831c8",
         "z": "dc20c6e0.0feb98",
         "name": "",
-        "x": 460,
+        "x": 640,
         "y": 40,
         "wires": [
             [
@@ -4185,7 +4219,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 290,
+        "x": 470,
         "y": 160,
         "wires": [
             [
@@ -4198,7 +4232,7 @@
         "type": "subflow:495f0879.c831c8",
         "z": "dc20c6e0.0feb98",
         "name": "",
-        "x": 460,
+        "x": 640,
         "y": 160,
         "wires": [
             [
@@ -4216,7 +4250,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 290,
+        "x": 470,
         "y": 220,
         "wires": [
             [
@@ -4229,7 +4263,7 @@
         "type": "subflow:495f0879.c831c8",
         "z": "dc20c6e0.0feb98",
         "name": "",
-        "x": 460,
+        "x": 640,
         "y": 220,
         "wires": [
             [
@@ -4247,7 +4281,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 290,
+        "x": 470,
         "y": 100,
         "wires": [
             [
@@ -4260,7 +4294,7 @@
         "type": "subflow:495f0879.c831c8",
         "z": "dc20c6e0.0feb98",
         "name": "",
-        "x": 460,
+        "x": 640,
         "y": 100,
         "wires": [
             [
@@ -4412,7 +4446,7 @@
         "y": 60,
         "wires": [
             [
-                "433db7b4.42d728"
+                "4b71742e21cf9cbe"
             ]
         ]
     },
@@ -4474,7 +4508,7 @@
         "initialize": "",
         "finalize": "",
         "x": 120,
-        "y": 100,
+        "y": 140,
         "wires": [
             [
                 "7413bfa1.a556d"
@@ -4486,7 +4520,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "a858ad3a.95706",
         "x": 120,
-        "y": 140,
+        "y": 180,
         "wires": [
             [
                 "e7a2ef05.36c48"
@@ -6511,7 +6545,7 @@
         "y": 460,
         "wires": [
             [
-                "ca68de71.c19fe"
+                "e149d03615b2e1c9"
             ]
         ]
     },
@@ -6622,7 +6656,7 @@
         "y": 60,
         "wires": [
             [
-                "14bd9d4f855846e3"
+                "5c5ada7d58866bb9"
             ]
         ]
     },
@@ -6637,7 +6671,7 @@
         "initialize": "",
         "finalize": "",
         "x": 120,
-        "y": 100,
+        "y": 140,
         "wires": [
             [
                 "35fa0f06d43baac7"
@@ -6649,7 +6683,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 120,
-        "y": 140,
+        "y": 180,
         "wires": [
             [
                 "57c90555a63f22cf"
@@ -7028,7 +7062,7 @@
         "y": 420,
         "wires": [
             [
-                "dc43776465459265"
+                "d6c5ad930a4d3947"
             ]
         ]
     },
@@ -7043,7 +7077,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 460,
+        "y": 500,
         "wires": [
             [
                 "6091033a136895a8"
@@ -7055,7 +7089,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 500,
+        "y": 540,
         "wires": [
             [
                 "16d3066c19e02864"
@@ -7212,7 +7246,7 @@
         "y": 780,
         "wires": [
             [
-                "0b236be672f61161"
+                "9927857c7828e88d"
             ]
         ]
     },
@@ -7227,7 +7261,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 820,
+        "y": 860,
         "wires": [
             [
                 "439465f15c1f1d19"
@@ -7239,7 +7273,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 860,
+        "y": 900,
         "wires": [
             [
                 "71ce0943.81bf18"
@@ -7945,7 +7979,7 @@
         "y": 1120,
         "wires": [
             [
-                "1e265817288fdd5b"
+                "8bd499e933e30132"
             ]
         ]
     },
@@ -7960,7 +7994,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 1160,
+        "y": 1200,
         "wires": [
             [
                 "b12624f8f82d0b24"
@@ -7972,7 +8006,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 1200,
+        "y": 1240,
         "wires": [
             [
                 "f5291e397d256f63"
@@ -8254,7 +8288,7 @@
         "y": 340,
         "wires": [
             [
-                "a9b1e710dfd1f486"
+                "2e160b0bf4ee73df"
             ]
         ]
     },
@@ -8269,7 +8303,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 380,
+        "y": 420,
         "wires": [
             [
                 "e28a44b1cd2e59b6"
@@ -8281,7 +8315,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "b76c0793b15a73b9",
         "x": 140,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "4ed048bc5715e45c"
@@ -8300,7 +8334,7 @@
         "finalize": "",
         "libs": [],
         "x": 400,
-        "y": 780,
+        "y": 820,
         "wires": [
             [
                 "72286e2a7aa8092a"
@@ -8319,7 +8353,7 @@
         "template": "Ideon Innovation Fikameter",
         "output": "str",
         "x": 340,
-        "y": 860,
+        "y": 900,
         "wires": [
             [
                 "63f9c23c028d53b8"
@@ -8395,7 +8429,7 @@
         "template": "coffeeCupWhite.png",
         "output": "str",
         "x": 350,
-        "y": 820,
+        "y": 860,
         "wires": [
             [
                 "5e599f562d019fd0"
@@ -8434,7 +8468,7 @@
         "y": 780,
         "wires": [
             [
-                "09e11d8a81caa3eb"
+                "b6d8fb195c02dfe4"
             ]
         ]
     },
@@ -8536,7 +8570,7 @@
         "y": 40,
         "wires": [
             [
-                "81add380a85a0a3e"
+                "a02f09fd62c88788"
             ]
         ]
     },
@@ -8551,7 +8585,7 @@
         "syntax": "mustache",
         "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-power-mon-open?name=101\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/powerMeterYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Power Monitor 101</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-power-mon-open?name=102\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/powerMeterYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Power Monitor 102</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
-        "x": 850,
+        "x": 1050,
         "y": 40,
         "wires": [
             [
@@ -8570,7 +8604,7 @@
         "syntax": "mustache",
         "template": "powerMeterYellow.png",
         "output": "str",
-        "x": 370,
+        "x": 570,
         "y": 40,
         "wires": [
             [
@@ -8589,7 +8623,7 @@
         "syntax": "mustache",
         "template": "Power-Monitor Demo",
         "output": "str",
-        "x": 520,
+        "x": 720,
         "y": 40,
         "wires": [
             [
@@ -8608,7 +8642,7 @@
         "syntax": "mustache",
         "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
         "output": "str",
-        "x": 690,
+        "x": 890,
         "y": 40,
         "wires": [
             [
@@ -8621,7 +8655,7 @@
         "type": "subflow:8341090a.df9758",
         "z": "b76c0793b15a73b9",
         "name": "",
-        "x": 990,
+        "x": 1190,
         "y": 40,
         "wires": []
     },
@@ -9500,8 +9534,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 580,
+        "x": 420,
+        "y": 620,
         "wires": [
             [
                 "faa6b997fe84097c"
@@ -9519,8 +9553,8 @@
         "syntax": "mustache",
         "template": "SE4 El-Prissensor ",
         "output": "str",
-        "x": 380,
-        "y": 660,
+        "x": 360,
+        "y": 700,
         "wires": [
             [
                 "d4f7af39035a2b83"
@@ -9538,8 +9572,8 @@
         "syntax": "mustache",
         "template": "powerPlantYellow.png",
         "output": "str",
-        "x": 390,
-        "y": 620,
+        "x": 370,
+        "y": 660,
         "wires": [
             [
                 "bc2de1ee6d096b29"
@@ -9559,7 +9593,7 @@
         "y": 580,
         "wires": [
             [
-                "5c9c12f92d219aa2"
+                "df97c852c2c1fe66"
             ]
         ]
     },
@@ -10479,7 +10513,7 @@
         "y": 1540,
         "wires": [
             [
-                "83370d67576be2e4"
+                "b2e87f53d10969df"
             ]
         ]
     },
@@ -10494,7 +10528,7 @@
         "initialize": "",
         "finalize": "",
         "x": 120,
-        "y": 1580,
+        "y": 1620,
         "wires": [
             [
                 "f3f4588e918c09f7"
@@ -10506,7 +10540,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 120,
-        "y": 1620,
+        "y": 1660,
         "wires": [
             [
                 "ba702753e4297c65"
@@ -10918,7 +10952,7 @@
         "y": 2000,
         "wires": [
             [
-                "eb22069a83fef072"
+                "244eaf806e37ba2d"
             ]
         ]
     },
@@ -10933,7 +10967,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 2040,
+        "y": 2080,
         "wires": [
             [
                 "8d1c4b56ec8473a5"
@@ -10945,7 +10979,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 2080,
+        "y": 2120,
         "wires": [
             [
                 "763f3fb05d73c292"
@@ -11334,7 +11368,7 @@
         "finalize": "",
         "libs": [],
         "x": 460,
-        "y": 520,
+        "y": 560,
         "wires": [
             [
                 "6a3b62db50924998"
@@ -11353,7 +11387,7 @@
         "template": "{{{payload.script.name}}} Temperature",
         "output": "str",
         "x": 400,
-        "y": 600,
+        "y": 640,
         "wires": [
             [
                 "6db8e230cd184326"
@@ -11372,7 +11406,7 @@
         "template": "thermoYellow.png",
         "output": "str",
         "x": 410,
-        "y": 560,
+        "y": 600,
         "wires": [
             [
                 "17a2444e439ef440"
@@ -11388,11 +11422,11 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 170,
+        "x": 130,
         "y": 520,
         "wires": [
             [
-                "551171c8c0af4712"
+                "3e4d546a4d70de55"
             ]
         ]
     },
@@ -11773,7 +11807,7 @@
         "y": 2400,
         "wires": [
             [
-                "cc786ff15c071e0e"
+                "38b0c33f58ed5342"
             ]
         ]
     },
@@ -11788,7 +11822,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 2440,
+        "y": 2480,
         "wires": [
             [
                 "c4a5f88412e9d257"
@@ -11800,7 +11834,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 2480,
+        "y": 2520,
         "wires": [
             [
                 "8fd8564aab5184b8"
@@ -12879,7 +12913,7 @@
         "y": 100,
         "wires": [
             [
-                "a560d760b6e08171"
+                "1ea7cffebed6852b"
             ]
         ]
     },
@@ -12894,7 +12928,7 @@
         "syntax": "mustache",
         "template": "<!-- Body HTML -->\n    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table>\n            <tr>\n                <td><img src=\"/img/bl-mc-icon-inverse.png\" style=\"width:450px;height:450px;\"/></td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
-        "x": 730,
+        "x": 890,
         "y": 100,
         "wires": [
             [
@@ -12913,7 +12947,7 @@
         "syntax": "mustache",
         "template": "powerMeterYellow.png",
         "output": "str",
-        "x": 250,
+        "x": 410,
         "y": 100,
         "wires": [
             [
@@ -12932,7 +12966,7 @@
         "syntax": "mustache",
         "template": "test",
         "output": "str",
-        "x": 400,
+        "x": 560,
         "y": 100,
         "wires": [
             [
@@ -12951,7 +12985,7 @@
         "syntax": "mustache",
         "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
         "output": "str",
-        "x": 570,
+        "x": 730,
         "y": 100,
         "wires": [
             [
@@ -12964,7 +12998,7 @@
         "type": "subflow:ca529822.9112f8",
         "z": "eb8f985d08e3bd4e",
         "name": "",
-        "x": 1190,
+        "x": 1270,
         "y": 100,
         "wires": []
     },
@@ -12979,7 +13013,7 @@
         "syntax": "mustache",
         "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            background-color: black !important;\n            width: 450px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
-        "x": 850,
+        "x": 1010,
         "y": 100,
         "wires": [
             [
@@ -12998,7 +13032,7 @@
         "syntax": "mustache",
         "template": "<!-- navBar -->\n",
         "output": "str",
-        "x": 980,
+        "x": 1140,
         "y": 100,
         "wires": [
             [
@@ -13378,7 +13412,7 @@
         "y": 2760,
         "wires": [
             [
-                "9af118e3c8304107"
+                "bdcd2bb3de15c84e"
             ]
         ]
     },
@@ -13393,7 +13427,7 @@
         "initialize": "",
         "finalize": "",
         "x": 140,
-        "y": 2800,
+        "y": 2840,
         "wires": [
             [
                 "2da95b9a4d873d69"
@@ -13405,7 +13439,7 @@
         "type": "subflow:2d027d69.1fdeb2",
         "z": "9c854ea3.68416",
         "x": 140,
-        "y": 2840,
+        "y": 2880,
         "wires": [
             [
                 "52c367b2337578a4"
@@ -13735,8 +13769,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 340,
-        "y": 1120,
+        "x": 380,
+        "y": 1160,
         "wires": [
             [
                 "b515b194a06f1bca"
@@ -13754,8 +13788,8 @@
         "syntax": "mustache",
         "template": "SE4 El-Prissensor ",
         "output": "str",
-        "x": 280,
-        "y": 1160,
+        "x": 320,
+        "y": 1200,
         "wires": [
             [
                 "be113a0b01c4ce3c"
@@ -13775,7 +13809,7 @@
         "y": 1120,
         "wires": [
             [
-                "95c0e2059e9b95cf"
+                "92668304dc1da8af"
             ]
         ]
     },
@@ -13845,7 +13879,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n        <div class='card' id=\"gaugeCard\">\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\"></div>\n                <p><button class='btn' style='border-color:#fcc200;border-width: 10px;background-color:#083357;color:#fcc200;' onclick='hideGaugeCard()' id='hideGaugeButton' >SE4 Spot Price</button></p>\n                <p style='color: white;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n        <div class='card' id=\"timePlotCard\">\n            <div class='card-body' align=\"center\" id=\"timePlotCardBody\">\n                <div id=\"timePlotChart\" width=\"100%\" onclick='hideTimePlotCard()'></div>\n            </div>\n        </div>\n",
+        "template": "<!-- Dashboard HTML -->\n        <div class='card' id=\"gaugeCard\">\n            <div class='card-body' align=\"center\">\n                <div id=\"priceGaugePlot\" width=\"100%\"></div>\n                <p><button class='btn' style='border-color:#fcc200;background-color:#083357;color:#fcc200;' onclick='hideGaugeCard()' id='hideGaugeButton' >SE4 Spot Price</button></p>\n                <p style='color: white;' id=\"currentSpotPriceCardTitle\">Spot Price</p>\n            </div>\n        </div>\n        <div class='card' id=\"timePlotCard\">\n            <div class='card-body' align=\"center\" id=\"timePlotCardBody\">\n                <div id=\"timePlotChart\" width=\"100%\" onclick='hideTimePlotCard()'></div>\n            </div>\n        </div>\n",
         "output": "str",
         "x": 1040,
         "y": 1120,
@@ -13864,7 +13898,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            var titleColor = '#000000';\n            var priceGaugeConfig = \n                {\n                    lolo            : device.price.alarm.limits.lolo, \n                    low             : device.price.alarm.limits.low, \n                    high            : device.price.alarm.limits.high, \n                    hihi            : device.price.alarm.limits.hihi, \n                    value           : Math.round(100 * device.price.value) / 100, \n                    unit            : device.price.unit, \n                    numberSize      : scaleSize(100),\n                    labelSize       : scaleSize(50),\n                    label           : '', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#083357', \n                    labelColor      : 'black', \n                    titleColor      : 'white', \n                    size            : scaleSize(1600), \n                    htmlId          : 'priceGaugePlot'\n                };\n            setGaugeWidget(priceGaugeConfig);\n            $('#hideGaugeButton').css(\"font-size\", scaleSize(160).toString() + 'px');\n            $('#currentSpotPriceCardTitle').css(\"font-size\", scaleSize(160).toString() + 'px');\n            $('#currentSpotPriceCardTitle').text(device.price.value.toFixed(2) + ' ' + espotPriceDevice.price.unit);\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings(device)\n        {\n            var titleColor = '#000000';\n            var priceGaugeConfig = \n                {\n                    lolo            : device.price.alarm.limits.lolo, \n                    low             : device.price.alarm.limits.low, \n                    high            : device.price.alarm.limits.high, \n                    hihi            : device.price.alarm.limits.hihi, \n                    value           : Math.round(100 * device.price.value) / 100, \n                    unit            : device.price.unit, \n                    numberSize      : scaleSize(100),\n                    labelSize       : scaleSize(50),\n                    label           : '', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#083357', \n                    labelColor      : 'black', \n                    titleColor      : 'white', \n                    size            : scaleSize(1600), \n                    htmlId          : 'priceGaugePlot'\n                };\n            setGaugeWidget(priceGaugeConfig);\n            $('#hideGaugeButton').css(\"border-width\", scaleSize(10).toString() + 'px');\n            $('#hideGaugeButton').css(\"font-size\", scaleSize(160).toString() + 'px');\n            $('#currentSpotPriceCardTitle').css(\"font-size\", scaleSize(160).toString() + 'px');\n            $('#currentSpotPriceCardTitle').text(device.price.value.toFixed(2) + ' ' + espotPriceDevice.price.unit);\n        }\n",
         "output": "str",
         "x": 740,
         "y": 1160,
@@ -14001,6 +14035,520 @@
         "wires": [
             [
                 "e613f9ea8c54709d"
+            ]
+        ]
+    },
+    {
+        "id": "721e5b041cde047a",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "Body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n   <h1 style=\"text-align:center;color:#415c71;\">{{{payload.errorMsg}}}</h1>\n   <p></p>\n   <h1 style=\"text-align:center;color:#415c71;\">Redirecting to HTTPS...</h1>\n",
+        "output": "str",
+        "x": 770,
+        "y": 80,
+        "wires": [
+            [
+                "8c6be08c3d726f73"
+            ]
+        ]
+    },
+    {
+        "id": "07bacb5b77262b3d",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Insecure Connection",
+        "output": "str",
+        "x": 490,
+        "y": 80,
+        "wires": [
+            [
+                "3a39937ddaa75862"
+            ]
+        ]
+    },
+    {
+        "id": "5129e0a4079ad82a",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        $( document ).ready(function()\n        {\n            setTimeout(function(){location.replace(\"{{{payload.httpsUrl}}}\");}, 3000);\n        });\n \n",
+        "output": "str",
+        "x": 350,
+        "y": 80,
+        "wires": [
+            [
+                "07bacb5b77262b3d"
+            ]
+        ]
+    },
+    {
+        "id": "3a39937ddaa75862",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "basicYellow.png",
+        "output": "str",
+        "x": 630,
+        "y": 80,
+        "wires": [
+            [
+                "721e5b041cde047a"
+            ]
+        ]
+    },
+    {
+        "id": "8c6be08c3d726f73",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "navBar",
+        "field": "payload.navBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/apps'><img src=\"/img/home.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 900,
+        "y": 80,
+        "wires": [
+            [
+                "83802deb03eddd20"
+            ]
+        ]
+    },
+    {
+        "id": "83802deb03eddd20",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "output": "str",
+        "x": 1050,
+        "y": 80,
+        "wires": [
+            [
+                "3e97c79390cf79f0"
+            ]
+        ]
+    },
+    {
+        "id": "30495fc00067bd92",
+        "type": "function",
+        "z": "3fec913b325ae6ff",
+        "name": "https check",
+        "func": "let ireq = -1;\nfor (let ii = 0; ii < msg.req.rawHeaders.length; ++ii)\n{\n    if (msg.req.rawHeaders[ii] == \"X-Forwarded-Proto\") ireq = ii + 1;\n}\nif (ireq >= 0) \n{\n    if (msg.req.rawHeaders[ireq] == 'http')\n    {\n        msg.cookies = { };\n        let ireq2 = -1;\n        for (let ii = 0; ii < msg.req.rawHeaders.length; ++ii)\n        {\n            if (msg.req.rawHeaders[ii] == \"Host\") ireq2 = ii + 1;\n        }\n        if (ireq2 >= 0)\n        {\n            let host = msg.req.rawHeaders[ireq2];\n            let url = \"https://\" + host + msg.req.url;\n            msg.payload['httpsUrl'] = url;\n        }\n        else\n        {\n            msg.payload['httpsUrl'] = '';\n        }\n        msg.payload.errorMsg = \"Insecure Connection!\";\n        return [null,msg];\n    }\n}\nreturn [msg,null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [],
+            [
+                "5129e0a4079ad82a"
+            ]
+        ]
+    },
+    {
+        "id": "124220290623f310",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n{{{payload.head}}}\n  </head>\n  <body>\n{{{payload.navBar}}}\n{{{payload.body}}}\n{{{payload.foot}}}\n  </body>\n</html>",
+        "output": "str",
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "155aa92c7a1b80ab"
+            ]
+        ]
+    },
+    {
+        "id": "370b2570c9f1209a",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "Foot",
+        "field": "payload.foot",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <script src=\"/scripts/popper.js\"></script>\n    <script src=\"/scripts/bootstrap.js\"></script>",
+        "output": "str",
+        "x": 530,
+        "y": 220,
+        "wires": [
+            [
+                "124220290623f310"
+            ]
+        ]
+    },
+    {
+        "id": "3e97c79390cf79f0",
+        "type": "template",
+        "z": "3fec913b325ae6ff",
+        "name": "Head",
+        "field": "payload.head",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <meta charset=\"UTF-8\">\n    <link rel=\"icon\" href=\"/img/favicon.ico?v=4\" type=\"image/x-icon\"/>\n    <title>{{payload.title}}</title>\n    <link rel=\"stylesheet\" href=\"/css/bootstrap.css\"/>\n    <link rel=\"stylesheet\" href=\"/jquery/jquery-ui.css\"/>\n    <link rel=\"stylesheet\" href=\"/jquery/jquery-ui-timepicker-addon.css\"/>\n    <script src=\"/jquery/jquery.js\"></script>\n    <script src=\"/jquery/jquery-ui.js\"></script>\n    <script src=\"/jquery/jquery-ui-timepicker-addon.js\"></script>\n    <script src=\"/scripts/plotly-latest.min.js\"></script>\n    <script src=\"/scripts/pako.min.js\"></script>\n    <style>\n{{{payload.css}}}\n    </style>\n    <script>\n    </script>\n    <script>\n{{{payload.javascript}}}\n    </script>\n",
+        "output": "str",
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "370b2570c9f1209a"
+            ]
+        ]
+    },
+    {
+        "id": "155aa92c7a1b80ab",
+        "type": "http response",
+        "z": "3fec913b325ae6ff",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 770,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "1ea7cffebed6852b",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "eb8f985d08e3bd4e",
+        "name": "",
+        "x": 240,
+        "y": 100,
+        "wires": [
+            [
+                "a560d760b6e08171"
+            ]
+        ]
+    },
+    {
+        "id": "3e4d546a4d70de55",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "86abf68b4fd6e89a",
+        "name": "",
+        "x": 420,
+        "y": 520,
+        "wires": [
+            [
+                "551171c8c0af4712"
+            ]
+        ]
+    },
+    {
+        "id": "df97c852c2c1fe66",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "x": 380,
+        "y": 580,
+        "wires": [
+            [
+                "5c9c12f92d219aa2"
+            ]
+        ]
+    },
+    {
+        "id": "92668304dc1da8af",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "x": 340,
+        "y": 1120,
+        "wires": [
+            [
+                "95c0e2059e9b95cf"
+            ]
+        ]
+    },
+    {
+        "id": "4b71742e21cf9cbe",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 120,
+        "y": 100,
+        "wires": [
+            [
+                "433db7b4.42d728"
+            ]
+        ]
+    },
+    {
+        "id": "e149d03615b2e1c9",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 240,
+        "y": 460,
+        "wires": [
+            [
+                "ca68de71.c19fe"
+            ]
+        ]
+    },
+    {
+        "id": "5c5ada7d58866bb9",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 120,
+        "y": 100,
+        "wires": [
+            [
+                "14bd9d4f855846e3"
+            ]
+        ]
+    },
+    {
+        "id": "d6c5ad930a4d3947",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "dc43776465459265"
+            ]
+        ]
+    },
+    {
+        "id": "9927857c7828e88d",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 820,
+        "wires": [
+            [
+                "0b236be672f61161"
+            ]
+        ]
+    },
+    {
+        "id": "8bd499e933e30132",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 1160,
+        "wires": [
+            [
+                "1e265817288fdd5b"
+            ]
+        ]
+    },
+    {
+        "id": "b2e87f53d10969df",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 120,
+        "y": 1580,
+        "wires": [
+            [
+                "83370d67576be2e4"
+            ]
+        ]
+    },
+    {
+        "id": "244eaf806e37ba2d",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 2040,
+        "wires": [
+            [
+                "eb22069a83fef072"
+            ]
+        ]
+    },
+    {
+        "id": "38b0c33f58ed5342",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 2440,
+        "wires": [
+            [
+                "cc786ff15c071e0e"
+            ]
+        ]
+    },
+    {
+        "id": "bdcd2bb3de15c84e",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "9c854ea3.68416",
+        "name": "",
+        "x": 140,
+        "y": 2800,
+        "wires": [
+            [
+                "9af118e3c8304107"
+            ]
+        ]
+    },
+    {
+        "id": "b6d8fb195c02dfe4",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 360,
+        "y": 780,
+        "wires": [
+            [
+                "09e11d8a81caa3eb"
+            ]
+        ]
+    },
+    {
+        "id": "2e160b0bf4ee73df",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 140,
+        "y": 380,
+        "wires": [
+            [
+                "a9b1e710dfd1f486"
+            ]
+        ]
+    },
+    {
+        "id": "a02f09fd62c88788",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 390,
+        "y": 40,
+        "wires": [
+            [
+                "81add380a85a0a3e"
+            ]
+        ]
+    },
+    {
+        "id": "517b79d22bbe5ced",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "90f83725.6dae08",
+        "name": "",
+        "x": 320,
+        "y": 60,
+        "wires": [
+            [
+                "49150800.c088c8"
+            ]
+        ]
+    },
+    {
+        "id": "384da6cb7cceb074",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "90f83725.6dae08",
+        "name": "",
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "1e9bf28b.344d8d"
+            ]
+        ]
+    },
+    {
+        "id": "6f1305726e75da2e",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "90f83725.6dae08",
+        "name": "",
+        "x": 320,
+        "y": 300,
+        "wires": [
+            [
+                "b213f397.94307"
+            ]
+        ]
+    },
+    {
+        "id": "524a755f2629bcc1",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "dc20c6e0.0feb98",
+        "name": "",
+        "x": 300,
+        "y": 40,
+        "wires": [
+            [
+                "83301a46.e7b368"
+            ]
+        ]
+    },
+    {
+        "id": "a4587ae9888d2b33",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "dc20c6e0.0feb98",
+        "name": "",
+        "x": 300,
+        "y": 100,
+        "wires": [
+            [
+                "bc63b66b.867d18"
+            ]
+        ]
+    },
+    {
+        "id": "d5b379f613b93f3a",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "dc20c6e0.0feb98",
+        "name": "",
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "5fe2ee6b.e7801"
+            ]
+        ]
+    },
+    {
+        "id": "de9e3fc4f9e0c072",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "dc20c6e0.0feb98",
+        "name": "",
+        "x": 300,
+        "y": 220,
+        "wires": [
+            [
+                "fac3ac47.cbce"
             ]
         ]
     }
