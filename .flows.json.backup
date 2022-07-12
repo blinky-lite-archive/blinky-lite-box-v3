@@ -9211,9 +9211,7 @@
         "x": 310,
         "y": 240,
         "wires": [
-            [
-                "d279605b9d7bde87"
-            ]
+            []
         ]
     },
     {
@@ -14123,7 +14121,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/apps'><img src=\"/img/home.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 900,
         "y": 80,
@@ -14575,6 +14573,110 @@
         "wires": [
             [
                 "50b5b5d7.93c8ac"
+            ]
+        ]
+    },
+    {
+        "id": "e3cb68cb169cc9b5",
+        "type": "inject",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 1520,
+        "wires": [
+            [
+                "af202e2f6c9276e0"
+            ]
+        ]
+    },
+    {
+        "id": "af202e2f6c9276e0",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "SpotPrice Query",
+        "func": "msg.url ='https://api.energidataservice.dk/dataset/Elspotprices?limit=216' \nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 1520,
+        "wires": [
+            [
+                "746cd718baee1e3c"
+            ]
+        ]
+    },
+    {
+        "id": "746cd718baee1e3c",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 460,
+        "y": 1520,
+        "wires": [
+            [
+                "402ddf717fe141db"
+            ]
+        ]
+    },
+    {
+        "id": "670669b98a79ef04",
+        "type": "debug",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 1620,
+        "wires": []
+    },
+    {
+        "id": "402ddf717fe141db",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "Parse SpotPrice Table",
+        "func": "var se4Data = [];\nexchangeRate = flow.get('exchangeRate');\nfor (var ii = 0; ii < msg.payload.records.length; ++ii)\n{\n    if(msg.payload.records[ii].PriceArea === 'SE4')\n    {\n        var timeStampDate = new Date(0);\n        var utc = msg.payload.records[ii].HourUTC\n        timeStampDate.setUTCFullYear(Number(utc.split('T')[0].split('-')[0]));\n        timeStampDate.setUTCMonth(Number(utc.split('T')[0].split('-')[1]) - 1);\n        timeStampDate.setUTCDate(Number(utc.split('T')[0].split('-')[2]));\n        timeStampDate.setUTCHours(Number(utc.split('T')[1].split(':')[0]));\n        timeStampDate.setUTCMinutes(0);\n        timeStampDate.setUTCSeconds(0);\n        timeStampDate.setUTCMilliseconds(0);\n        var priceEURMWHr = msg.payload.records[ii].SpotPriceEUR;\n        var se4Record = {timeStamp:timeStampDate.getTime(),priceEURMWHr: priceEURMWHr};\n        se4Data.push(se4Record);\n    }\n}\nsortByKey(se4Data, 'timeStamp');\n/*\nfor (var ii = 0; ii < se4Data.length; ++ii)\n{\n    node.warn((new Date(se4Data[ii].timeStamp).toString() + \" price \" + se4Data[ii].priceSEKWHr.toString()));\n}\n*/\nflow.set('se4Data',se4Data);\nreturn {topic:'SE4',payload:se4Data};\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 1620,
+        "wires": [
+            [
+                "670669b98a79ef04"
             ]
         ]
     }
