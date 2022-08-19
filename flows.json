@@ -9534,7 +9534,7 @@
         "y": 580,
         "wires": [
             [
-                "df97c852c2c1fe66"
+                "9b710f618dbe6003"
             ]
         ]
     },
@@ -14632,5 +14632,33 @@
                 "a8d2eb4249f7439d"
             ]
         ]
+    },
+    {
+        "id": "9b710f618dbe6003",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n            window.location = 'https://www.blinky-lite.se/espotPrice?name=SE4'\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n\n",
+        "output": "str",
+        "x": 374,
+        "y": 519,
+        "wires": [
+            [
+                "f59cda274fd84401"
+            ]
+        ]
+    },
+    {
+        "id": "f59cda274fd84401",
+        "type": "subflow:ca529822.9112f8",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "x": 540,
+        "y": 520,
+        "wires": []
     }
 ]

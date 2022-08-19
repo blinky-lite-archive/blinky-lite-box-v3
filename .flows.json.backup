@@ -9149,27 +9149,6 @@
         ]
     },
     {
-        "id": "d279605b9d7bde87",
-        "type": "http request",
-        "z": "c764f51b8859588d",
-        "name": "",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "authType": "",
-        "x": 490,
-        "y": 240,
-        "wires": [
-            [
-                "16eb68dd21c79672"
-            ]
-        ]
-    },
-    {
         "id": "f5de72b6e4e36701",
         "type": "inject",
         "z": "c764f51b8859588d",
@@ -9193,43 +9172,7 @@
         "y": 240,
         "wires": [
             [
-                "88542b1ff6092d2e"
-            ]
-        ]
-    },
-    {
-        "id": "88542b1ff6092d2e",
-        "type": "function",
-        "z": "c764f51b8859588d",
-        "name": "SpotPrice Query",
-        "func": "var numberOfDays = 1;\nmsg.url ='https://api.energidataservice.dk/datastore_search_sql?sql=' \nmsg.url = msg.url + '%0A%20SELECT%20*';\nmsg.url = msg.url + '%0A%20from%20\"elspotprices\"';\nmsg.url = msg.url + '%0A%20WHERE%20%22HourUTC%22%20%3E%20((current_timestamp%20at%20time%20zone%20%27UTC%27)-INTERVAL%20%27'+ numberOfDays.toString() + '%20days%27)'\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 310,
-        "y": 240,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "16eb68dd21c79672",
-        "type": "function",
-        "z": "c764f51b8859588d",
-        "name": "Parse SpotPrice Table",
-        "func": "var se4Data = [];\nexchangeRate = flow.get('exchangeRate');\nfor (var ii = 0; ii < msg.payload.result.records.length; ++ii)\n{\n    if(msg.payload.result.records[ii].PriceArea === 'SE4')\n    {\n        var timeStampDate = new Date(0);\n        var utc = msg.payload.result.records[ii].HourUTC\n        timeStampDate.setUTCFullYear(Number(utc.split('T')[0].split('-')[0]));\n        timeStampDate.setUTCMonth(Number(utc.split('T')[0].split('-')[1]) - 1);\n        timeStampDate.setUTCDate(Number(utc.split('T')[0].split('-')[2]));\n        timeStampDate.setUTCHours(Number(utc.split('T')[1].split(':')[0]));\n        timeStampDate.setUTCMinutes(0);\n        timeStampDate.setUTCSeconds(0);\n        timeStampDate.setUTCMilliseconds(0);\n        var priceEURMWHr = msg.payload.result.records[ii].SpotPriceEUR;\n        var se4Record = {timeStamp:timeStampDate.getTime(),priceEURMWHr: priceEURMWHr};\n        se4Data.push(se4Record);\n    }\n}\nsortByKey(se4Data, 'timeStamp');\n/*\nfor (var ii = 0; ii < se4Data.length; ++ii)\n{\n    node.warn((new Date(se4Data[ii].timeStamp).toString() + \" price \" + se4Data[ii].priceSEKWHr.toString()));\n}\n*/\nflow.set('se4Data',se4Data);\nreturn {topic:'SE4',payload:se4Data};\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 690,
-        "y": 240,
-        "wires": [
-            [
-                "a8d2eb4249f7439d"
+                "f11d8d9965c09321"
             ]
         ]
     },
@@ -9345,7 +9288,7 @@
         "y": 160,
         "wires": [
             [
-                "88542b1ff6092d2e"
+                "f11d8d9965c09321"
             ]
         ]
     },
@@ -9591,7 +9534,7 @@
         "y": 580,
         "wires": [
             [
-                "df97c852c2c1fe66"
+                "9b710f618dbe6003"
             ]
         ]
     },
@@ -14577,55 +14520,24 @@
         ]
     },
     {
-        "id": "e3cb68cb169cc9b5",
-        "type": "inject",
-        "z": "c764f51b8859588d",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 120,
-        "y": 1520,
-        "wires": [
-            [
-                "af202e2f6c9276e0"
-            ]
-        ]
-    },
-    {
-        "id": "af202e2f6c9276e0",
+        "id": "e72166d3acfec63b",
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "SpotPrice Query",
-        "func": "msg.url ='https://api.energidataservice.dk/dataset/Elspotprices?limit=216' \nreturn msg;\n",
+        "func": "var numberOfDays = 1;\nmsg.url ='https://api.energidataservice.dk/datastore_search_sql?sql=' \nmsg.url = msg.url + '%0A%20SELECT%20*';\nmsg.url = msg.url + '%0A%20from%20\"elspotprices\"';\nmsg.url = msg.url + '%0A%20WHERE%20%22HourUTC%22%20%3E%20((current_timestamp%20at%20time%20zone%20%27UTC%27)-INTERVAL%20%27'+ numberOfDays.toString() + '%20days%27)'\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 280,
-        "y": 1520,
+        "x": 296,
+        "y": 1866,
         "wires": [
-            [
-                "746cd718baee1e3c"
-            ]
+            []
         ]
     },
     {
-        "id": "746cd718baee1e3c",
+        "id": "5a1e4603b2f97661",
         "type": "http request",
         "z": "c764f51b8859588d",
         "name": "",
@@ -14637,32 +14549,73 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 460,
-        "y": 1520,
+        "x": 466,
+        "y": 1866,
         "wires": [
             [
-                "402ddf717fe141db"
+                "21f4bb064c419bc0"
             ]
         ]
     },
     {
-        "id": "670669b98a79ef04",
-        "type": "debug",
+        "id": "21f4bb064c419bc0",
+        "type": "function",
         "z": "c764f51b8859588d",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 830,
-        "y": 1620,
-        "wires": []
+        "name": "Parse SpotPrice Table",
+        "func": "var se4Data = [];\nexchangeRate = flow.get('exchangeRate');\nfor (var ii = 0; ii < msg.payload.result.records.length; ++ii)\n{\n    if(msg.payload.result.records[ii].PriceArea === 'SE4')\n    {\n        var timeStampDate = new Date(0);\n        var utc = msg.payload.result.records[ii].HourUTC\n        timeStampDate.setUTCFullYear(Number(utc.split('T')[0].split('-')[0]));\n        timeStampDate.setUTCMonth(Number(utc.split('T')[0].split('-')[1]) - 1);\n        timeStampDate.setUTCDate(Number(utc.split('T')[0].split('-')[2]));\n        timeStampDate.setUTCHours(Number(utc.split('T')[1].split(':')[0]));\n        timeStampDate.setUTCMinutes(0);\n        timeStampDate.setUTCSeconds(0);\n        timeStampDate.setUTCMilliseconds(0);\n        var priceEURMWHr = msg.payload.result.records[ii].SpotPriceEUR;\n        var se4Record = {timeStamp:timeStampDate.getTime(),priceEURMWHr: priceEURMWHr};\n        se4Data.push(se4Record);\n    }\n}\nsortByKey(se4Data, 'timeStamp');\n/*\nfor (var ii = 0; ii < se4Data.length; ++ii)\n{\n    node.warn((new Date(se4Data[ii].timeStamp).toString() + \" price \" + se4Data[ii].priceSEKWHr.toString()));\n}\n*/\nflow.set('se4Data',se4Data);\nreturn {topic:'SE4',payload:se4Data};\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 696,
+        "y": 1866,
+        "wires": [
+            []
+        ]
     },
     {
-        "id": "402ddf717fe141db",
+        "id": "f11d8d9965c09321",
+        "type": "function",
+        "z": "c764f51b8859588d",
+        "name": "SpotPrice Query",
+        "func": "msg.url ='https://api.energidataservice.dk/dataset/Elspotprices?limit=216' \nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 240,
+        "wires": [
+            [
+                "6ccb0a141bbfb6aa"
+            ]
+        ]
+    },
+    {
+        "id": "6ccb0a141bbfb6aa",
+        "type": "http request",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 470,
+        "y": 240,
+        "wires": [
+            [
+                "b4c79feb7f9a4a8b"
+            ]
+        ]
+    },
+    {
+        "id": "b4c79feb7f9a4a8b",
         "type": "function",
         "z": "c764f51b8859588d",
         "name": "Parse SpotPrice Table",
@@ -14672,12 +14625,42 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 620,
-        "y": 1620,
+        "x": 660,
+        "y": 240,
         "wires": [
             [
-                "670669b98a79ef04"
+                "a8d2eb4249f7439d"
             ]
         ]
+    },
+    {
+        "id": "9b710f618dbe6003",
+        "type": "template",
+        "z": "c764f51b8859588d",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n            window.location = 'https://www.blinky-lite.se/espotPrice?name=SE4'\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n\n",
+        "output": "str",
+        "x": 374,
+        "y": 519,
+        "wires": [
+            [
+                "7cd899c22a4ec55e"
+            ]
+        ]
+    },
+    {
+        "id": "7cd899c22a4ec55e",
+        "type": "http response",
+        "z": "c764f51b8859588d",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 540,
+        "y": 520,
+        "wires": []
     }
 ]
