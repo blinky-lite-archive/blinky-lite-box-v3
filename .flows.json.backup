@@ -663,6 +663,12 @@
         "wholemsg": "false"
     },
     {
+        "id": "933b70526001d4ad",
+        "type": "websocket-listener",
+        "path": "/ideon-fika-mon/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -4955,7 +4961,8 @@
             "3906b8f2c8f56585",
             "a61d9213f6edc11c",
             "2036b12a29f0277e",
-            "1bbad9be6b29302e"
+            "1bbad9be6b29302e",
+            "654352d74f4247c7"
         ],
         "x": 855,
         "y": 680,
@@ -6890,7 +6897,8 @@
             "355850f24ee88a60",
             "a8eff39aaa50d4ee",
             "3906b8f2c8f56585",
-            "a61d9213f6edc11c"
+            "a61d9213f6edc11c",
+            "654352d74f4247c7"
         ],
         "x": 715,
         "y": 100,
@@ -6906,7 +6914,8 @@
             "355850f24ee88a60",
             "a8eff39aaa50d4ee",
             "3906b8f2c8f56585",
-            "a61d9213f6edc11c"
+            "a61d9213f6edc11c",
+            "654352d74f4247c7"
         ],
         "x": 1155,
         "y": 800,
@@ -8834,7 +8843,8 @@
         "links": [
             "36aae1e6268a5d9c",
             "82cabe47116325a6",
-            "be346535d6c21d30"
+            "be346535d6c21d30",
+            "ac1d5945dcbc3dca"
         ],
         "x": 275,
         "y": 440,
@@ -9760,6 +9770,7 @@
         "z": "8475ab9.3d26058",
         "name": "espotPrice-archive",
         "links": [
+            "654352d74f4247c7",
             "94489a275b7f183f"
         ],
         "x": 1155,
@@ -14648,19 +14659,322 @@
         "y": 519,
         "wires": [
             [
-                "7cd899c22a4ec55e"
+                "f59cda274fd84401"
             ]
         ]
     },
     {
-        "id": "7cd899c22a4ec55e",
-        "type": "http response",
+        "id": "f59cda274fd84401",
+        "type": "subflow:ca529822.9112f8",
         "z": "c764f51b8859588d",
         "name": "",
-        "statusCode": "",
-        "headers": {},
         "x": 540,
         "y": 520,
+        "wires": []
+    },
+    {
+        "id": "b707351bbe91703d",
+        "type": "function",
+        "z": "b76c0793b15a73b9",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name;\nmsg.payload['script']['deviceType'] = 'blinky-power-mon';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 1100,
+        "wires": [
+            [
+                "d65bbec72b2734a2"
+            ]
+        ]
+    },
+    {
+        "id": "b31ab0c530d43b5c",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Ideon Innovation Fikameter",
+        "output": "str",
+        "x": 340,
+        "y": 1180,
+        "wires": [
+            [
+                "c8fa988abd6b9a42"
+            ]
+        ]
+    },
+    {
+        "id": "c8fa988abd6b9a42",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var archiveList = [];\n\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(false);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#archiveCardId').hide();\n            window.addEventListener('resize', resizePlots);\n/*\n            document.onclick= function(event) \n            {\n                if (event===undefined) event= window.event;\n                var target= 'target' in event? event.target : event.srcElement;\n                console.log(event);\n            };\n*/\n            document.getElementById(\"archiveChart\").addEventListener(\"click\", duplicateWindow);\n            document.getElementById(\"energyBarPlot\").addEventListener(\"click\", duplicateWindow);\n            document.getElementById(\"costBarPlot\").addEventListener(\"click\", duplicateWindow);\n        }\n        function duplicateWindow()\n        {\n            window.open(window.location.href, '_blank').focus();\n        }\n        function resizePlots()\n        {\n            if (archiveData) updateDayData();\n            if (archiveData) Plotly.newPlot('archiveChart', [archiveTrace1,archiveTrace2], getArchiveLayout(), {displayModeBar: false, staticPlot: true});\n\n        }\n        function onWebSocketOpen()\n        {\n            getArchive(25);\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function getScaledPix(percentageWindowWidth)\n        {\n            var pix = window.innerWidth * percentageWindowWidth;\n            pix = Math.round(pix / 100);\n            return pix;\n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        lastPing = new Date().getTime();\n                        heartbeat();\n                        device = JSON.parse(msg.payload);\n                        mqttDevice = msg.mqttDevice;\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n//                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "output": "str",
+        "x": 670,
+        "y": 1060,
+        "wires": [
+            [
+                "31133f16e343f7ef"
+            ]
+        ]
+    },
+    {
+        "id": "83a06872b6b0ec4a",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateDayData}}}\n{{{payload.script.vertbarWidget}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 660,
+        "y": 1220,
+        "wires": [
+            [
+                "84736b47a1b0314c"
+            ]
+        ]
+    },
+    {
+        "id": "84736b47a1b0314c",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div  width=\"100%\">\n            <table width=\"100%\" style=\"background-color:#547792;\">\n                <tr>\n                    <td width=\"15%\">\n                        <div id=\"energyBarPlot\" width=\"100%\" ></div>\n                    </td>\n                    <td width=\"15%\">\n                        <div id=\"costBarPlot\" width=\"100%\" ></div>\n                    </td>\n                    <td width=\"70%\">\n                        <div id=\"archiveChart\" width=\"100%\" ></div>\n                    </td>\n                </tr>\n            </table>\n        </div>\n    </div>\n\\",
+        "output": "str",
+        "x": 810,
+        "y": 1220,
+        "wires": [
+            [
+                "f7376e40e4b61f97"
+            ]
+        ]
+    },
+    {
+        "id": "d65bbec72b2734a2",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "coffeeCupWhite.png",
+        "output": "str",
+        "x": 350,
+        "y": 1140,
+        "wires": [
+            [
+                "b31ab0c530d43b5c"
+            ]
+        ]
+    },
+    {
+        "id": "c7c80debcfe1c817",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var archiveData = false;\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['power','powerAvg'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'espotPrice',\n                name : 'SE4', \n                attr : ['priceTime','price'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                integratePower();\n                plotArchive();\n            }\n        }\n        let hourData = [];\n        let dayData = {energy:0,cost:0};\n        function integratePower()\n        {\n            let endDate = new Date();\n            endDate.setMilliseconds(0);\n            endDate.setSeconds(0);\n            endDate.setMinutes(0);\n            startTime = new Date(endDate.getTime() - 86400000).getTime();\n            let startHour = startTime;\n            let stopHour = startHour + 3600000;\n            let powerPointer = 1;\n            \n            let ihour = 0;\n            while(archiveList[0].trace[powerPointer].timeStamp > startHour)\n            {\n                hourData.push({stopHour:stopHour,energy:0,price:0});\n                ihour = ihour + 1;\n                startHour = stopHour;\n                stopHour = startHour + 3600000;\n            }\n            while(archiveList[0].trace[powerPointer].timeStamp < startHour) powerPointer = powerPointer + 1;\n\n            while(ihour < 24)\n            { \n                let wattSec = 0;\n                while (archiveList[0].trace[powerPointer].timeStamp < stopHour)\n                {\n                    \n                    let dt = archiveList[0].trace[powerPointer].timeStamp - archiveList[0].trace[powerPointer - 1].timeStamp;\n                    let dp = (archiveList[0].trace[powerPointer].powerAvg + archiveList[0].trace[powerPointer - 1].powerAvg) / 2.0;\n                    wattSec = wattSec + dp * dt * 0.001;\n                    powerPointer = powerPointer + 1;\n                }\n                let iprice = 0;\n                for (let ii = 0; ii < archiveList[1].trace.length; ++ii)\n                {\n                    if (archiveList[1].trace[ii].priceTime < stopHour) iprice  = ii;\n                }\n                let hourPt = {stopHour:stopHour, energy:(wattSec / 3600000.0), price:((archiveList[1].trace[iprice].price + 0.6925) * 1.25)};\n                hourData.push(hourPt);\n                dayData.energy = dayData.energy + hourPt.energy;\n                dayData.cost = dayData.cost + hourPt.energy * hourPt.price;\n                ihour = ihour + 1;\n                startHour = stopHour;\n                stopHour = startHour + 3600000;\n            }\n            \n        }\n\n        var archiveTrace1 = \n        {\n            x: [],\n            y: [],\n            name: 'Energy Rate (kW)',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: '#00ffff',width:1}\n        };\n        var archiveTrace2 = \n        {\n            x: [],\n            y: [],\n            name: 'Cost Rate (SEK/hr)',\n            yaxis: 'y2',\n            type: 'scatter',\n            mode: 'lines',\n            line: {color: '#ffff00',width:4}\n        };\n        function getArchiveLayout()\n        {\n            var archiveLayout =\n            {\n                plot_bgcolor: \"#547792\",\n                paper_bgcolor:\"#547792\",\n                showlegend  : true,\n                legend      : \n                { \n                    x: 0, \n                    y: 1.2,\n                    orientation: \"h\",\n                    font: \n                    {\n                        color:'white',\n                        size: getScaledPix(1.6)\n                    }\n                },\n                showlegend  : true,\n                height      : getScaledPix(50),\n                width       : getScaledPix(70),\n                xaxis       :\n                {\n                    type: 'date',\n                    tickfont: \n                    {\n                        size: getScaledPix(2.0),\n                        color: 'white'\n                    },\n                    tickcolor: 'white',\n                    gridcolor: 'white',\n                    tickangle: 0,\n                    tickformat: \"%H:%M\\n%b-%d\"\n\n                },\n                yaxis:\n                {\n                    title           : '',\n                    titlefont       : {color: '#00ffff', size: getScaledPix(2)},\n                    tickfont        : {color: '#00ffff', size: getScaledPix(2)},\n                    gridcolor       : '#00aaff',\n                    zerolinecolor   : '#00aaff',\n                    linecolor       : '#00ffff',\n                    range: [0, 1]\n                },\n    \n                yaxis2:\n                {\n                    title           : '',\n                    titlefont       : {color: '#ffff00', size: getScaledPix(2)},\n                    tickfont        : {color: '#ffff00', size: getScaledPix(2)},\n                    gridcolor       : '#ffffff',\n                    zerolinecolor   : '#ffffff',\n                    linecolor       : '#ffff00',\n                    overlaying: 'y',\n                    side: 'right',\n                    range: [0, 10]\n                },\n    \n                margin: \n                    {\n                        l: getScaledPix(8),\n                        r: getScaledPix(8),\n                        b: getScaledPix(9),\n                        t: getScaledPix(0),\n                        pad: 0\n                    }\n            };\n            if (getScaledPix(100) < 200) archiveLayout.showlegend = false;\n            return archiveLayout;\n        }\n\n        function plotArchive()\n        {\n            archiveTrace1.x = [];\n            archiveTrace1.y = [];\n            archiveTrace2.x = [];\n            archiveTrace2.y = [];\n            \n            for (var ii = 0; ii < hourData.length; ++ii)\n            {\n                var x = hourData[ii].stopHour;\n                archiveTrace1.x[ii] = x;\n                archiveTrace1.y[ii] = hourData[ii].energy ;\n                archiveTrace2.x[ii] = x;\n                archiveTrace2.y[ii] = hourData[ii].energy * hourData[ii].price;\n\n            }\n            archiveData = true;\n            updateDayData();\n\n            Plotly.newPlot('archiveChart', [archiveTrace1,archiveTrace2], getArchiveLayout(), {displayModeBar: false, staticPlot: true});\n\n        }\n",
+        "output": "str",
+        "x": 670,
+        "y": 1180,
+        "wires": [
+            [
+                "83a06872b6b0ec4a"
+            ]
+        ]
+    },
+    {
+        "id": "75b8673ea21d9caf",
+        "type": "http in",
+        "z": "b76c0793b15a73b9",
+        "name": "/ideon-fika-mon",
+        "url": "/ideon-fika-mon",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 1060,
+        "wires": [
+            [
+                "4d635ca64b7c8ab0"
+            ]
+        ]
+    },
+    {
+        "id": "31133f16e343f7ef",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.updateDayData",
+        "field": "payload.script.updateDayData",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDayData()\n        {\n\n            var energyBarConfig = \n                {\n                    lolo            : 0, \n                    low             : 8, \n                    high            : 16, \n                    hihi            : 24, \n                    value           : dayData.energy, \n                    unit            : 'kWh', \n                    textsize        : 2,\n                    label           : 'Daily Energy', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#547792', \n                    labelColor      : '#ffff00', \n                    gridColor       : '#ffffff',\n                    barColor        : '#ffff00',\n                    width           : 15, \n                    height          : 50, \n                    title           : \"Energy: \" + dayData.energy.toFixed(1) + \" kwh\",\n                    htmlId          : 'energyBarPlot'\n                };\n            setHorzBarWidget(energyBarConfig);\n            \n            var costBarConfig = \n                {\n                    lolo            : 0, \n                    low             : 80, \n                    high            : 160, \n                    hihi            : 240, \n                    value           : dayData.cost, \n                    unit            : 'SEK', \n                    textsize        : 2,\n                    label           : 'Daily Cost', \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#547792', \n                    labelColor      : '#00ffff', \n                    gridColor       : '#ffffff',\n                    barColor        : '#00ffff',\n                    width           : 15, \n                    height          : 50, \n                    title           : \"Cost: \" + dayData.cost.toFixed(0) + \" SEK\",\n                    htmlId          : 'costBarPlot'\n                };\n            setHorzBarWidget(costBarConfig);\n        }\n",
+        "output": "str",
+        "x": 700,
+        "y": 1100,
+        "wires": [
+            [
+                "b6474bc8ad46f897"
+            ]
+        ]
+    },
+    {
+        "id": "f7376e40e4b61f97",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            background-color: transparent !important;\n            max-width: 100%;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top: 1w;\n          padding-bottom:0vw;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n          font-size:5vw;\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "output": "str",
+        "x": 930,
+        "y": 1220,
+        "wires": [
+            [
+                "c29972852438f811"
+            ]
+        ]
+    },
+    {
+        "id": "c29972852438f811",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "navBar",
+        "field": "payload.navBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- navBar -->\n    <div id=\"navbar\">\n        <table width=\"100%\" style=\"background-color:#547792;\">\n            <tr>\n                <td width=\"10%\" style=\"text-align:center;\">\n                    <img src=\"/img/{{{payload.navBarIcon}}}\" style=\"width:5vw;height:5vw;\"/>\n                </td>\n                <td width=\"80%\" style=\"text-align:center;\">\n                    <span style=\"color:white;font-size:5vw;\">{{{payload.title}}}</span>\n                </td>\n                <td width=\"10%\" style=\"text-align:center;\">\n                    <a href=\"https://www.bl-mc.se/\" target=\"_blank\"><img src=\"/img/bl-mc-icon-inverse.png\" style=\"width:5vw;height:5vw;\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 1060,
+        "y": 1220,
+        "wires": [
+            [
+                "dddf5e59261f01ed"
+            ]
+        ]
+    },
+    {
+        "id": "b6474bc8ad46f897",
+        "type": "template",
+        "z": "b76c0793b15a73b9",
+        "name": "script.vertbarWidget",
+        "field": "payload.script.vertbarWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Horz Bar Widget\n        function setHorzBarWidget(barConfig)\n        {\n            var lowValue = 0;\n            var mediumValue = 0;\n            var highValue = 0;\n        \n            var lowColor = barConfig.backgroundColor;\n            var mediumColor = barConfig.backgroundColor;\n            var highColor = barConfig.backgroundColor;\n            var valueColor = barConfig.backgroundColor; \n            \n            if ( barConfig.value <= barConfig.lolo)\n            {\n                lowValue = barConfig.lolo;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.lolo <= barConfig.value) && (barConfig.value < barConfig.low) )\n            {\n                lowValue = barConfig.value;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.low  <= barConfig.value) && (barConfig.value < barConfig.high) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.value - barConfig.low; \n                lowColor = barConfig.mediumColor;\n                mediumColor = barConfig.mediumColor;\n                valueColor = mediumColor;\n        \n            }\n            if ( (barConfig.high <= barConfig.value) && (barConfig.value < barConfig.hihi) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low;\n                highValue = barConfig.value - barConfig.high;\n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if ( barConfig.hihi <= barConfig.value)\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low; \n                highValue = barConfig.hihi - barConfig.high; \n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if (barConfig.barColor != null)\n            {\n                valueColor = barConfig.barColor;\n                lowColor = barConfig.barColor;\n                mediumColor = barConfig.barColor;\n                highColor = barConfig.barColor;\n            }\n            \n            var lowBar = \n            {\n                x: ['', '-'],\n                y: [ barConfig.low, lowValue],\n                type: 'bar',\n//                orientation: 'v',\n                showlegend: false,\n                marker:{color: [barConfig.lowColor, lowColor]},\n              width: [0.15, 0.8],\n            };\n            var mediumBar = \n            {\n                x: ['', '-'],\n                y: [barConfig.high - barConfig.low, mediumValue],\n                type: 'bar',\n//                orientation: 'v',\n                showlegend: false,\n                marker:{color: [barConfig.mediumColor, mediumColor]},\n              width: [0.15, 0.8],\n            };\n            var highBar = \n            {\n                x: ['', '-'],\n                y: [barConfig.hihi - barConfig.high, highValue],\n//                orientation: 'v',\n                type: 'bar',\n                showlegend: false,\n                marker:{color: [barConfig.highColor, highColor]},\n              width: [0.15, 0.8],\n            };\n            var layout = \n                {\n                    barmode: 'stack',\n                    plot_bgcolor:barConfig.backgroundColor,\n                    paper_bgcolor:barConfig.backgroundColor,\n                    margin: \n                        {\n                            t: getScaledPix(5), //top margin\n                            l: getScaledPix(5), //left margin\n                            r: getScaledPix(2), //right margin\n                            b: getScaledPix(5) //bottom margin\n                        },\n \n                    width:  getScaledPix(barConfig.width),\n                    height: getScaledPix(barConfig.height),\n                    title: \n                        {\n                            text: barConfig.title,\n//                            font: {color: valueColor, size:barConfig.textsize},\n                            font: {color: barConfig.labelColor, size:getScaledPix(barConfig.textsize)},\n                        },\n                    yaxis: \n                        {\n                            range: [barConfig.lolo, barConfig.hihi],\n                            tickfont: {color:barConfig.labelColor, size:getScaledPix(barConfig.textsize)},\n                            gridcolor       : barConfig.gridColor\n                        },\n                    xaxis: \n                        {\n                           tickfont: {color:valueColor, size:getScaledPix(barConfig.textsize)}\n                        }\n                };\n           Plotly.newPlot(barConfig.htmlId, [lowBar, mediumBar, highBar], layout, {displayModeBar: false, staticPlot: true});\n        }\n        \n        \n        \n        \n        \n    \n",
+        "output": "str",
+        "x": 700,
+        "y": 1140,
+        "wires": [
+            [
+                "c7c80debcfe1c817"
+            ]
+        ]
+    },
+    {
+        "id": "dddf5e59261f01ed",
+        "type": "subflow:3eac550e9ccb56f3",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 1210,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "4d635ca64b7c8ab0",
+        "type": "subflow:3fec913b325ae6ff",
+        "z": "b76c0793b15a73b9",
+        "name": "",
+        "x": 360,
+        "y": 1060,
+        "wires": [
+            [
+                "b707351bbe91703d"
+            ]
+        ]
+    },
+    {
+        "id": "654352d74f4247c7",
+        "type": "link in",
+        "z": "b76c0793b15a73b9",
+        "name": "/ideon-fika-mon input socket",
+        "links": [
+            "1e710224.de723e",
+            "76b3cf58f503afba",
+            "ab40734a9039d27b",
+            "df90abfd748bbd25"
+        ],
+        "x": 975,
+        "y": 240,
+        "wires": [
+            [
+                "00e0970f30d4e8f1"
+            ]
+        ]
+    },
+    {
+        "id": "00e0970f30d4e8f1",
+        "type": "websocket out",
+        "z": "b76c0793b15a73b9",
+        "name": "/ideon-fika-mon/websocket",
+        "server": "933b70526001d4ad",
+        "client": "",
+        "x": 1140,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "77e8e404a52b6a45",
+        "type": "websocket in",
+        "z": "b76c0793b15a73b9",
+        "name": "/ideon-fika-mon/websocket",
+        "server": "933b70526001d4ad",
+        "client": "",
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "ac1d5945dcbc3dca"
+            ]
+        ]
+    },
+    {
+        "id": "ac1d5945dcbc3dca",
+        "type": "link out",
+        "z": "b76c0793b15a73b9",
+        "name": "/ideon-fika-mon/websocket out",
+        "links": [
+            "f92124c5033966a3"
+        ],
+        "x": 375,
+        "y": 240,
         "wires": []
     }
 ]
